@@ -1,0 +1,57 @@
+{
+    "main": {
+        "description": "The best Ana Paintball since 2019!\n๏ Land a sleep dart to earn the final point!\n๏ Shoot or punch sleeping players!\n๏ Endorsement mechanic, stats tracker...\nand much more!\n\nDiscord ≫ jinko.dev/discord\nFull mode details ≫ jinko.dev/anapb\n★ FAVORITE to always play the latest version!\nDo not save the settings or they will be outdated eventually!",
+        "modeName": "\u0001｢︻デ≡一一 ANA PAINTBALL by Jinko"
+    },
+    "lobby": {
+        "allowPlayersInQueue": true,
+        "mapRotation": "afterGame",
+        "ffaSlots": 8,
+        "spectatorSlots": 12,
+        "returnToLobby": "never",
+        "swapTeamsAfterMatch": false
+    },
+    "gamemodes": {
+        "ffa": {
+            "enabledMaps": [
+                "chateauGuillard"
+                //"dorado",
+                //"ecopointAntarctica",
+                //"eichenwalde",
+                //"hollywood",
+                //"malevento",
+                //"petra"
+            ]
+        },
+        "general": {
+            "enableHeroSwitching": false,
+            "enableEnemyHealthBars": false,
+            "gamemodeStartTrigger": "immediately",
+            "enableKillCam": false,
+            "respawnTime%": 0,
+            "scoreToWin": 25,
+            "enableSelfInitiatedRespawn": false,
+            "spawnHealthPacks": "disabled"
+        }
+    },
+    "heroes": {
+        "allTeams": {
+            "ana": {
+                "enableAbility2": false,
+                "ability1Cooldown%": 20,
+                "combatUltGen%": 0,
+                "passiveUltGen%": 0
+            },
+            "enabledHeroes": [
+                "ana"
+            ],
+            "general": {
+                "enableInfiniteUlt": true,
+                "ultGen%": 10,
+                "combatUltGen%": 0,
+                "passiveUltGen%": 0
+            }
+            
+        }
+    }
+}

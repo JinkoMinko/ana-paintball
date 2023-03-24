@@ -1,0 +1,111 @@
+#!mainFile "ANA_PB.opy"
+
+rule "Reset player's variables & effects upon death":
+    @Event playerDied
+    @Hero ana
+
+    eventPlayer.startForcingOutlineFor(getAllPlayers(), true, Color.RED, OutlineVisibility.DEFAULT)
+    eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
+    eventPlayer.KillStreakBeforeDeath = eventPlayer.KillStreak
+    eventPlayer.Deaths +=1
+    eventPlayer.SleepUsedAndDied = true
+    eventPlayer.SleepsOnground = false
+    wait(0.5)
+    eventPlayer.RespawnDelay = 0
+    eventPlayer.SleepLock = 0
+    eventPlayer.clearStatusEffect(Status.BURNING)
+    eventPlayer.KillStreak = 0
+    wait(1.6)
+    eventPlayer.RespawnDelay = 1
+    if eventPlayer.getScore() < NANO_SCORE:
+        eventPlayer.setUltCharge((eventPlayer.getScore()/NANO_SCORE)*100)
+
+rule "fix movement bug after death":
+    @Event playerDied
+    @Hero ana
+    @Condition eventPlayer.FixMovementBug == true
+
+    waitUntil(eventPlayer.isAlive(), 69)
+    eventPlayer.startForcingHero(Hero.ASHE)
+    eventPlayer.startForcingHero(Hero.ANA)
+    eventPlayer.FixMovementBug = false
+
+
+rule "RIFLE & MELEE KILLS mechanics":
+    @Event playerDealtDamage
+    @Hero ana
+    @Condition eventAbility == Button.PRIMARY_FIRE or (eventAbility == Button.MELEE and victim.hasStatusEffect(Status.ASLEEP))
+    
+    kill(victim, attacker)
+
+    if not FirstBlood:
+        attacker.MedalQueue.append(Medal.FIRST_BLOOD)
+        FirstBlood = not FirstBlood
+
+    if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED
+        attacker.ScopedHits +=1
+        attacker.RaycastLastHitPlayer = attacker
+        attacker.RaycastLastHitPos = attacker.getEyePosition()
+        while attacker.RaycastLastHitPlayer != null:    #COLLATERALS
+            if DEBUG_MODE: createBeam(getAllPlayers(), Beam.GRAPPLE, attacker.RaycastLastHitPos, raycast(attacker.RaycastLastHitPos, attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 50, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition(), Color.GRAY, EffectReeval.VISIBILITY)
+            attacker.Temp = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 50, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition()
+            attacker.RaycastLastHitPlayer = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 50, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getPlayerHit()
+            attacker.RaycastLastHitPos = attacker.Temp
+
+            kill(attacker.RaycastLastHitPlayer, attacker)
+            attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
+            attacker.KillStreak += 1
+            attacker.EarnedCollateral += 1
+
+        attacker.ScopedAccuracy = round((attacker.ScopedHits / attacker.ScopedShots)*100)
+        BestScopedAccuracyPlayer = sorted([scoper for scoper in getAllPlayers() if scoper.ScopedShots >= 15], lambda p: p.ScopedAccuracy).last()
+        BestScopedAccuracyValue = BestScopedAccuracyPlayer.ScopedAccuracy
+        if attacker.EarnedCollateral > 1:
+            attacker.MedalQueue.append(Medal.COLLATERAL_SHOT)
+        attacker.EarnedCollateral = 0
+
+    elif eventAbility == Button.PRIMARY_FIRE:    # NOSCOPE
+        attacker.KillStreak += 1
+        attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
+    
+    else:    # MELEE
+        attacker.KillStreak += 1
+        attacker.SleepPunches += 1
+        attacker.setAmmo(0, 15)
+        attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
+        playEffect([victim, attacker], DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
+        if victim.getScore() >= attacker.getScore():
+            attacker.MedalQueue.append(Medal.DEMOTED)
+            smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1} demoted {2}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker, victim))
+            victim.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(victim.MedalQueue)
+            smallMessage(victim, "    {0}  {1} demoted you!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker))
+            eventPlayer.DemotedVictim = victim
+            victim.setScore(victim.getScore()-1)
+            attacker.DemotedPlayers += 1
+            playEffect(victim, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 999)
+            
+            if victim.getScore() == NANO_SCORE -1:
+                attacker.MedalQueue.append(Medal.KILLJOY)
+        
+        if attacker.getScore() < NANO_SCORE:
+            attacker.MedalQueue.append(Medal.SLEEP_PUNCH)
+            attacker.setAmmo(0, 15)
+    
+    if victim.KillStreak == ONFIRE_STREAK-1 or victim.KillStreak == RAMPAGE_STREAK-1 or victim.KillStreak == GODLIKE_STREAK-1:
+        attacker.MedalQueue.append(Medal.BUZZKILL)
+    
+    if attacker.ComebackCount >= 3:
+        attacker.MedalQueue.append(Medal.COMEBACK)
+        attacker.ComebackCount = 0
+
+    if victim.KillStreak == 0:
+        victim.ComebackCount +=1
+
+    attacker.ComebackCount = 0
+
+    if attacker.KillStreak > MostKillStreakValue and attacker.KillStreak >= ONFIRE_STREAK:
+        MostKillStreakPlayer = attacker
+        MostKillStreakValue = attacker.KillStreak
+    if attacker.getScore() > NANO_SCORE:
+        attacker.setScore(NANO_SCORE)
+    attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)    
