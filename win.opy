@@ -20,7 +20,7 @@ rule "Win Cam":
     victim.OofDistance = distance(attacker, victim)
     if victim.OofDistance >= LONGSHOT_DISTANCE:
         LongshotWin = not LongshotWin
-    getAllPlayers().exclude([Winner, FinalVictim]).startForcingOutlineFor(getAllPlayers(), false, hsv((getTotalTimeElapsed())%0.5/0.5*360,0.5,0.9), OutlineVisibility.ALWAYS)
+    getAllPlayers().exclude([Winner, FinalVictim]).startForcingOutlineFor(getAllPlayers(), false, rgb(rainbow(getTotalTimeElapsed() * 150)), OutlineVisibility.ALWAYS)
     getAllPlayers().setStatusEffect(null, Status.INVINCIBLE, 999)
     getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
     getAllPlayers().setAimSpeed(10)
@@ -31,10 +31,10 @@ rule "Win Cam":
     getAllPlayers().startCamera(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim()) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 25)
     wait(0.5)
     #Amazing in-world text code by josbird https://workshop.codes/wiki/articles/rendering-an-inworld-text-at-a-specific-onscreen-position
-    createInWorldText(localPlayer,"longshot victory! {0}m hit!".format(OofString(victim.OofDistance)) if victim.OofDistance >= LONGSHOT_DISTANCE else "{0}m sleep dart hit!".format(OofString(victim.OofDistance)), WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, 0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, hsv(getTotalTimeElapsed()%1/1*360,0.5,0.9) if victim.OofDistance >= LONGSHOT_DISTANCE else rgb(63, 191, 116), SpecVisibility.NEVER)
+    createInWorldText(localPlayer,"longshot victory! {0}m hit!".format(OofString(victim.OofDistance)) if victim.OofDistance >= LONGSHOT_DISTANCE else "{0}m sleep dart hit!".format(OofString(victim.OofDistance)), WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, 0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)) if victim.OofDistance >= LONGSHOT_DISTANCE else rgb(63, 191, 116), SpecVisibility.NEVER)
     wait(0.95)
     playEffect(getAllPlayers(), DynamicEffect.DVA_SELF_DESTRUCT_EXPLOSION, Color.ROSE, victim.getPosition(), 999)
-    createInWorldText(localPlayer,"▶ www.jinko.dev/discord ◀", WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, -0.5), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, hsv(getTotalTimeElapsed()%1/1*360,0.5,0.9), SpecVisibility.NEVER)
+    createInWorldText(localPlayer,"▶ www.jinko.dev/discord ◀", WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, -0.5), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
     wait(18.5)
     restartMatch()
 rule "rainbow outline if last dart was a longshot":
@@ -43,8 +43,10 @@ rule "rainbow outline if last dart was a longshot":
     @Condition MatchEnded
     @Condition Winner
 
-    Winner.startForcingOutlineFor(getAllPlayers(), true, hsv((getTotalTimeElapsed())%0.5/0.5*360,0.5,0.9), OutlineVisibility.ALWAYS)
+    Winner.startForcingOutlineFor(getAllPlayers(), true, rgb(rainbow(getTotalTimeElapsed() * 500)), OutlineVisibility.ALWAYS)
     if FinalVictim.OofDistance >= LONGSHOT_DISTANCE:
-        FinalVictim.startForcingOutlineFor(getAllPlayers(), true, hsv((getTotalTimeElapsed())%0.5/0.5*360,0.5,0.9), OutlineVisibility.ALWAYS)
+        FinalVictim.startForcingOutlineFor(getAllPlayers(), true, rgb(rainbow(getTotalTimeElapsed() * 500)), OutlineVisibility.ALWAYS)
+    else:
+        FinalVictim.startForcingOutlineFor(getAllPlayers(), false, Color.RED, OutlineVisibility.ALWAYS)
     wait()
     goto RULE_START

@@ -1,26 +1,37 @@
 #!mainFile "ANA_PB.opy"
 
+
+rule "Start match immediately":
+    @Condition DEBUG_MODE
+    @Condition isAssemblingHeroes()
+
+    setMatchTime(1)
+    wait(1.2)
+    setMatchTime(261)
+    wait()
+    pauseMatchTime()
+
+
+rule "Show where bots are":
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Condition eventPlayer.isDummy()
+
+    createIcon(getAllPlayers(), eventPlayer, Icon.ARROW_DOWN, IconReeval.VISIBILITY_AND_POSITION, Color.GREEN, true)
+
 rule "Debug HUDs":
     @Condition DEBUG_MODE
     @Event eachPlayer
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    hudSubtext(eventPlayer, "{}".format(getClosestPlayer(eventPlayer, Team.ALL).IsPlayer), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
+    hudSubtext(eventPlayer, "{}".format(eventPlayer.getPosition()), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
+    hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
 
 
-rule "show spawn points":
-    @Condition DEBUG_MODE
-    @Event global
-    for Spawn in range(len(getSpawnPoints(Team.ALL))):
-        createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, getSpawnPoints(Team.ALL)[evalOnce(Spawn)].getPosition(), 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-        createEffect(getAllPlayers(), Effect.SPHERE, Color.ORANGE, getSpawnPoints(Team.ALL)[evalOnce(Spawn)].getPosition(), 0.05, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-        createInWorldText(getAllPlayers(), "{0}".format(getSpawnPoints(Team.ALL)[evalOnce(Spawn)].getPosition()), getSpawnPoints(Team.ALL)[evalOnce(Spawn)].getPosition(), 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_AND_STRING, Color.GREEN, SpecVisibility.NEVER)
-
-
-rule "Create bots with INTERACT":
+rule "INTERACT: create bots":
     @Condition DEBUG_MODE
     @Event eachPlayer
     @Condition eventPlayer.isHoldingButton(Button.INTERACT)
@@ -30,7 +41,7 @@ rule "Create bots with INTERACT":
     wait(0.3, Wait.ABORT_WHEN_FALSE)
     
 
-rule "Make bots shoot by shooting":
+rule "PRIMARY FIRE: make bots attack":
     @Condition DEBUG_MODE
     @Event eachPlayer
     @Hero ana
@@ -41,9 +52,9 @@ rule "Make bots shoot by shooting":
     #getAllPlayers().exclude(eventPlayer).startForcingButton(Button.SECONDARY_FIRE)
     #wait(0.5)
     getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.PRIMARY_FIRE)
+    #kill(eventPlayer, eventPlayer)
 
-
-rule "TP to closest bot by crouching":
+rule "CROUCH: teleport to closest bot":
     @Condition DEBUG_MODE
     @Event eachPlayer
     @Hero ana
@@ -54,7 +65,7 @@ rule "TP to closest bot by crouching":
     eventPlayer.teleport(getClosestPlayer(eventPlayer, Team.ALL))
 
 
-rule "Make bots use sleep by using sleep":
+rule "SLEEP DART: make bots use sleep dart":
     @Condition DEBUG_MODE
     @Event eachPlayer
     @Hero ana
@@ -65,7 +76,7 @@ rule "Make bots use sleep by using sleep":
     #getAllPlayers().exclude(eventPlayer).startThrottleInDirection(directionTowards(localPlayer.getEyePosition(), Vector.FORWARD), 1, Relativity.TO_PLAYER, Throttle.ADD_TO_EXISTING, ThrottleReeval.DIRECTION_AND_MAGNITUDE)
 
 
-rule "Make bots say nice shot":
+rule "bots send 'nice shot'":
     @Condition DEBUG_MODE
     @Event playerDied
     @Hero ana
@@ -88,19 +99,32 @@ rule "Kill all bots":
     destroyAllDummies()
 
 
-rule "Show where bots are":
+rule "show spawn points":
+    @Condition DEBUG_MODE
+    @Event global
+    wait(1)
+    for Spawn in range(len(SpawnPointSettings)):
+        createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+        createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)], 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+        createInWorldText(getAllPlayers(), "{0}".format(SpawnPointSettings[evalOnce(Spawn)]), SpawnPointSettings[evalOnce(Spawn)], 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_AND_STRING, Color.GREEN, SpecVisibility.NEVER)
+
+    
+rule "cycle through to spawn points":
     @Condition DEBUG_MODE
     @Event eachPlayer
+    @Condition strContains("{0}".format(eventPlayer), "Jinko")
+    @Condition eventPlayer.isHoldingButton(Button.RELOAD)
 
-    createIcon(getAllPlayers(), eventPlayer, Icon.ARROW_DOWN, IconReeval.VISIBILITY_AND_POSITION, Color.GREEN, true)
+    eventPlayer.teleport(SpawnPointSettings[IndexValue][0])
+    eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
+    IndexValue +=1
 
-
-rule "Start match immediately":
+rule "log spawn point and facing direction":
     @Condition DEBUG_MODE
-    @Condition isAssemblingHeroes()
+    @Event eachPlayer
+    @Condition strContains("{0}".format(eventPlayer), "Jinko")
+    @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
 
-    setMatchTime(1)
-    wait(1.2)
-    setMatchTime(261)
-    wait()
-    pauseMatchTime()
+    printLog(eventPlayer.getPosition())
+    printLog(eventPlayer.getFacingDirection())
+    smallMessage(eventPlayer, "    printed log")

@@ -47,9 +47,8 @@ rule "quadfeed kills":
 
 
 rule "Detect stolen kills":
-    @Event playerDealtDamage
+    @Event playerEarnedElimination
     @Hero ana
-    @Condition eventAbility == Button.PRIMARY_FIRE or eventAbility == Button.MELEE
     @Condition victim.SleepAuthor != null
     @Condition victim.SleepAuthor != eventPlayer
    
@@ -159,7 +158,7 @@ rule "Longshot":
     wait()
     attacker.MedalQueue.append(Medal.LONGSHOT)
     attacker.OofDistance = distance(attacker, victim)
-    createInWorldText(getAllPlayers(), random.choice(["oof", "ouch", "damn", "owie", "bonk"]), victim, 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, hsv(getTotalTimeElapsed()%1/1*360,0.5,0.9), SpecVisibility.NEVER)
+    createInWorldText(getAllPlayers(), random.choice(["oof", "ouch", "damn", "owie", "bonk"]), victim, 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 150)), SpecVisibility.NEVER)
     attacker.OofText = getLastCreatedText()
     if attacker.OofDistance > attacker.LongestLongshot:
         attacker.LongestLongshot = distance(attacker, victim)

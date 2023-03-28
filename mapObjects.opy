@@ -133,6 +133,7 @@ rule "HOLLYWOOD Locked zone 2":
 rule "CREATE Chateau launcher":
     @Event global
     @Condition getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN
+    @Disabled
 
     createEffect(getAllPlayers(), Effect.GOOD_AURA, Color.YELLOW, vect(206.3, 9, 107), 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
@@ -142,6 +143,7 @@ rule "TRIGGER Chateau launcher":
     @Hero ana
     @Condition getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN
     @Condition (distance(eventPlayer, vect(206.3, 8.5, 107))) <= 1.13
+    @Disabled
 
     cancelMomentum(eventPlayer)
     eventPlayer.setStatusEffect(null, Status.ROOTED, 1)

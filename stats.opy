@@ -62,7 +62,7 @@ rule "Sleep Dart hits":
     wait(0.5)
     victim.SleepsOnground = true
     waitUntil(not victim.hasStatusEffect(Status.ASLEEP), 3.7)
-    victim.startForcingOutlineFor(getAllPlayers(), true, Color.RED, OutlineVisibility.DEFAULT)
+    victim.stopForcingOutlineFor(getAllPlayers())
     stopChasingVariable(victim.SleepPunchRange)
     victim.SleepsOnground = false
     victim.SleepPunchRange = 30

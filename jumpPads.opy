@@ -248,4 +248,4 @@ rule "TRIGGER any jump pad":
     eventPlayer.ClosestPadIndex = JumpPadPos.index(sorted(JumpPadPos, lambda pos: distance(eventPlayer, pos)))
     eventPlayer.applyImpulse(Vector.UP, JumpPadPower[eventPlayer.ClosestPadIndex], Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION_XYZ)
     playEffect(eventPlayer, DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, eventPlayer, 30)
-    playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, JumpPadPos[eventPlayer.ClosestPadIndex], 20)
+    playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, JumpPadPos[eventPlayer.ClosestPadIndex], 40)

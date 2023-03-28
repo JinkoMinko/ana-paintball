@@ -4,16 +4,17 @@ rule "Reset player's variables & effects upon death":
     @Event playerDied
     @Hero ana
 
-    eventPlayer.startForcingOutlineFor(getAllPlayers(), true, Color.RED, OutlineVisibility.DEFAULT)
+    eventPlayer.stopForcingOutlineFor(getAllPlayers())
     eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
     eventPlayer.KillStreakBeforeDeath = eventPlayer.KillStreak
     eventPlayer.Deaths +=1
     eventPlayer.SleepUsedAndDied = true
     eventPlayer.SleepsOnground = false
+    eventPlayer.clearStatusEffect(Status.BURNING)
     wait(0.5)
+    eventPlayer.SleepAuthor = null
     eventPlayer.RespawnDelay = 0
     eventPlayer.SleepLock = 0
-    eventPlayer.clearStatusEffect(Status.BURNING)
     eventPlayer.KillStreak = 0
     wait(1.6)
     eventPlayer.RespawnDelay = 1
@@ -83,6 +84,8 @@ rule "RIFLE & MELEE KILLS mechanics":
             victim.setScore(victim.getScore()-1)
             attacker.DemotedPlayers += 1
             playEffect(victim, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 999)
+            playEffect(victim, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 999)
+
             
             if victim.getScore() == NANO_SCORE -1:
                 attacker.MedalQueue.append(Medal.KILLJOY)

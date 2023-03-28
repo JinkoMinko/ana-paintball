@@ -1,10 +1,10 @@
 #!mainFile "ANA_PB.opy"
 
 # Constants
-globalvar ONFIRE_STREAK = (3 if DEBUG_MODE else 5)
-globalvar RAMPAGE_STREAK = (5 if DEBUG_MODE else 10)
-globalvar GODLIKE_STREAK = (7 if DEBUG_MODE else 15)
-globalvar NANO_SCORE = (655 if DEBUG_MODE else 24)
+globalvar ONFIRE_STREAK = (110 if DEBUG_MODE else 5)
+globalvar RAMPAGE_STREAK = (110 if DEBUG_MODE else 10)
+globalvar GODLIKE_STREAK = (110 if DEBUG_MODE else 15)
+globalvar NANO_SCORE = (111 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
 globalvar NIGHTMAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHTMAPS else Color.PURPLE
@@ -103,6 +103,9 @@ playervar RaycastLastHitPos
 
 playervar FixMovementBug
 
+globalvar Rainbow
+globalvar IndexValue
+
 enum Medal:
     SYSTEM_MESSAGE,
     NICE_SHOT,
@@ -127,8 +130,11 @@ enum Medal:
     JOLLY_JUMPER,
     COLLATERAL_SHOT,
 
-globalvar SpawnPoints = [vect(10, 0, 10), vect(10, 0, 0), vect(0, 0, 10)]
-globalvar SpawnFacings = [vect(0, 0, 0), vect(0, 0, 0), vect(0, 0, 0)]
+playervar AlivePlayers
+playervar SpawnPointsNotInLOS
+playervar SpawnPointsFarEnoughFromPlayers
+playervar ChosenSpawnPoint
 
-globalvar EligiblePlayers = []
-globalvar AlivePlayers
+globalvar SpawnPointSettings
+globalvar InitialSpawns
+playervar PlayerSpawnPoint

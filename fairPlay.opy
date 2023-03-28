@@ -1,15 +1,15 @@
 #!mainFile "ANA_PB.opy"
 
 rule "When player dies, display NICE SHOT HUD": 
-    @Event playerDied
+    @Event playerTookDamage
     @Hero ana
     @Condition eventAbility == Button.PRIMARY_FIRE
 
-    eventPlayer.Killer = attacker
-    eventPlayer.FairplayBar = 100
-    chase(eventPlayer.FairplayBar, 0, duration=2.5, ChaseReeval.DESTINATION_AND_DURATION)
+    victim.Killer = attacker
+    victim.FairplayBar = 100
+    chase(victim.FairplayBar, 0, duration=2.5, ChaseReeval.DESTINATION_AND_DURATION)
     wait(2.6, Wait.RESTART_WHEN_TRUE)
-    eventPlayer.Killer = null
+    victim.Killer = null
 
 
 rule "Send message if GRENADE is pressed":

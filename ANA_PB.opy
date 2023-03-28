@@ -28,6 +28,7 @@ settings "settings.opy.json"
 
 # Kills & deaths
 #!include "kills.opy"
+#!include "respawns.opy"
 
 # Sleep mechanics
 #!include "sleep.opy"

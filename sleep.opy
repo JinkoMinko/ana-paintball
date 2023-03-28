@@ -72,7 +72,8 @@ rule "Detect when two players sleep each-other":
     @Event playerDealtDamage
     @Hero ana
     @Condition eventAbility == Button.ABILITY_1
-
+    @Disabled
+    
     victim.SleepAuthor = attacker
     wait()
     if attacker.SleepAuthor == victim:
