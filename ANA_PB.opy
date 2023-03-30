@@ -7,6 +7,7 @@ settings "settings.opy.json"
 #!extension debuffStatusEffects
 
 #!include "macros.opy"
+
 #!define DEBUG_MODE false
 
 #!include "variables.opy"

@@ -105,6 +105,7 @@ playervar FixMovementBug
 
 globalvar Rainbow
 globalvar IndexValue
+playervar Xxx
 
 enum Medal:
     SYSTEM_MESSAGE,

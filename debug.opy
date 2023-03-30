@@ -102,6 +102,7 @@ rule "Kill all bots":
 rule "show spawn points":
     @Condition DEBUG_MODE
     @Event global
+    
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
         createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
@@ -128,3 +129,13 @@ rule "log spawn point and facing direction":
     printLog(eventPlayer.getPosition())
     printLog(eventPlayer.getFacingDirection())
     smallMessage(eventPlayer, "    printed log")
+
+
+rule "display death time":
+    @Event playerDied
+    @Disabled
+    
+    eventPlayer.Xxx = getTotalTimeElapsed()
+    waitUntil(eventPlayer.isAlive(), 999)
+    eventPlayer.Xxx = getTotalTimeElapsed() - eventPlayer.Xxx
+    smallMessage(eventPlayer, "{0}".format(eventPlayer.Xxx))

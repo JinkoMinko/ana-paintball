@@ -26,7 +26,7 @@ rule "Detect players":
     
     eventPlayer.IsPlayer = true
     if getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN or getCurrentMap() == Map.PETRA:
-        eventPlayer.setRespawnTime(1)
+        eventPlayer.setRespawnTime(1.05)
 
 
 rule "If lobby is empty, restart the game":

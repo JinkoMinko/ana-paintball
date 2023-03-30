@@ -30,8 +30,8 @@ rule "CREATE all jump pads":
             vect(-2.54, -11.77, 16.85),  # mid
             vect(-15.33, -10.7, 30.07),  # staircase
             vect(-38.52, -15.72, 18.04), # sanctuary
-            vect(-18.84, -8, 52.38),     # rocks
-            vect(2.051, -4.5, -19.133)   # broken floor
+            vect(2.051, -4.5, -19.133),  # broken floor
+            vect(16.05, -11.4, 8.72)     # broken stairs mid
             ]
         
             JumpPadPower = [
@@ -40,7 +40,7 @@ rule "CREATE all jump pads":
             19,
             18.5,
             13,
-            13
+            10
             ]
         
             JumpPadSize = [
@@ -48,8 +48,8 @@ rule "CREATE all jump pads":
             2.4,
             2,
             3.5,
-            2,
-            1.3
+            1.3,
+            2.7
             ]
             break
         case Map.CHATEAU_GUILLARD:
@@ -247,5 +247,5 @@ rule "TRIGGER any jump pad":
 
     eventPlayer.ClosestPadIndex = JumpPadPos.index(sorted(JumpPadPos, lambda pos: distance(eventPlayer, pos)))
     eventPlayer.applyImpulse(Vector.UP, JumpPadPower[eventPlayer.ClosestPadIndex], Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION_XYZ)
-    playEffect(eventPlayer, DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, eventPlayer, 30)
-    playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, JumpPadPos[eventPlayer.ClosestPadIndex], 40)
+    playEffect(eventPlayer, DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, JumpPadPos[eventPlayer.ClosestPadIndex], 30)
+    playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, JumpPadPos[eventPlayer.ClosestPadIndex], 35)
