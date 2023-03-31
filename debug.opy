@@ -25,8 +25,10 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    hudSubtext(eventPlayer, "{}".format(eventPlayer.getPosition()), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
-    hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+
+    hudSubtext(eventPlayer, "DemotedEffect: {}".format(eventPlayer.StolenFrom), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
+    #hudSubtext(eventPlayer, "{}".format(eventPlayer.getPosition()), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
+    #hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
 
@@ -53,6 +55,17 @@ rule "PRIMARY FIRE: make bots attack":
     #wait(0.5)
     getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.PRIMARY_FIRE)
     #kill(eventPlayer, eventPlayer)
+
+
+rule "GRENADE: make bots punch":
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Hero ana
+    @Condition eventPlayer.isHoldingButton(Button.ABILITY_2)
+    @Condition strContains("{0}".format(eventPlayer), "Jinko")
+
+    getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.MELEE)
+
 
 rule "CROUCH: teleport to closest bot":
     @Condition DEBUG_MODE
@@ -81,7 +94,7 @@ rule "bots send 'nice shot'":
     @Event playerDied
     @Hero ana
     @Condition not strContains("{0}".format(eventPlayer), "Jinko")
-    @Disabled
+    #@Disabled
     wait(1)
     eventPlayer.startForcingButton(Button.ABILITY_2)
     wait()
@@ -105,8 +118,9 @@ rule "show spawn points":
     
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
-        createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-        createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)], 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+        createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)]+vect(0,1,0), 0.3, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+        #createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)], 0.05, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+        createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)]+vect(0,2,0), 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
         createInWorldText(getAllPlayers(), "{0}".format(SpawnPointSettings[evalOnce(Spawn)]), SpawnPointSettings[evalOnce(Spawn)], 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_AND_STRING, Color.GREEN, SpecVisibility.NEVER)
 
     
@@ -115,6 +129,7 @@ rule "cycle through to spawn points":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.RELOAD)
+    @Disabled
 
     eventPlayer.teleport(SpawnPointSettings[IndexValue][0])
     eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
@@ -125,6 +140,7 @@ rule "log spawn point and facing direction":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
+    @Disabled
 
     printLog(eventPlayer.getPosition())
     printLog(eventPlayer.getFacingDirection())

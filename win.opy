@@ -21,6 +21,7 @@ rule "Win Cam":
     if victim.OofDistance >= LONGSHOT_DISTANCE:
         LongshotWin = not LongshotWin
     getAllPlayers().exclude([Winner, FinalVictim]).startForcingOutlineFor(getAllPlayers(), false, rgb(rainbow(getTotalTimeElapsed() * 150)), OutlineVisibility.ALWAYS)
+    createEffect(getAllPlayers(), Effect.SOLDIER_SPRINTING, Color.WHITE, victim, 1, EffectReeval.POSITION_AND_RADIUS)
     getAllPlayers().setStatusEffect(null, Status.INVINCIBLE, 999)
     getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
     getAllPlayers().setAimSpeed(10)

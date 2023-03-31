@@ -53,6 +53,7 @@ rule "Sleep Dart hits":
     @Condition eventAbility == Button.ABILITY_1
     @Condition not eventWasEnvironment
 
+    victim.SleepAuthor = attacker
     victim.startForcingOutlineFor(getAllPlayers(), true, rgb(63, 191, 116) if victim.getScore() > attacker.getScore() else Color.SKY_BLUE, OutlineVisibility.DEFAULT)
     eventPlayer.SleepHits += 1
     eventPlayer.SleepAccuracy = round((eventPlayer.SleepHits / eventPlayer.SleepShots)*100)
@@ -61,11 +62,13 @@ rule "Sleep Dart hits":
     chase(victim.SleepPunchRange, 10, duration=3.7, ChaseReeval.DESTINATION_AND_DURATION)
     wait(0.5)
     victim.SleepsOnground = true
-    waitUntil(not victim.hasStatusEffect(Status.ASLEEP), 3.7)
+    waitUntil(not victim.hasStatusEffect(Status.ASLEEP), 4)
     victim.stopForcingOutlineFor(getAllPlayers())
     stopChasingVariable(victim.SleepPunchRange)
     victim.SleepsOnground = false
     victim.SleepPunchRange = 30
+    if victim.isAlive():
+        victim.SleepAuthor = null
 
 
 rule "detect movement bug":

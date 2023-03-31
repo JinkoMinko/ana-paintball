@@ -8,6 +8,7 @@ globalvar NANO_SCORE = (111 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
 globalvar NIGHTMAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHTMAPS else Color.PURPLE
+globalvar CUSTOM_RESPAWN_TIME = 1.05
 
 # Jump pads
 globalvar CreateJumpPad    # Macro call
@@ -139,3 +140,5 @@ playervar ChosenSpawnPoint
 globalvar SpawnPointSettings
 globalvar InitialSpawns
 playervar PlayerSpawnPoint
+
+playervar DemotedEffect

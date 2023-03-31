@@ -38,7 +38,7 @@ rule "quadfeed kills":
     @Event playerEarnedElimination
     @Hero ana
 
-    attacker.QuadFeedTimes = [t for t in attacker.QuadFeedTimes if getTotalTimeElapsed() - t <= 7.7]
+    attacker.QuadFeedTimes = [t for t in attacker.QuadFeedTimes if getTotalTimeElapsed() - t <= 7.5]
     attacker.QuadFeedTimes.append(getTotalTimeElapsed())
     getAllPlayers().exclude(attacker).QuadFeedTimes = []
     if len(attacker.QuadFeedTimes) >= 4:
@@ -50,7 +50,7 @@ rule "Detect stolen kills":
     @Event playerEarnedElimination
     @Hero ana
     @Condition victim.SleepAuthor != null
-    @Condition victim.SleepAuthor != eventPlayer
+    @Condition victim.SleepAuthor != attacker
    
     attacker.StolenFrom = victim.SleepAuthor
     attacker.StolenKills +=1
@@ -59,8 +59,10 @@ rule "Detect stolen kills":
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
     smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill!".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
+    wait(2, Wait.RESTART_WHEN_TRUE)
+    attacker.StolenFrom = null
 
-
+    
 rule "Killstreak effects & announcements":
     @Event playerEarnedElimination
     @Hero ana
@@ -179,7 +181,7 @@ rule "MEDALS":
     eventPlayer.DisplayMedal = eventPlayer.MedalQueue[0]
     if eventPlayer.DisplayMedal != Medal.SYSTEM_MESSAGE:
         smallMessage(eventPlayer, {
-            Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.NiceShotQueue[0], random.choice(["Nice one", "Sheeeesh", "Damn!", "wow", "oof"])),
+            Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.NiceShotQueue[0], random.choice(["Nice one", "Sheeeesh", "Damn!", "wow!", "oof"])),
             Medal.SLEEP_PUNCH:      "    {0}{1}  Sleep-Punch - max ammo!".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
             Medal.PERFECT_QS:       "    {0}  Perfect quickscope!".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
             Medal.DEMOTED:          "    {0}  demoted {1}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), eventPlayer.DemotedVictim),

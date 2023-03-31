@@ -1,9 +1,8 @@
 #!mainFile "ANA_PB.opy"
 
-rule "When player dies, display NICE SHOT HUD": 
-    @Event playerTookDamage
+rule "When player dies, display fair-play HUD": 
+    @Event playerDied
     @Hero ana
-    @Condition eventAbility == Button.PRIMARY_FIRE
 
     victim.Killer = attacker
     victim.FairplayBar = 100

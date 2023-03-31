@@ -26,7 +26,7 @@ rule "Detect players":
     
     eventPlayer.IsPlayer = true
     if getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN or getCurrentMap() == Map.PETRA:
-        eventPlayer.setRespawnTime(1.05)
+        eventPlayer.setRespawnTime(CUSTOM_RESPAWN_TIME)
 
 
 rule "If lobby is empty, restart the game":
@@ -112,4 +112,6 @@ rule "PLAYER SETTINGS & KILLSTREAK EFFECTS":
     createStreakEffect(GODLIKE_STREAK, Effect.WINSTON_PRIMAL_RAGE, 1)
     
     createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.RespawnDelay == 1 else [], Effect.ANA_NANO_BOOSTED, Color.TEAM_1, eventPlayer, 0 if eventPlayer.isUsingUltimate() else 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-    createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.RespawnDelay == 1 else [], Effect.ANA_NANO_BOOSTED_SOUND, Color.TEAM_1, eventPlayer, (0 if eventPlayer.isUsingUltimate() else 25) if eventPlayer == localPlayer else 150, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)    
+    createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.RespawnDelay == 1 else [], Effect.ANA_NANO_BOOSTED_SOUND, Color.TEAM_1, eventPlayer, (0 if eventPlayer.isUsingUltimate() else 25) if eventPlayer == localPlayer else 150, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+
+    createEffect(localPlayer if eventPlayer.DemotedEffect == true else [], Effect.SOMBRA_HACKED_SOUND, Color.TEAM_1, eventPlayer, 150 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)

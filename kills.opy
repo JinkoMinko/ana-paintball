@@ -12,12 +12,13 @@ rule "Reset player's variables & effects upon death":
     eventPlayer.SleepsOnground = false
     eventPlayer.clearStatusEffect(Status.BURNING)
     wait(0.5)
-    eventPlayer.SleepAuthor = null
     eventPlayer.RespawnDelay = 0
     eventPlayer.SleepLock = 0
     eventPlayer.KillStreak = 0
     wait(1.6)
+    eventPlayer.SleepAuthor = null
     eventPlayer.RespawnDelay = 1
+    eventPlayer.DemotedEffect = null
     if eventPlayer.getScore() < NANO_SCORE:
         eventPlayer.setUltCharge((eventPlayer.getScore()/NANO_SCORE)*100)
 
@@ -63,6 +64,9 @@ rule "RIFLE & MELEE KILLS mechanics":
         BestScopedAccuracyValue = BestScopedAccuracyPlayer.ScopedAccuracy
         if attacker.EarnedCollateral > 1:
             attacker.MedalQueue.append(Medal.COLLATERAL_SHOT)
+            bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} got {2} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker, attacker.EarnedCollateral))
+            bigMessage(attacker, "{0}  {1} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker.EarnedCollateral))
+            wait()
         attacker.EarnedCollateral = 0
 
     elif eventAbility == Button.PRIMARY_FIRE:    # NOSCOPE
@@ -85,7 +89,7 @@ rule "RIFLE & MELEE KILLS mechanics":
             attacker.DemotedPlayers += 1
             playEffect(victim, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 999)
             playEffect(victim, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 999)
-
+            victim.DemotedEffect = true
             
             if victim.getScore() == NANO_SCORE -1:
                 attacker.MedalQueue.append(Medal.KILLJOY)
