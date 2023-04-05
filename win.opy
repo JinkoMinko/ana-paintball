@@ -1,6 +1,31 @@
 #!mainFile "ANA_PB.opy"
 
-rule "Win Cam":
+rule "NUKE_STREAK":
+    @Event playerEarnedElimination
+    @Hero ana
+    @Condition attacker.KillStreak >= NUKE_STREAK
+    @Condition not MatchEnded
+    @Disabled
+    
+    getAllPlayers().disableKillFeed()
+    getAllPlayers().disableScoreboard()
+    getAllPlayers().disableGamemodeHud()
+    getAllPlayers().disableHeroHUD()
+
+    MatchEnded = true
+    FinalVictim = victim
+    Winner = attacker
+    declarePlayerVictory(eventPlayer)
+    attacker.setScore(25)
+    createEffect(getAllPlayers(), Effect.SOLDIER_SPRINTING, Color.WHITE, victim, 1, EffectReeval.POSITION_AND_RADIUS)
+    getAllPlayers().setStatusEffect(null, Status.INVINCIBLE, 999)
+    getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
+    getAllPlayers().setAimSpeed(10)
+    getAllPlayers().setMoveSpeed(10)
+    setSlowMotion(5)
+
+
+rule "NANO_SCORE":
     @Event playerDealtDamage
     @Hero ana
     @Condition eventAbility == Button.ABILITY_1
@@ -8,7 +33,7 @@ rule "Win Cam":
     @Condition not MatchEnded
 
     getAllPlayers().disableKillFeed()
-    getAllPlayers().disableScoreboard()
+    #getAllPlayers().disableScoreboard()
     getAllPlayers().disableGamemodeHud()
     getAllPlayers().disableHeroHUD()
 
@@ -38,6 +63,7 @@ rule "Win Cam":
     createInWorldText(localPlayer,"▶ www.jinko.dev/discord ◀", WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, -0.5), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
     wait(18.5)
     restartMatch()
+
 rule "rainbow outline if last dart was a longshot":
     @Event eachPlayer
     @Hero ana

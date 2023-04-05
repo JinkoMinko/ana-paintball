@@ -1,10 +1,10 @@
 #!mainFile "ANA_PB.opy"
 
 # Constants
-globalvar ONFIRE_STREAK = (110 if DEBUG_MODE else 5)
-globalvar RAMPAGE_STREAK = (110 if DEBUG_MODE else 10)
-globalvar GODLIKE_STREAK = (110 if DEBUG_MODE else 15)
-globalvar NANO_SCORE = (111 if DEBUG_MODE else 24)
+globalvar ONFIRE_STREAK = (223 if DEBUG_MODE else 5)
+globalvar RAMPAGE_STREAK = (34 if DEBUG_MODE else 10)
+globalvar NUKE_STREAK = (33 if DEBUG_MODE else 15)
+globalvar NANO_SCORE = (1 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
 globalvar NIGHTMAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHTMAPS else Color.PURPLE
@@ -43,7 +43,6 @@ globalvar Spawn    #used in debug to show spawn points
 
 # Other
 globalvar OutOfBoundBot1
-globalvar BarrierBot1
 globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 globalvar i    # used to loop medals sent globally
 
@@ -53,7 +52,7 @@ playervar FairplayBar = 0
 playervar DisplayStats = true
 playervar OofDistance    # Distance between attacker and victim. >= Longshot Distance
 playervar OofText
-playervar RespawnDelay = 1    # Used to know when a player can cast Nanoboost
+playervar NanoDelay = 1    # Used to know when a player can cast Nanoboost
 playervar ClosestPadIndex    # Closest Jump Pad relative to the player
 playervar IsPlayer 
 playervar LongestLongshot = 0
@@ -78,7 +77,6 @@ playervar PerfectQuickscopes
 playervar ComebackCount # Numbers of deaths without a kill
 playervar Killer
 playervar SleepAuthor
-playervar SleepVictim
 playervar SleepUsedAndDied = true    # Used to detect when a sleeping player should be awoken due to their SleepAuthor dying
 playervar SleepLock     # should be reworked
 playervar SleepsOnground = false    # Whether a player that was hit with a sleep dart has finished the "falling on the ground" animation
@@ -94,7 +92,6 @@ playervar MedalQueue = []
 playervar ShutdownVictim
 playervar DemotedVictim
 playervar StolenFrom
-playervar NiceShotSender
 playervar DisplayMedal
 playervar MedalCount
 playervar SysMsgCount
@@ -121,16 +118,16 @@ enum Medal:
     NANOPUNCH,
     ENV_KILL,
     ON_FIRE_SHUTDOWN,
-    RAMPAGE_SHUTDOWN ,
-    GODLIKE_SHUTDOWN ,
+    RAMPAGE_SHUTDOWN,
     BUZZKILL,
     KILLJOY,
     QUADFEED,
     ON_FIRE,
     RAMPAGE,
-    GODLIKE,
     JOLLY_JUMPER,
     COLLATERAL_SHOT,
+    MUTUAL_SLEEP,
+
 
 playervar AlivePlayers
 playervar SpawnPointsNotInLOS
@@ -138,7 +135,18 @@ playervar SpawnPointsFarEnoughFromPlayers
 playervar ChosenSpawnPoint
 
 globalvar SpawnPointSettings
-globalvar InitialSpawns
-playervar PlayerSpawnPoint
 
 playervar DemotedEffect
+playervar KillstreakSFX
+
+
+subroutine RespawnSystem
+subroutine RespawnsCHATEAU
+subroutine RespawnsPETRA
+subroutine RespawnsMALEVENTO
+subroutine RespawnsDORADO
+subroutine RespawnsHOLLYWOOD
+subroutine RespawnsBLIZZWORLD
+subroutine RespawnsEICHENWALDE
+subroutine RespawnsECOPOINT
+subroutine RespawnsBLACKFOREST

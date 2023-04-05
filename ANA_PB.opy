@@ -11,25 +11,22 @@ settings "settings.opy.json"
 #!define DEBUG_MODE false
 
 #!include "variables.opy"
-
 #!include "debug.opy"
 
 # Pre-match
 #!include "setup.opy"
+#!include "respawns.opy"
 
 # Context messages
 #!include "systemMessages.opy"
 
 # Trackers
 #!include "stats.opy"
-
 #!include "medals.opy"
-
 #!include "fairPlay.opy"
 
 # Kills & deaths
 #!include "kills.opy"
-#!include "respawns.opy"
 
 # Sleep mechanics
 #!include "sleep.opy"
@@ -44,5 +41,4 @@ settings "settings.opy.json"
 
 # Launchers, teleporters, etc
 #!include "mapObjects.opy"
-
 #!include "bots.opy"

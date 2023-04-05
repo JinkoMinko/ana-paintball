@@ -66,27 +66,24 @@ rule "Detect stolen kills":
 rule "Killstreak effects & announcements":
     @Event playerEarnedElimination
     @Hero ana
-    @Condition attacker.KillStreak >= ONFIRE_STREAK
     @Condition not eventAbility == Button.ABILITY_1
+
     if attacker.KillStreak == ONFIRE_STREAK:
         attacker.MedalQueue.append(Medal.ON_FIRE)
             for i in range(getNumberOfPlayers(Team.ALL) - 1):
             getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
         attacker.setStatusEffect(null, Status.BURNING, 9999)
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.ORANGE, OutlineVisibility.DEFAULT)
+        playEffect(getAllPlayers(), DynamicEffect.ASHE_DYNAMITE_EXPLOSION_SOUND, Color.TEAM_1, attacker, 200)
         smallMessage(getAllPlayers().exclude(attacker), "    {0}  {1} is on fire!  {0}".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE), attacker))
     elif attacker.KillStreak == RAMPAGE_STREAK:
         attacker.MedalQueue.append(Medal.RAMPAGE)
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.VIOLET, OutlineVisibility.DEFAULT)
-        playEffect(getAllPlayers(), DynamicEffect.SIGMA_HYPERSPHERE_IMPLOSION_SOUND, Color.TEAM_2, attacker, 200)
         bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} is on a rampage!  {0}".format(abilityIconString(Hero.REAPER, Button.ULTIMATE), attacker))
-    elif attacker.KillStreak == GODLIKE_STREAK:
-        attacker.MedalQueue.append(Medal.GODLIKE)
-        attacker.startForcingOutlineFor(getAllPlayers(), true, Color.YELLOW, OutlineVisibility.DEFAULT)
-        playEffect(getAllPlayers(), DynamicEffect.SIGMA_HYPERSPHERE_IMPLOSION_SOUND, Color.TEAM_2, attacker, 200)
-        bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} is godlike!  {0}".format(abilityIconString(Hero.ZENYATTA, Button.ULTIMATE), attacker))
+        attacker.KillstreakSFX = true
+    
     wait(2)
-
+    attacker.KillstreakSFX = false
 
 rule "Killstreak shutdown announcements":
     @Event playerDealtFinalBlow
@@ -101,13 +98,10 @@ rule "Killstreak shutdown announcements":
         attacker.MedalQueue.append(Medal.ON_FIRE_SHUTDOWN)
 
         smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} killstreak ended!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
-    elif victim.KillStreak < GODLIKE_STREAK:
+    else:
         attacker.MedalQueue.append(Medal.RAMPAGE_SHUTDOWN)
         smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} kills rampage ended!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
-    else:
-        attacker.MedalQueue.append(Medal.GODLIKE_SHUTDOWN)
-        smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} kills supremacy ended!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
-    
+        
     for i in range(getNumberOfPlayers(Team.ALL) - 1):
         getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
     playEffect(getAllPlayers(), DynamicEffect.SOMBRA_TRANSLOCATOR_DISAPPEAR_SOUND, Color.WHITE, victim.getPosition(), 200)
@@ -193,15 +187,14 @@ rule "MEDALS":
             Medal.ENV_KILL:         "    {0}  Environment kill!".format(abilityIconString(Hero.SIGMA, Button.ULTIMATE)),
             Medal.ON_FIRE_SHUTDOWN: "    {0}  Ended {1}'s {2} Killstreak!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
             Medal.RAMPAGE_SHUTDOWN: "    {0}  Ended {1}'s {2} kills rampage!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
-            Medal.GODLIKE_SHUTDOWN: "    {0}  Ended {1}'s {2} kills supremacy!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
             Medal.BUZZKILL:         "    {0}  Buzzkill!".format(abilityIconString(Hero.DOOMFIST, Button.ABILITY_1)),
             Medal.KILLJOY:          "    {0}  Killjoy!".format(iconString(Icon.SAD)),
             Medal.QUADFEED:         "    {0}  Quadfeed!".format(abilityIconString(Hero.JUNKER_QUEEN, Button.ULTIMATE)),
             Medal.ON_FIRE:          "    {0}  On fire!".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE)),
             Medal.RAMPAGE:          "    {0}  {1}".format(abilityIconString(Hero.REAPER, Button.ULTIMATE), random.choice(["You are on a rampage!", "Rampage!"])),
-            Medal.GODLIKE:          "    {0}  {1}".format(abilityIconString(Hero.ZENYATTA, Button.ULTIMATE), random.choice(["You are Godlike!", "Godlike!"])),
             Medal.JOLLY_JUMPER:     "    {0}  Jolly jumper!".format(abilityIconString(Hero.BAPTISTE, Button.CROUCH)),
             Medal.COLLATERAL_SHOT:  "    {0}  Collateral shot!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
+            Medal.MUTUAL_SLEEP:     "    {0}  Mutual sleep! Awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2)),
         }[eventPlayer.DisplayMedal])
         if DEBUG_MODE:
             eventPlayer.MedalCount += 1

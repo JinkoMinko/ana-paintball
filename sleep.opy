@@ -68,19 +68,13 @@ rule "Wake slept player if attacker dies after using sleep dart":
         damage(victim, null, 1)
 
 
-rule "Detect when two players sleep each-other":
+rule "Detect mutual sleeps":
     @Event playerDealtDamage
-    @Hero ana
+    @Condition attacker.hasStatusEffect(Status.ASLEEP)
     @Condition eventAbility == Button.ABILITY_1
-    @Disabled
-    
-    victim.SleepAuthor = attacker
-    wait()
-    if attacker.SleepAuthor == victim:
-        wait(0.3)
-        if attacker.isAlive() and victim.isAlive():
-            eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
-            smallMessage([attacker, victim], random.choice(["    {0} mimimimi...".format(abilityIconString(Hero.ANA, Button.ABILITY_1)), "    {0}{1}{0}  This is fine!".format(iconString(Icon.FIRE), iconString(Icon.HAPPY)), "    That's awkward!", "    zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"]))
-        else:
-        waitUntil(not eventPlayer.hasStatusEffect(Status.ASLEEP), 5)
-        [attacker, victim].SleepAuthor = null
+    @Condition victim == attacker.SleepAuthor
+    @Hero ana
+
+    [eventPlayer, victim].MedalQueue.append(Medal.MUTUAL_SLEEP)
+    wait(1)
+    damage([eventPlayer, victim], null, 1.5)

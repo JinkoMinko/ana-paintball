@@ -56,12 +56,11 @@ rule "If NANO_SCORE and died, nanoboost again":
     @Event playerDied
     @Hero ana
     @Condition eventPlayer.getScore() == NANO_SCORE
-    @Condition not eventPlayer.isUsingUltimate()
 
     eventPlayer.disallowButton(Button.ABILITY_1)
-    wait(2.2, Wait.ABORT_WHEN_FALSE)
+    waitUntil(eventPlayer.isAlive(), 69)
     eventPlayer.setUltCharge(100)
+    while eventPlayer.isUsingUltimate() == false:
+        eventPlayer.forceButtonPress(Button.ULTIMATE)
+        wait()
     eventPlayer.allowButton(Button.ABILITY_1)
-    eventPlayer.forceButtonPress(Button.ULTIMATE)
-    wait()
-    eventPlayer.forceButtonPress(Button.ULTIMATE)    # for people using "confirm nano target"

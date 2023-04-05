@@ -3,7 +3,8 @@
 rule "When player dies, display fair-play HUD": 
     @Event playerDied
     @Hero ana
-
+    @Condition not eventWasEnvironment
+    
     victim.Killer = attacker
     victim.FairplayBar = 100
     chase(victim.FairplayBar, 0, duration=2.5, ChaseReeval.DESTINATION_AND_DURATION)

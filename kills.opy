@@ -11,16 +11,19 @@ rule "Reset player's variables & effects upon death":
     eventPlayer.SleepUsedAndDied = true
     eventPlayer.SleepsOnground = false
     eventPlayer.clearStatusEffect(Status.BURNING)
-    wait(0.5)
-    eventPlayer.RespawnDelay = 0
+    eventPlayer.NanoDelay = not eventPlayer.NanoDelay
+
+    waitUntil(eventPlayer.isAlive(), 69)
+
     eventPlayer.SleepLock = 0
     eventPlayer.KillStreak = 0
-    wait(1.6)
     eventPlayer.SleepAuthor = null
-    eventPlayer.RespawnDelay = 1
     eventPlayer.DemotedEffect = null
     if eventPlayer.getScore() < NANO_SCORE:
         eventPlayer.setUltCharge((eventPlayer.getScore()/NANO_SCORE)*100)
+    wait(2.1 - CUSTOM_RESPAWN_TIME)
+    eventPlayer.NanoDelay = 1
+
 
 rule "fix movement bug after death":
     @Event playerDied
@@ -38,6 +41,7 @@ rule "RIFLE & MELEE KILLS mechanics":
     @Hero ana
     @Condition eventAbility == Button.PRIMARY_FIRE or (eventAbility == Button.MELEE and victim.hasStatusEffect(Status.ASLEEP))
     
+    attacker.EarnedCollateral = 0
     kill(victim, attacker)
 
     if not FirstBlood:
@@ -49,9 +53,9 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.RaycastLastHitPlayer = attacker
         attacker.RaycastLastHitPos = attacker.getEyePosition()
         while attacker.RaycastLastHitPlayer != null:    #COLLATERALS
-            if DEBUG_MODE: createBeam(getAllPlayers(), Beam.GRAPPLE, attacker.RaycastLastHitPos, raycast(attacker.RaycastLastHitPos, attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 50, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition(), Color.GRAY, EffectReeval.VISIBILITY)
-            attacker.Temp = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 50, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition()
-            attacker.RaycastLastHitPlayer = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 50, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getPlayerHit()
+            if DEBUG_MODE: createBeam(getAllPlayers(), Beam.GRAPPLE, attacker.RaycastLastHitPos, raycast(attacker.RaycastLastHitPos, attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition(), Color.GRAY, EffectReeval.VISIBILITY)
+            attacker.Temp = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition()
+            attacker.RaycastLastHitPlayer = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getPlayerHit()
             attacker.RaycastLastHitPos = attacker.Temp
 
             kill(attacker.RaycastLastHitPlayer, attacker)
@@ -62,12 +66,11 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.ScopedAccuracy = round((attacker.ScopedHits / attacker.ScopedShots)*100)
         BestScopedAccuracyPlayer = sorted([scoper for scoper in getAllPlayers() if scoper.ScopedShots >= 15], lambda p: p.ScopedAccuracy).last()
         BestScopedAccuracyValue = BestScopedAccuracyPlayer.ScopedAccuracy
+        
         if attacker.EarnedCollateral > 1:
             attacker.MedalQueue.append(Medal.COLLATERAL_SHOT)
             bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} got {2} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker, attacker.EarnedCollateral))
             bigMessage(attacker, "{0}  {1} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker.EarnedCollateral))
-            wait()
-        attacker.EarnedCollateral = 0
 
     elif eventAbility == Button.PRIMARY_FIRE:    # NOSCOPE
         attacker.KillStreak += 1
@@ -98,7 +101,7 @@ rule "RIFLE & MELEE KILLS mechanics":
             attacker.MedalQueue.append(Medal.SLEEP_PUNCH)
             attacker.setAmmo(0, 15)
     
-    if victim.KillStreak == ONFIRE_STREAK-1 or victim.KillStreak == RAMPAGE_STREAK-1 or victim.KillStreak == GODLIKE_STREAK-1:
+    if victim.KillStreak == ONFIRE_STREAK-1 or victim.KillStreak == RAMPAGE_STREAK-1:
         attacker.MedalQueue.append(Medal.BUZZKILL)
     
     if attacker.ComebackCount >= 3:
@@ -113,6 +116,22 @@ rule "RIFLE & MELEE KILLS mechanics":
     if attacker.KillStreak > MostKillStreakValue and attacker.KillStreak >= ONFIRE_STREAK:
         MostKillStreakPlayer = attacker
         MostKillStreakValue = attacker.KillStreak
+
     if attacker.getScore() > NANO_SCORE:
         attacker.setScore(NANO_SCORE)
-    attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)    
+        
+    attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)
+
+
+rule "Respawns":
+    @Event playerDied
+    @Hero ana
+    @Condition SpawnPointSettings != 0
+
+    eventPlayer.disableNameplatesFor([getAllPlayers(), localPlayer])
+    wait(0.7)
+    eventPlayer.setInvisibility(Invis.ALL)
+    waitUntil(eventPlayer.isAlive(), 9)
+    RespawnSystem()
+    eventPlayer.setInvisibility(Invis.NONE)
+    eventPlayer.enableNameplatesFor(getAllPlayers())

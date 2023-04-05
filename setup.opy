@@ -36,6 +36,41 @@ rule "If lobby is empty, restart the game":
     if len(getPlayersOnHero(Hero.ANA, Team.ALL)) == 0:
         restartMatch()
 
+rule "Pick spawn points depending on maps":
+    @Event global
+
+    if getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN:
+        RespawnsCHATEAU()
+    elif getCurrentMap() == Map.PETRA:
+        RespawnsPETRA()
+    elif getCurrentMap() == Map.MALEVENTO:
+        RespawnsMALEVENTO()
+    elif getCurrentMap() == Map.DORADO:
+        RespawnsDORADO()
+    elif getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN:
+        RespawnsHOLLYWOOD()
+    elif getCurrentMap() == Map.BLIZZ_WORLD or getCurrentMap() == Map.BLIZZ_WORLD_WINTER:
+        RespawnsBLIZZWORLD()
+    elif getCurrentMap() == Map.EICHENWALDE or getCurrentMap() == Map.EICHENWALDE_HALLOWEEN:
+        RespawnsEICHENWALDE()
+    elif getCurrentMap() == Map.ECOPOINT_ANTARCTICA or getCurrentMap() == Map.ECOPOINT_ANTARCTICA_WINTER:
+        RespawnsECOPOINT()
+    elif getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() == Map.BLACK_FOREST_WINTER:
+        RespawnsBLACKFOREST()
+    else:
+        SpawnPointSettings = 0
+
+
+rule "Initial spawn":
+    @Event eachPlayer
+    @Condition not eventPlayer.isDummy()
+    @Hero ana
+    @Condition eventPlayer.getNumberOfDeaths() == 0
+    @Condition SpawnPointSettings != 0
+
+    waitUntil(eventPlayer.hasSpawned(), 99999)
+    RespawnSystem()
+
 
 rule "PLAYER HUDs":
     @Event global
@@ -108,10 +143,10 @@ rule "PLAYER SETTINGS & KILLSTREAK EFFECTS":
 
     createStreakEffect(ONFIRE_STREAK, Effect.SOLDIER_SPRINTING, 10)
     createStreakEffect(RAMPAGE_STREAK, Effect.ECHO_CLONING, 1)
-    createStreakEffect(RAMPAGE_STREAK, Effect.MERCY_DAMAGE_BOOSTED_SOUND, 0 if eventPlayer.isUsingUltimate() else 10 if eventPlayer == localPlayer else 80)
-    createStreakEffect(GODLIKE_STREAK, Effect.WINSTON_PRIMAL_RAGE, 1)
+    createStreakEffect(RAMPAGE_STREAK, Effect.MERCY_DAMAGE_BOOSTED_SOUND, 0 if eventPlayer.getScore() == NANO_SCORE else 10 if eventPlayer == localPlayer else 60)
     
-    createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.RespawnDelay == 1 else [], Effect.ANA_NANO_BOOSTED, Color.TEAM_1, eventPlayer, 0 if eventPlayer.isUsingUltimate() else 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-    createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.RespawnDelay == 1 else [], Effect.ANA_NANO_BOOSTED_SOUND, Color.TEAM_1, eventPlayer, (0 if eventPlayer.isUsingUltimate() else 25) if eventPlayer == localPlayer else 150, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.NanoDelay else [], Effect.ANA_NANO_BOOSTED, Color.TEAM_1, eventPlayer, 0 if eventPlayer.isUsingUltimate() else 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.NanoDelay else [], Effect.ANA_NANO_BOOSTED_SOUND, Color.TEAM_1, eventPlayer, (0 if eventPlayer.isUsingUltimate() else 25) if eventPlayer == localPlayer else 150, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
     createEffect(localPlayer if eventPlayer.DemotedEffect == true else [], Effect.SOMBRA_HACKED_SOUND, Color.TEAM_1, eventPlayer, 150 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(getAllPlayers() if eventPlayer.KillstreakSFX == true else [], Effect.WINSTON_PRIMAL_RAGE_SOUND, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
