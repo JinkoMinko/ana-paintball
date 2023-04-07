@@ -6,13 +6,13 @@ rule "Initial spawn random message":
     @Condition eventPlayer.hasSpawned()
     @Condition eventPlayer.getNumberOfDeaths() == 0
 
-    wait(0.1) #why
+    wait(0.1) #keep
     smallMessage(eventPlayer, random.choice([
                                                 "    {0}  Discord link above the scoreboard!".format(iconString(Icon.ARROW_UP)),
                                                 "    {0}  Got feedback? Join the discord!".format(iconString(Icon.ARROW_UP)),
                                                 "    {0}  Want to share your clips? Join the discord!".format(iconString(Icon.ARROW_UP)),
 
-                                                "    {0}  I spent 150+ hours working on it!".format(abilityIconString(Hero.TORBJORN, Button.ABILITY_2)),
+                                                "    {0}  I spent 200+ hours working on it!".format(abilityIconString(Hero.TORBJORN, Button.ABILITY_2)),
                                                 "    {0}  Created in 2019!".format(abilityIconString(Hero.ASHE, Button.ULTIMATE)),
 
                                                 "    {0}  Good luck have fun!".format(iconString(Icon.HAPPY)),
@@ -28,13 +28,13 @@ rule "Initial spawn random message":
                                                 "    {0}{1}  Sleep-Punch players with a better score to demote them!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.HAMMOND, Button.CROUCH)),
                                                 
                                                 "    {0}  'ana' spelled backwards is 'ana'!".format(iconString(Icon.CHECKMARK)),
+                                                "    {0}  People who say 'nice shot' are 69% more likely to win!".format(iconString(Icon.CHECKMARK)),
                                                 "    {0}  Reject ranked, play Ana Paintball!".format(abilityIconString(Hero.LUCIO, Button.JUMP)),
-                                                "    {0}  100% without bad teammates!".format(iconString(Icon.CHECKMARK)),
-                                                "    {0}  You are cute if you read this!".format(abilityIconString(Hero.ASHE, Button.ULTIMATE)),
-                                                "    {0}  An hour of Ana Paintball a day keeps bad teammates away!".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_2)),
-                                                "    {0}{1}  The scoreboard has cute icons on it!".format(abilityIconString(Hero.KIRIKO, Button.ULTIMATE), abilityIconString(Hero.DVA, Button.ULTIMATE)),
+                                                "    {0}  100% bad teammates free!".format(iconString(Icon.CHECKMARK)),
+                                                "    {0}  ur cute if you read this".format(abilityIconString(Hero.ASHE, Button.ULTIMATE)),
+                                                "    {0}  An hour of Ana PB a day keeps bad teammates away!".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_2)),
                                             ]))
-    wait()
+    wait(0.2) #keep
     smallMessage(eventPlayer, "    Mode by Jinko")
 
 

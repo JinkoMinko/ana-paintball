@@ -1,12 +1,13 @@
 #!mainFile "ANA_PB.opy"
 
 # Constants
-globalvar ONFIRE_STREAK = (223 if DEBUG_MODE else 5)
-globalvar RAMPAGE_STREAK = (34 if DEBUG_MODE else 10)
+globalvar ONFIRE_STREAK = (1 if DEBUG_MODE else 5)
+globalvar RAMPAGE_STREAK = (2 if DEBUG_MODE else 10)
 globalvar NUKE_STREAK = (33 if DEBUG_MODE else 15)
-globalvar NANO_SCORE = (1 if DEBUG_MODE else 24)
+globalvar NANO_SCORE = (222 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
 globalvar NIGHTMAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
+globalvar SNOWMAPS = [Map.BLACK_FOREST_WINTER, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA, Map.ECOPOINT_ANTARCTICA_WINTER]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHTMAPS else Color.PURPLE
 globalvar CUSTOM_RESPAWN_TIME = 1.05
 
@@ -138,7 +139,6 @@ globalvar SpawnPointSettings
 
 playervar DemotedEffect
 playervar KillstreakSFX
-
 
 subroutine RespawnSystem
 subroutine RespawnsCHATEAU

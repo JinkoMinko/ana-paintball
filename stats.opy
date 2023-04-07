@@ -63,12 +63,19 @@ rule "Sleep Dart hits":
     wait(0.5)
     victim.SleepsOnground = true
     waitUntil(not victim.hasStatusEffect(Status.ASLEEP), 4)
-    victim.stopForcingOutlineFor(getAllPlayers())
     stopChasingVariable(victim.SleepPunchRange)
     victim.SleepsOnground = false
     victim.SleepPunchRange = 30
+    victim.stopForcingOutlineFor(getAllPlayers())
     if victim.isAlive():
         victim.SleepAuthor = null
+        if victim.KillStreak >= RAMPAGE_STREAK:
+            victim.startForcingOutlineFor(getAllPlayers(), true, Color.YELLOW, OutlineVisibility.DEFAULT)
+        elif  victim.KillStreak >= ONFIRE_STREAK:
+            victim.startForcingOutlineFor(getAllPlayers(), true, Color.ORANGE, OutlineVisibility.DEFAULT)
+        else:
+            victim.stopForcingOutlineFor(getAllPlayers())
+
 
 
 rule "detect movement bug":

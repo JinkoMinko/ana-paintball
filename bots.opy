@@ -6,24 +6,26 @@ rule "PETRA create FLOORBREAKER":
     @Condition getNumberOfHeroes(Hero.ANA, Team.ALL) > 1
 
     createDummy(Hero.WIDOWMAKER, Team.ALL, 11, vect(500, 500, 0), Vector.UP)
-    getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).setGravity(0)
-    getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).setInvisibility(Invis.ALL)
-    getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).startScalingSize(0.2, false)
-    getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).setFacing(Vector.UP, Relativity.TO_WORLD)
-    getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).startForcingName("Floorbreaker")
+    OutOfBoundBot1 = getLastCreatedEntity()
+    OutOfBoundBot1.setGravity(0)
+    OutOfBoundBot1.setInvisibility(Invis.ALL)
+    OutOfBoundBot1.startScalingSize(0.2, false)
+    OutOfBoundBot1.setFacing(Vector.UP, Relativity.TO_WORLD)
+    OutOfBoundBot1.startForcingName("Floorbreaker")
+    OutOfBoundBot1.setScore(-69)
 
 
 rule "PETRA break floor over time":
     @Event global
-    @Condition getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL)
+    @Condition OutOfBoundBot1
     @Condition getCurrentMap() == Map.PETRA
 
     for PetraPunches in range(0, 50, 1):
         wait(3)
-        getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).teleport(random.choice([vect(-4, -11, 12), vect(9.5, -11, 11.3), vect(8.2, -11, 6.5), vect(-3.3, -11, 6.5)]))
-        getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).startForcingButton(Button.MELEE)
+        OutOfBoundBot1.teleport(random.choice([vect(-4, -11, 12), vect(9.5, -11, 11.3), vect(8.2, -11, 6.5), vect(-3.3, -11, 6.5)]))
+        OutOfBoundBot1.startForcingButton(Button.MELEE)
         wait()
-        getPlayersOnHero(Hero.WIDOWMAKER, Team.ALL).teleport(vect(500, 500, 0))
+        OutOfBoundBot1.teleport(vect(500, 500, 0))
     destroyAllDummies()
 
 

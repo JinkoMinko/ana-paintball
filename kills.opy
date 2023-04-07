@@ -81,7 +81,7 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.SleepPunches += 1
         attacker.setAmmo(0, 15)
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
-        playEffect([victim, attacker], DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
+        playEffect(getAllPlayers() if victim.getScore() > attacker.getScore() else getAllPlayers().exclude(victim), DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
         if victim.getScore() >= attacker.getScore():
             attacker.MedalQueue.append(Medal.DEMOTED)
             smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1} demoted {2}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker, victim))

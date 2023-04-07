@@ -114,7 +114,8 @@ rule "Kill all bots":
 rule "show spawn points":
     @Condition DEBUG_MODE
     @Event global
-    
+    @Disabled
+
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
         createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.3, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
@@ -127,7 +128,7 @@ rule "cycle through to spawn points":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.RELOAD)
-    #@Disabled
+    @Disabled
 
     eventPlayer.teleport(SpawnPointSettings[IndexValue][0])
     eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
@@ -138,7 +139,7 @@ rule "log spawn point and facing direction":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
-    #@Disabled
+    @Disabled
 
     printLog(eventPlayer.getPosition())
     printLog(eventPlayer.getFacingDirection())

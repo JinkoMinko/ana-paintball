@@ -143,10 +143,11 @@ rule "PLAYER SETTINGS & KILLSTREAK EFFECTS":
 
     createStreakEffect(ONFIRE_STREAK, Effect.SOLDIER_SPRINTING, 10)
     createStreakEffect(RAMPAGE_STREAK, Effect.ECHO_CLONING, 1)
-    createStreakEffect(RAMPAGE_STREAK, Effect.MERCY_DAMAGE_BOOSTED_SOUND, 0 if eventPlayer.getScore() == NANO_SCORE else 10 if eventPlayer == localPlayer else 60)
+    createStreakEffect(RAMPAGE_STREAK, Effect.WINSTON_PRIMAL_RAGE_SOUND, 80 if eventPlayer == localPlayer else 200)
     
     createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.NanoDelay else [], Effect.ANA_NANO_BOOSTED, Color.TEAM_1, eventPlayer, 0 if eventPlayer.isUsingUltimate() else 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.NanoDelay else [], Effect.ANA_NANO_BOOSTED_SOUND, Color.TEAM_1, eventPlayer, (0 if eventPlayer.isUsingUltimate() else 25) if eventPlayer == localPlayer else 150, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
     createEffect(localPlayer if eventPlayer.DemotedEffect == true else [], Effect.SOMBRA_HACKED_SOUND, Color.TEAM_1, eventPlayer, 150 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-    createEffect(getAllPlayers() if eventPlayer.KillstreakSFX == true else [], Effect.WINSTON_PRIMAL_RAGE_SOUND, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer.exclude(eventPlayer) if eventPlayer.KillstreakSFX == true else [], Effect.WINSTON_PRIMAL_RAGE, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer if eventPlayer.KillstreakSFX == true else [], Effect.WRECKING_BALL_ADAPTIVE_SHIELD_TARGET, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)

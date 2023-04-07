@@ -40,7 +40,7 @@ rule "CREATE all jump pads":
             19,
             18.5,
             13,
-            10
+            12
             ]
         
             JumpPadSize = [
