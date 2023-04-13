@@ -170,3 +170,26 @@ rule "TRIGGER Dorado launcher":
     playEffect(eventPlayer, DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(123.4, 10, -17.5), 30)
     playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(123.4, 10, -17.5), 40)
     eventPlayer.applyImpulse(vectorTowards(vect(123.4, 10, -17.5), vect(102.3, 34, 9.9)), 46, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
+
+
+rule "CREATE Lijang Control launcher":
+    @Event global
+    @Condition getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY
+
+    createEffect(getAllPlayers(), Effect.GOOD_AURA, Color.YELLOW, vect(0, 271, 268), 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+
+
+rule "TRIGGER Lijang Control launcher":
+    @Event eachPlayer
+    @Hero ana
+    @Condition getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY
+    @Condition (distance(eventPlayer, vect(0, 271, 268))) <= 1.2
+
+    cancelMomentum(eventPlayer)
+    eventPlayer.setStatusEffect(null, Status.ROOTED, 1)
+    playEffect(eventPlayer, DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(0, 271, 268), 30)
+    playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(0, 271, 268), 40)
+    eventPlayer.applyImpulse(vectorTowards(vect(0, 271, 268), vect(0, 287, 290)), 38, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
+    eventPlayer.disableEnvironmentCollision(false)
+    wait(1.2)
+    eventPlayer.enableEnvironmentCollision()

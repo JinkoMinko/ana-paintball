@@ -1,14 +1,13 @@
 #!mainFile "ANA_PB.opy"
 
 # Constants
-globalvar ONFIRE_STREAK = (1 if DEBUG_MODE else 5)
-globalvar RAMPAGE_STREAK = (2 if DEBUG_MODE else 10)
+globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
+globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
 globalvar NUKE_STREAK = (33 if DEBUG_MODE else 15)
-globalvar NANO_SCORE = (222 if DEBUG_MODE else 24)
+globalvar NANO_SCORE = (24 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
-globalvar NIGHTMAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
-globalvar SNOWMAPS = [Map.BLACK_FOREST_WINTER, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA, Map.ECOPOINT_ANTARCTICA_WINTER]
-globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHTMAPS else Color.PURPLE
+globalvar NIGHT_MAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
+globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHT_MAPS else Color.PURPLE
 globalvar CUSTOM_RESPAWN_TIME = 1.05
 
 # Jump pads
@@ -49,7 +48,7 @@ globalvar i    # used to loop medals sent globally
 
 
 
-playervar FairplayBar = 0
+playervar HonorBar = 0
 playervar DisplayStats = true
 playervar OofDistance    # Distance between attacker and victim. >= Longshot Distance
 playervar OofText
@@ -69,7 +68,7 @@ playervar ScopedShots
 playervar ScopedHits
 playervar ScopedAccuracy
 playervar Jumps
-playervar SleepPunches
+playervar Execute
 playervar StolenKills
 playervar DemotedPlayers
 playervar Deaths
@@ -81,7 +80,7 @@ playervar SleepAuthor
 playervar SleepUsedAndDied = true    # Used to detect when a sleeping player should be awoken due to their SleepAuthor dying
 playervar SleepLock     # should be reworked
 playervar SleepsOnground = false    # Whether a player that was hit with a sleep dart has finished the "falling on the ground" animation
-playervar SleepPunchRange = 30    # Used as a proximity-based visibility condition for "punch to kill" prompts
+playervar ExecuteRange = 30    # Used as a proximity-based visibility condition for "punch to kill" prompts
 playervar Temp
 playervar EarnedCollateral
 
@@ -109,7 +108,7 @@ playervar Xxx
 enum Medal:
     SYSTEM_MESSAGE,
     NICE_SHOT,
-    SLEEP_PUNCH,
+    EXECUTE,
     PERFECT_QS,
     DEMOTED,
     STOLEN_KILL,
@@ -121,12 +120,12 @@ enum Medal:
     ON_FIRE_SHUTDOWN,
     RAMPAGE_SHUTDOWN,
     BUZZKILL,
-    KILLJOY,
+    SHOWSTOPPER,
     QUADFEED,
     ON_FIRE,
     RAMPAGE,
     JOLLY_JUMPER,
-    COLLATERAL_SHOT,
+    COLLATERAL_KILLS,
     MUTUAL_SLEEP,
 
 
@@ -150,3 +149,14 @@ subroutine RespawnsBLIZZWORLD
 subroutine RespawnsEICHENWALDE
 subroutine RespawnsECOPOINT
 subroutine RespawnsBLACKFOREST
+subroutine RespawnsNEPALSHRINE
+subroutine RespawnsLIJANGCONTROL
+subroutine PlayZoneLIJANGCONTROL
+
+
+globalvar PlayzoneCenter
+globalvar PlayzoneRadius
+
+globalvar RespawnHigherDistance
+globalvar RespawnLowerDistance
+globalvar RespawnFailsafeDistance

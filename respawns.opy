@@ -25,26 +25,26 @@ def RespawnSystem():
         eventPlayer.SpawnPointsNotInLOS = SpawnPointSettings
     eventPlayer.SpawnPointsFarEnoughFromPlayers = [
         s for s in eventPlayer.SpawnPointsNotInLOS if
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[0], 25, 55) and
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[1], 25, 55) and
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[2], 25, 55) and
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[3], 25, 55) and
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[4], 25, 55) and
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[5], 25, 55) and
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[6], 25, 55)
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[0], RespawnLowerDistance, RespawnHigherDistance) and
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[1], RespawnLowerDistance, RespawnHigherDistance) and
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[2], RespawnLowerDistance, RespawnHigherDistance) and
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[3], RespawnLowerDistance, RespawnHigherDistance) and
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[4], RespawnLowerDistance, RespawnHigherDistance) and
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[5], RespawnLowerDistance, RespawnHigherDistance) and
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[6], RespawnLowerDistance, RespawnHigherDistance)
     ]
 
     if len(eventPlayer.SpawnPointsFarEnoughFromPlayers) == 0:
         # failsafe
         eventPlayer.SpawnPointsFarEnoughFromPlayers = [
         s for s in eventPlayer.SpawnPointsNotInLOS if
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[0]) >= 15 and 
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[1]) >= 15 and 
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[2]) >= 15 and 
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[3]) >= 15 and 
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[4]) >= 15 and 
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[5]) >= 15 and 
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[6]) >= 15
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[0]) >= RespawnFailsafeDistance and 
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[1]) >= RespawnFailsafeDistance and 
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[2]) >= RespawnFailsafeDistance and 
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[3]) >= RespawnFailsafeDistance and 
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[4]) >= RespawnFailsafeDistance and 
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[5]) >= RespawnFailsafeDistance and 
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[6]) >= RespawnFailsafeDistance
         ]
     if len(eventPlayer.SpawnPointsFarEnoughFromPlayers) == 0:
         # failsafe
@@ -52,6 +52,7 @@ def RespawnSystem():
 
     eventPlayer.ChosenSpawnPoint = random.choice(eventPlayer.SpawnPointsFarEnoughFromPlayers)
     eventPlayer.teleport(eventPlayer.ChosenSpawnPoint[0])
+    cancelMomentum(eventPlayer)
     eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
     wait()
     eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
@@ -235,8 +236,8 @@ def RespawnsDORADO():
         [vect(77.74, 13.01, 16.59), vect(0.05, 0.00, 1.00)],
         [vect(68.49, 14.01, 16.33), vect(0.79, 0.00, 0.62)],
         [vect(102.64, 12.03, 19.43), vect(0.15, 0.00, -0.99)],
-        [vect(88.65, 7.03, -10.50), vect(0.78, 0.18, -0.59)],
-        [vect(83.21, 6.81, -7.75), vect(0.37, -0.00, 0.93)],
+        [vect(88.65, 7.03, -10.50), vect(0.78, 0.00, -0.59)],
+        [vect(83.21, 6.81, -7.75), vect(0.37, 0.00, 0.93)],
         [vect(78.10, 8.00, 1.95), vect(0.56, 0.00, 0.83)],
         [vect(73.03, 8.00, 8.15), vect(1.00, 0.00, 0.10)],
         [vect(97.21, 13.96, 47.54), vect(-0.41, 0.00, -0.91)],
@@ -250,19 +251,15 @@ def RespawnsDORADO():
         [vect(124.55, 11.00, 39.69), vect(-0.96, 0.00, -0.28)],
         [vect(117.83, 7.25, -26.51), vect(0.09, 0.00, 1.00)],
         [vect(133.61, 7.25, -14.25), vect(-0.99, 0.00, 0.14)],
-        [vect(67.79, 15.25, 32.63), vect(0.63, -0.16, -0.76)],
+        [vect(67.79, 15.25, 32.63), vect(0.63, 0.00, -0.76)],
         [vect(131.16, 9.02, -26.74), vect(-0.65, 0.00, 0.76)],
         [vect(98.46, 13.01, 21.62), vect(-0.99, 0.00, 0.15)],
     ] # Spawn points: 41
 def RespawnsHOLLYWOOD():
     SpawnPointSettings = [
-        [vect(49.99, 2.75, -56.67), vect(-0.78, 0.00, -0.62)],
-        [vect(55.21, 2.75, -49.21), vect(-1.00, 0.00, -0.10)],
         [vect(45.80, 2.75, -45.42), vect(-1.00, 0.00, 0.07)], 
         [vect(47.43, 2.75, -64.90), vect(-0.97, 0.00, 0.24)], 
-        [vect(51.60, 2.75, -56.59), vect(-0.97, 0.00, 0.23)], 
         [vect(35.06, 1.80, -29.22), vect(-0.85, 0.00, -0.53)], 
-        [vect(40.49, 2.75, -46.05), vect(-0.25, 0.00, 0.97)], 
         [vect(32.24, 2.75, -62.28), vect(0.23, 0.00, 0.97)], 
         [vect(28.21, 1.86, -71.50), vect(-0.36, 0.00, -0.93)], 
         [vect(19.10, 1.75, -93.56), vect(0.58, 0.00, 0.82)], 
@@ -270,10 +267,7 @@ def RespawnsHOLLYWOOD():
         [vect(-6.45, 4.00, -65.06), vect(0.37, 0.00, 0.93)], 
         [vect(8.52, 4.79, -64.91), vect(-0.54, 0.00, 0.84)], 
         [vect(-18.79, 1.75, -47.45), vect(0.93, 0.00, -0.37)], 
-        [vect(-19.24, 8.81, -34.65), vect(0.09, 0.00, -1.00)], 
-        [vect(-31.46, 5.75, -43.92), vect(0.96, 0.00, -0.29)], 
         [vect(-19.17, 5.75, -52.35), vect(-0.49, 0.00, -0.87)], 
-        [vect(-16.76, 5.75, -56.89), vect(-0.67, 0.00, -0.74)], 
         [vect(-17.12, 1.73, -77.89), vect(0.30, 0.00, 0.95)], 
         [vect(-8.17, 1.60, -73.87), vect(-0.20, 0.00, 0.98)], 
         [vect(-16.17, 1.73, -71.41), vect(0.98, 0.00, -0.21)], 
@@ -286,28 +280,39 @@ def RespawnsHOLLYWOOD():
         [vect(3.03, 1.75, -33.70), vect(0.80, 0.00, 0.60)], 
         [vect(12.55, 3.33, -33.03), vect(-1.00, 0.00, 0.04)], 
         [vect(-0.33, 1.87, -29.95), vect(-0.26, 0.00, 0.97)], 
-        [vect(-8.43, 1.75, -14.79), vect(0.80, 0.00, 0.60)], 
         [vect(13.55, 1.75, -40.25), vect(0.90, 0.00, 0.44)], 
         [vect(-12.58, 1.73, -58.24), vect(0.76, 0.00, 0.65)], 
         [vect(0.99, 1.60, -83.53), vect(0.65, 0.00, 0.76)], 
         [vect(26.73, 1.61, -47.34), vect(-0.96, 0.00, 0.28)], 
         [vect(26.73, 1.61, -47.34), vect(-0.15, 0.00, 0.99)], 
-        [vect(4.56, 1.60, -18.10), vect(0.87, 0.00, -0.49)], 
         [vect(8.25, 2.00, -66.19), vect(-0.64, 0.00, -0.77)], 
         [vect(2.55, 2.00, -67.58), vect(0.20, 0.00, 0.98)], 
         [vect(2.76, 3.97, -12.79), vect(-0.35, 0.00, -0.94)], 
         [vect(-6.40, 1.60, -40.34), vect(0.86, 0.00, 0.51)], 
-        [vect(9.43, 1.60, -50.84), vect(-0.95, 0.00, 0.30)], 
         [vect(42.16, 1.75, -68.16), vect(-0.99, 0.00, 0.12)], 
         [vect(42.16, 1.75, -68.16), vect(-0.48, 0.00, -0.88)], 
         [vect(37.74, 2.75, -53.24), vect(-1.00, 0.00, -0.02)], 
-        [vect(33.89, 4.22, -45.07), vect(0.43, 0.00, 0.90)],
         [vect(27.47, 1.63, -93.54), vect(-0.72, 0.00, 0.70)],
         [vect(37.79, 1.60, -83.91), vect(-0.13, 0.00, 0.99)],
         [vect(22.42, 1.86, -78.92), vect(0.92, 0.00, -0.40)],
         [vect(9.67, 2.78, -69.69), vect(0.75, 0.00, 0.66)],
         [vect(-2.33, 1.60, -67.64), vect(0.47, 0.00, -0.88)],
-    ] # Spawn points: 51
+        [vect(42.82, 2.75, -63.16), vect(-0.97, 0.00, 0.22)],
+        [vect(38.91, 2.75, -46.44), vect(-0.07, 0.00, 1.00)],
+        [vect(48.88, 2.75, -52.79), vect(-0.77, 0.00, 0.64)],
+        [vect(49.57, 2.75, -58.58), vect(-0.85, 0.00, -0.52)],
+        [vect(10.46, 1.75, -9.64), vect(0.73, 0.00, -0.69)],
+        [vect(-1.58, 1.75, -5.51), vect(-0.03, 0.00, -1.00)],
+        [vect(-21.11, 5.75, -39.24), vect(0.44, 0.00, -0.90)],
+        [vect(-17.32, 3.75, -41.94), vect(0.58, 0.00, -0.81)],
+        [vect(-26.53, 5.75, -46.69), vect(0.44, 0.00, -0.90)],
+        [vect(-18.32, 5.75, -56.49), vect(-0.18, 0.00, -0.98)],
+        [vect(-19.43, 1.73, -77.36), vect(0.83, 0.00, 0.56)],
+        [vect(-17.66, 1.73, -65.59), vect(1.00, 0.00, -0.02)],
+        [vect(7.75, 2.00, -64.77), vect(-0.71, 0.00, 0.70)],
+        [vect(1.07, 1.87, -24.32), vect(-0.48, 0.00, -0.88)],
+        [vect(9.13, 1.60, -51.76), vect(-0.95, 0.00, 0.31)],
+    ] # Spawn points:
 def RespawnsBLIZZWORLD():
     SpawnPointSettings = [
         [vect(-13.32, 1.94, 85.29), vect(-0.71, 0.00, 0.71)],
@@ -325,19 +330,14 @@ def RespawnsBLIZZWORLD():
         [vect(-52.64, -0.25, 62.08), vect(-0.88, 0.00, 0.48)],
         [vect(-51.08, -0.25, 67.29), vect(-1.00, 0.00, -0.03)],
         [vect(-40.34, 0.75, 55.53), vect(-0.12, 0.00, 0.99)],
-        [vect(-15.96, 2.00, 67.03), vect(-1.00, 0.00, -0.10)],
-        [vect(-15.01, 2.00, 72.73), vect(-0.23, 0.00, 0.97)],
         [vect(-20.06, 0.02, 61.19), vect(-0.98, 0.00, 0.22)],
         [vect(-15.81, 2.00, 74.19), vect(-0.22, 0.00, 0.98)],
         [vect(-75.88, 0.79, 92.86), vect(0.02, 0.00, -1.00)],
         [vect(-86.25, 0.75, 79.24), vect(-0.28, 0.00, 0.96)],
         [vect(-80.46, 4.88, 63.05), vect(0.71, 0.00, 0.70)],
         [vect(-90.78, 0.75, 88.79), vect(0.72, 0.00, -0.69)],
-        [vect(-87.61, 0.75, 94.50), vect(0.95, 0.00, 0.30)],
         [vect(-83.94, 0.75, 100.72), vect(0.50, 0.00, -0.87)],
         [vect(-85.42, 0.75, 92.49), vect(0.73, 0.00, 0.68)],
-        [vect(-74.38, 0.79, 90.27), vect(-0.14, 0.00, -0.99)],
-        [vect(-47.34, -0.11, 106.20), vect(-0.96, 0.00, -0.27)],
         [vect(-42.54, -0.21, 136.04), vect(-0.95, 0.00, -0.30)],
         [vect(-44.34, -2.21, 149.30), vect(-0.87, 0.00, -0.50)],
         [vect(-42.05, -2.21, 140.77), vect(-1.00, 0.00, -0.09)],
@@ -347,7 +347,6 @@ def RespawnsBLIZZWORLD():
         [vect(-74.26, 0.75, 135.91), vect(0.96, 0.00, 0.29)],
         [vect(-77.29, 0.81, 117.50), vect(0.82, 0.00, 0.57)],
         [vect(-77.51, 2.16, 111.26), vect(0.48, 0.00, 0.88)],
-        [vect(-63.56, 0.46, 112.10), vect(1.00, 0.00, -0.02)],
         [vect(-62.85, 0.75, 134.45), vect(-0.95, 0.00, -0.30)],
         [vect(-58.31, -0.11, 127.24), vect(0.99, 0.00, -0.12)],
         [vect(-67.23, 1.12, 107.28), vect(0.27, 0.00, -0.96)],
@@ -355,14 +354,25 @@ def RespawnsBLIZZWORLD():
         [vect(-71.23, 0.25, 62.34), vect(0.03, 0.00, 1.00)],
         [vect(-48.98, 0.46, 59.59), vect(0.34, 0.00, 0.94)],
         [vect(-35.09, 0.68, 60.06), vect(-0.58, 0.00, 0.82)],
-    ] # Spawn points: 45
+        [vect(-29.85, 0.00, 56.90), vect(-0.10, 0.00, 0.99)],
+        [vect(-16.21, 2.00, 62.50), vect(-0.74, 0.00, 0.68)],
+        [vect(-19.59, 2.00, 69.57), vect(0.29, 0.00, 0.96)],
+        [vect(-25.97, 6.00, 88.92), vect(0.29, 0.00, -0.96)],
+        [vect(-42.92, -0.12, 131.24), vect(-0.97, 0.00, -0.26)],
+        [vect(-29.96, -2.21, 148.52), vect(-0.96, 0.00, -0.27)],
+        [vect(-80.46, 1.91, 112.04), vect(0.91, 0.00, 0.41)],
+        [vect(-78.70, 0.25, 64.42), vect(0.68, 0.00, 0.73)],
+        [vect(-44.04, -0.19, 97.29), vect(0.09, 0.00, -1.00)],
+        [vect(-44.10, -0.19, 97.37), vect(-0.90, 0.00, 0.43)],
+        [vect(-55.70, -0.19, 92.29), vect(-0.01, 0.00, -1.00)],
+        [vect(-49.45, -0.19, 87.06), vect(-1.00, 0.00, -0.02)],
+    ] # Spawn points: 
 def RespawnsEICHENWALDE():
     SpawnPointSettings = [
         [vect(66.00, 16.03, -63.59), vect(0.96, 0.00, -0.28)],
         [vect(34.72, 5.25, -54.56), vect(0.64, 0.00, -0.77)],
         [vect(36.43, 5.25, -50.42), vect(0.99, 0.00, 0.17)],
         [vect(60.85, 6.72, -77.36), vect(-0.66, 0.00, 0.75)],
-        [vect(67.81, 4.72, -83.33), vect(-0.98, 0.00, 0.21)],
         [vect(55.58, 5.98, -100.31), vect(-0.24, 0.00, -0.97)],
         [vect(61.21, 4.72, -92.20), vect(-0.21, 0.00, 0.98)],
         [vect(61.21, 4.72, -92.20), vect(-0.65, 0.00, -0.76)],
@@ -371,33 +381,39 @@ def RespawnsEICHENWALDE():
         [vect(59.33, 10.72, -107.37), vect(-0.69, 0.00, 0.72)],
         [vect(29.54, 10.40, -94.07), vect(0.99, 0.00, 0.10)],
         [vect(46.54, 5.60, -57.36), vect(0.49, 0.00, -0.87)],
-        [vect(52.96, 11.72, -82.39), vect(0.24, 0.00, 0.97)],
         [vect(34.99, 12.72, -106.34), vect(0.78, 0.00, 0.62)],
         [vect(61.22, 11.71, -100.98), vect(0.89, 0.00, 0.45)],
         [vect(101.12, 12.72, -108.84), vect(-0.59, 0.00, 0.81)],
         [vect(101.12, 12.72, -108.84), vect(-0.89, 0.00, -0.45)],
         [vect(95.87, 12.72, -105.25), vect(0.43, 0.00, 0.90)],
-        [vect(104.47, 12.77, -71.47), vect(-0.87, 0.00, -0.50)],
-        [vect(96.72, 12.68, -73.63), vect(-0.96, 0.00, 0.28)],
         [vect(92.40, 18.68, -66.33), vect(-0.65, 0.00, -0.76)],
         [vect(75.19, 12.66, -71.86), vect(-0.38, 0.00, 0.93)],
         [vect(81.90, 13.04, -65.17), vect(-0.22, 0.00, -0.97)],
         [vect(57.10, 6.72, -108.97), vect(0.99, 0.00, 0.15)],
         [vect(67.99, 18.05, -76.64), vect(-0.56, 0.00, 0.83)],
         [vect(34.57, 8.29, -86.68), vect(0.97, 0.00, 0.25)],
-        [vect(64.72, 7.20, -107.78), vect(0.98, 0.00, -0.20)],
         [vect(58.25, 11.72, -84.47), vect(-0.63, 0.00, 0.78)],
         [vect(58.93, 10.88, -87.59), vect(-0.76, 0.00, -0.65)],
         [vect(103.53, 9.60, -90.22), vect(-0.00, 0.00, 1.00)],
         [vect(88.98, 12.80, -63.53), vect(-0.27, 0.00, -0.96)],
-        [vect(53.85, 6.72, -74.54), vect(0.61, 0.00, 0.79)],
         [vect(32.10, 6.02, -71.71), vect(0.89, 0.00, -0.46)],
         [vect(28.63, 8.00, -87.77), vect(0.58, 0.00, 0.81)],
         [vect(52.49, 10.72, -120.62), vect(0.39, 0.00, 0.92)],
         [vect(58.20, 10.72, -121.73), vect(-0.03, 0.00, 1.00)],
-        [vect(85.72, 13.00, -105.20), vect(-0.71, 0.00, 0.70)],
-
-    ] # Spawn points: 43
+        [vect(54.90, 4.72, -89.37), vect(0.08, 0.00, -1.00)],
+        [vect(55.91, 4.72, -85.47), vect(0.36, 0.00, 0.93)],
+        [vect(53.60, 6.72, -76.03), vect(0.52, 0.00, 0.85)],
+        [vect(51.64, 11.72, -82.04), vect(0.91, 0.00, 0.42)],
+        [vect(60.80, 11.72, -75.62), vect(-0.55, 0.00, 0.84)],
+        [vect(102.95, 12.72, -71.18), vect(-0.92, 0.00, -0.38)],
+        [vect(98.40, 12.66, -74.71), vect(-0.92, 0.00, 0.38)],
+        [vect(99.26, 11.85, -98.24), vect(-0.42, 0.00, -0.91)],
+        [vect(105.76, 12.72, -111.07), vect(-0.90, 0.00, 0.44)],
+        [vect(96.35, 12.72, -113.91), vect(-0.91, 0.00, 0.42)],
+        [vect(56.01, 10.72, -116.71), vect(0.65, 0.00, 0.76)],
+        [vect(52.58, 21.20, -65.27), vect(0.97, 0.00, -0.26)],
+        [vect(70.15, 18.04, -69.32), vect(-0.85, 0.00, -0.53)],
+    ] # Spawn points:
 def RespawnsECOPOINT():
     SpawnPointSettings = [
         [vect(-10.12, 12.00, -9.12), vect(-0.54, 0.00, 0.84)],
@@ -495,3 +511,104 @@ def RespawnsBLACKFOREST():
         [vect(2.26, 12.68, -10.05), vect(-0.99, 0.00, 0.16)],
         [vect(2.16, 12.68, 20.62), vect(-0.89, 0.00, -0.45)],
     ] # Spawn points: 45
+def RespawnsNEPALSHRINE():
+    SpawnPointSettings = [
+        [vect(-51.95, 18.98, 51.96), vect(0.86, 0.00, -0.51)],
+        [vect(-51.06, 18.98, 52.28), vect(-0.03, 0.00, -1.00)],
+        [vect(-45.52, 18.97, 52.09), vect(-0.03, 0.00, -1.00)],
+        [vect(-29.29, 16.00, 39.70), vect(-0.96, 0.00, -0.27)],
+        [vect(-46.12, 11.00, 50.34), vect(-0.54, 0.00, -0.84)],
+        [vect(-72.69, 11.18, 43.95), vect(1.00, 0.00, 0.00)],
+        [vect(-70.84, 12.00, 32.96), vect(-0.06, 0.00, -1.00)],
+        [vect(-32.91, 10.00, 27.71), vect(-0.98, 0.00, 0.18)],
+        [vect(-26.09, 10.01, 32.73), vect(0.02, 0.00, -1.00)],
+        [vect(-33.25, 10.00, 22.25), vect(0.54, 0.00, -0.84)],
+        [vect(-22.92, 10.00, 25.37), vect(-0.43, 0.00, -0.90)],
+        [vect(-32.91, 10.00, -11.50), vect(0.51, 0.00, -0.86)],
+        [vect(-33.25, 10.63, -22.79), vect(0.59, 0.00, 0.81)],
+        [vect(-26.10, 10.17, -33.07), vect(0.02, 0.00, 1.00)],
+        [vect(-28.92, 12.08, -40.51), vect(-1.00, 0.00, 0.02)],
+        [vect(-29.17, 12.26, -47.31), vect(-0.91, 0.00, 0.42)],
+        [vect(-45.69, 11.00, -49.02), vect(-0.70, 0.00, 0.72)],
+        [vect(-72.60, 11.14, -43.86), vect(1.00, 0.00, -0.01)],
+        [vect(-70.95, 12.20, -37.72), vect(-0.02, 0.00, 1.00)],
+        [vect(-67.22, 11.59, -25.29), vect(0.81, 0.00, 0.59)],
+        [vect(-35.53, 11.67, -25.12), vect(-0.75, 0.00, 0.67)],
+        [vect(-35.00, 10.00, -9.84), vect(-0.79, 0.00, -0.61)],
+        [vect(-55.50, 11.53, -10.07), vect(-0.59, 0.00, -0.81)],
+        [vect(-72.78, 8.00, -3.70), vect(-0.00, 0.00, -1.00)],
+        [vect(-72.82, 8.03, 4.97), vect(0.00, 0.00, 1.00)],
+        [vect(-67.23, 11.60, 25.30), vect(0.76, 0.00, -0.65)],
+        [vect(-35.61, 11.68, 25.17), vect(-0.81, 0.00, -0.58)],
+        [vect(-35.00, 10.00, 9.84), vect(-0.67, 0.00, 0.74)],
+        [vect(-30.10, 12.23, 48.09), vect(-0.85, 0.00, -0.52)],
+        [vect(-22.19, 16.00, 41.76), vect(-0.02, 0.00, -1.00)],
+        [vect(-26.63, 17.00, 22.92), vect(-0.71, -0.00, -0.70)],
+        [vect(-25.53, 17.00, -24.34), vect(-0.67, 0.00, 0.74)],
+        [vect(-23.07, 16.00, -38.13), vect(0.01, 0.00, 1.00)],
+    ] # Spawn points: 
+def RespawnsLIJANGCONTROL():
+    SpawnPointSettings = [
+        [vect(40.96, 267.00, 312.98), vect(-0.81, 0.00, 0.59)],
+        [vect(26.88, 267.00, 325.74), vect(0.71, 0.00, -0.70)],
+        [vect(34.50, 267.00, 327.09), vect(-0.17, 0.00, -0.98)],
+        [vect(26.75, 267.00, 316.84), vect(-0.08, 0.00, -1.00)],
+        [vect(20.14, 270.00, 331.86), vect(-1.00, 0.00, -0.05)],
+        [vect(11.75, 270.00, 329.25), vect(0.40, 0.00, -0.92)],
+        [vect(16.50, 267.00, 306.59), vect(1.00, 0.00, -0.02)],
+        [vect(30.72, 267.00, 284.52), vect(0.49, 0.00, 0.87)],
+        [vect(28.85, 267.00, 280.40), vect(-0.67, 0.00, -0.74)],
+        [vect(15.44, 267.00, 270.89), vect(0.29, 0.00, 0.96)],
+        [vect(24.01, 267.00, 282.83), vect(1.00, 0.00, -0.04)],
+        [vect(10.25, 270.00, 307.25), vect(-0.69, 0.00, -0.72)],
+        [vect(-4.32, 274.00, 337.25), vect(0.00, 0.00, -1.00)],
+        [vect(3.80, 274.00, 337.25), vect(0.00, 0.00, -1.00)],
+        [vect(-0.07, 275.64, 330.97), vect(0.00, 0.00, -1.00)],
+        [vect(24.58, 267.00, 277.90), vect(-0.70, 0.00, -0.72)],
+        [vect(42.21, 267.00, 301.19), vect(-0.69, 0.00, -0.73)],
+        [vect(34.48, 267.00, 305.16), vect(-0.82, 0.00, 0.58)],
+        [vect(-15.43, 267.00, 270.89), vect(-0.29, 0.00, 0.96)],
+        [vect(-24.58, 267.00, 277.90), vect(0.72, 0.00, -0.70)],
+        [vect(-27.97, 267.00, 281.19), vect(0.56, 0.00, -0.83)],
+        [vect(-42.66, 267.00, 301.64), vect(0.69, 0.00, -0.73)],
+        [vect(-34.22, 267.00, 303.98), vect(0.75, 0.00, 0.66)],
+        [vect(-26.75, 267.00, 316.84), vect(-0.14, 0.00, -0.99)],
+        [vect(-16.50, 267.00, 306.59), vect(-0.99, 0.00, -0.14)],
+        [vect(-11.75, 270.00, 329.25), vect(-0.33, 0.00, -0.95)],
+        [vect(-9.75, 269.95, 332.67), vect(-0.87, 0.00, -0.50)],
+        [vect(-22.28, 269.95, 334.94), vect(0.82, 0.00, -0.57)],
+        [vect(-18.25, 270.00, 329.25), vect(0.71, 0.00, -0.70)],
+        [vect(-10.25, 270.00, 307.25), vect(0.57, 0.00, -0.82)],
+        [vect(-40.48, 267.00, 314.15), vect(1.00, 0.00, -0.00)],
+        [vect(-8.14, 270.00, 325.25), vect(0.47, 0.00, -0.88)],
+        [vect(8.18, 270.00, 325.25), vect(-0.47, 0.00, -0.89)],
+        [vect(-12.26, 270.00, 299.03), vect(1.00, 0.00, -0.07)],
+        [vect(12.27, 270.00, 299.02), vect(-1.00, 0.00, 0.04)],
+        [vect(5.13, 267.17, 292.12), vect(0.41, 0.00, -0.91)],
+        [vect(-5.13, 267.17, 292.12), vect(-0.41, 0.00, -0.91)],
+        [vect(-8.25, 278.00, 337.25), vect(0.51, 0.00, -0.86)],
+        [vect(8.25, 278.00, 337.25), vect(-0.51, 0.00, -0.86)],
+        [vect(-4.84, 278.00, 296.75), vect(0.42, 0.00, 0.91)],
+        [vect(4.95, 278.00, 296.75), vect(-0.43, 0.00, 0.90)],
+        [vect(-0.07, 278.00, 303.02), vect(-0.01, 0.00, 1.00)],
+        [vect(-0.08, 278.00, 337.25), vect(0.00, 0.00, -1.00)],
+        [vect(-0.04, 270.00, 329.48), vect(0.00, 0.00, -1.00)],
+        [vect(-9.41, 270.00, 263.10), vect(1.00, 0.00, 0.00)],
+        [vect(9.08, 270.00, 263.22), vect(-1.00, 0.00, 0.00)],
+        [vect(35.51, 267.00, 317.28), vect(-0.70, 0.00, -0.72)],
+        [vect(41.19, 266.15, 323.18), vect(-0.70, 0.00, -0.72)],
+        [vect(-32.62, 267.00, 327.53), vect(-0.02, 0.00, -1.00)],
+        [vect(-41.80, 266.13, 322.64), vect(0.71, 0.00, -0.70)],
+        [vect(-35.12, 267.00, 316.08), vect(0.71, 0.00, -0.70)],
+        [vect(-19.43, 267.00, 309.52), vect(-0.35, 0.00, -0.94)],
+        [vect(19.42, 267.00, 309.51), vect(0.41, 0.00, -0.91)],
+        [vect(5.32, 267.17, 267.42), vect(-0.13, 0.00, 0.99)],
+        [vect(-5.32, 267.17, 267.42), vect(0.13, 0.00, 0.99)],
+        [vect(-16.98, 269.95, 337.08), vect(0.24, 0.00, -0.97)],
+        [vect(-11.75, 270.00, 316.75), vect(-0.47, 0.00, 0.88)],
+        [vect(11.75, 270.00, 316.75), vect(0.56, 0.00, 0.83)],
+        [vect(18.25, 270.00, 329.25), vect(-0.66, 0.00, -0.75)],
+        [vect(10.76, 269.95, 334.76), vect(0.64, 0.00, -0.77)],
+        [vect(16.56, 269.95, 336.44), vect(-0.17, 0.00, -0.99)],
+        [vect(-0.12, 274.00, 337.25), vect(0.00, 0.00, -1.00)],
+    ] # Spawn points: 

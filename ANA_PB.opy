@@ -16,6 +16,8 @@ settings "settings.opy.json"
 # Pre-match
 #!include "setup.opy"
 #!include "respawns.opy"
+#!include "playzones.opy"
+
 
 # Context messages
 #!include "systemMessages.opy"
@@ -23,7 +25,7 @@ settings "settings.opy.json"
 # Trackers
 #!include "stats.opy"
 #!include "medals.opy"
-#!include "fairPlay.opy"
+#!include "honor.opy"
 
 # Kills & deaths
 #!include "kills.opy"

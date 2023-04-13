@@ -25,7 +25,8 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-
+    
+    hudSubtext(eventPlayer, "{}".format(angleBetweenVectors(localPlayer.getFacingDirection(), directionTowards(localPlayer.getEyePosition(), PlayzoneCenter))), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
     hudSubtext(eventPlayer, "{}".format(eventPlayer.getPosition()), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
     hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     
@@ -88,7 +89,7 @@ rule "SLEEP DART: make bots use sleep dart":
     #getAllPlayers().exclude(eventPlayer).startThrottleInDirection(directionTowards(localPlayer.getEyePosition(), Vector.FORWARD), 1, Relativity.TO_PLAYER, Throttle.ADD_TO_EXISTING, ThrottleReeval.DIRECTION_AND_MAGNITUDE)
 
 
-rule "bots send 'nice shot'":
+rule "bots honor players'":
     @Condition DEBUG_MODE
     @Event playerDied
     @Hero ana
@@ -114,7 +115,7 @@ rule "Kill all bots":
 rule "show spawn points":
     @Condition DEBUG_MODE
     @Event global
-    @Disabled
+    #@Disabled
 
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
@@ -128,7 +129,7 @@ rule "cycle through to spawn points":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.RELOAD)
-    @Disabled
+    #@Disabled
 
     eventPlayer.teleport(SpawnPointSettings[IndexValue][0])
     eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
@@ -139,19 +140,9 @@ rule "log spawn point and facing direction":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
-    @Disabled
+    #@Disabled
 
     printLog(eventPlayer.getPosition())
     printLog(eventPlayer.getFacingDirection())
     smallMessage(eventPlayer, "    printed log")
     createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.PURPLE, eventPlayer.getPosition(), 0.3, EffectReeval.NONE)
-
-
-rule "display death time":
-    @Event playerDied
-    @Disabled
-    
-    eventPlayer.Xxx = getTotalTimeElapsed()
-    waitUntil(eventPlayer.isAlive(), 999)
-    eventPlayer.Xxx = getTotalTimeElapsed() - eventPlayer.Xxx
-    smallMessage(eventPlayer, "{0}".format(eventPlayer.Xxx))

@@ -18,11 +18,11 @@ rule "Reset player's variables & effects upon death":
     eventPlayer.SleepLock = 0
     eventPlayer.KillStreak = 0
     eventPlayer.SleepAuthor = null
-    eventPlayer.DemotedEffect = null
     if eventPlayer.getScore() < NANO_SCORE:
         eventPlayer.setUltCharge((eventPlayer.getScore()/NANO_SCORE)*100)
     wait(2.1 - CUSTOM_RESPAWN_TIME)
     eventPlayer.NanoDelay = 1
+    eventPlayer.DemotedEffect = null
 
 
 rule "fix movement bug after death":
@@ -68,7 +68,7 @@ rule "RIFLE & MELEE KILLS mechanics":
         BestScopedAccuracyValue = BestScopedAccuracyPlayer.ScopedAccuracy
         
         if attacker.EarnedCollateral > 1:
-            attacker.MedalQueue.append(Medal.COLLATERAL_SHOT)
+            attacker.MedalQueue.append(Medal.COLLATERAL_KILLS)
             bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} got {2} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker, attacker.EarnedCollateral))
             bigMessage(attacker, "{0}  {1} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker.EarnedCollateral))
 
@@ -78,7 +78,7 @@ rule "RIFLE & MELEE KILLS mechanics":
     
     else:    # MELEE
         attacker.KillStreak += 1
-        attacker.SleepPunches += 1
+        attacker.Execute += 1
         attacker.setAmmo(0, 15)
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
         playEffect(getAllPlayers() if victim.getScore() > attacker.getScore() else getAllPlayers().exclude(victim), DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
@@ -90,15 +90,14 @@ rule "RIFLE & MELEE KILLS mechanics":
             eventPlayer.DemotedVictim = victim
             victim.setScore(victim.getScore()-1)
             attacker.DemotedPlayers += 1
-            playEffect(victim, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 999)
-            playEffect(victim, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 999)
+            playEffect(attacker, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 200)
             victim.DemotedEffect = true
             
             if victim.getScore() == NANO_SCORE -1:
-                attacker.MedalQueue.append(Medal.KILLJOY)
+                attacker.MedalQueue.append(Medal.SHOWSTOPPER)
         
         if attacker.getScore() < NANO_SCORE:
-            attacker.MedalQueue.append(Medal.SLEEP_PUNCH)
+            attacker.MedalQueue.append(Medal.EXECUTE)
             attacker.setAmmo(0, 15)
     
     if victim.KillStreak == ONFIRE_STREAK-1 or victim.KillStreak == RAMPAGE_STREAK-1:

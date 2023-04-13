@@ -1,6 +1,6 @@
 {
     "main": {
-        "description": "The best Ana Paintball since 2019!\n๏ Land a sleep dart to earn the final point!\n๏ Shoot or punch sleeping players!\n๏ Endorsement mechanic, stats tracker...\nand much more!\n\nDiscord ≫ jinko.dev/discord\nFull mode details ≫ jinko.dev/anapb\n★ FAVORITE to always play the latest version!\nDo not save the settings or they will be outdated eventually!",
+        "description":  "The best Ana Paintball since 2019!\n๏ Free-for-all, first to 25 points!\n๏ Demote others to slow their progress!\n๏ Land a sleep dart to earn the final point!\n๏ Stats tracker, honor mechanic...\nand much more!\n\nDiscord ≫ jinko.dev/discord\nFull mode details ≫ jinko.dev/anapb\n★ FAVORITE to always play the latest version!\nDo not save the settings, they will be outdated soon!",
         "modeName": "\u0001｢︻デ≡一一 ANA PAINTBALL by Jinko"
     },
     "lobby": {
@@ -14,13 +14,16 @@
     "gamemodes": {
         "ffa": {
             "enabledMaps": [
-                "chateauGuillard"
-                //"dorado",
-                //"ecopointAntarctica",
-                //"eichenwalde",
-                //"hollywood",
-                //"malevento",
-                //"petra"
+                {"dorado": ["night"]},
+                {"eichenwalde": ["morning"]},
+                {"hollywood": ["morning"]},
+                {"blizzWorld": ["overcast"]},
+                "lijiangControlCenter",
+                "blackForestWinter",
+                "ecopointAntarctica",
+                "chateauGuillard",
+                "malevento",
+                "petra"
             ]
         },
         "general": {

@@ -122,7 +122,6 @@ rule "CREATE all jump pads":
             break
         case Map.BLACK_FOREST_WINTER:
         case Map.BLACK_FOREST:
-            
             JumpPadPos = [
             vect(4.6, 10, 5),         # mill
             vect(0, 10.82, 24.24),    # positive side panoramic view
@@ -184,7 +183,6 @@ rule "CREATE all jump pads":
             break
 
         case Map.DORADO:
-
             JumpPadPos = [
             vect(129.71, 7.77, 16.9), # CORNER
             vect(92.5, 9.67, 31.88),  # TREES
@@ -211,31 +209,56 @@ rule "CREATE all jump pads":
             break
         case Map.HOLLYWOOD_HALLOWEEN:
         case Map.HOLLYWOOD:
-
             JumpPadPos = [
-            vect(9.66, -1.7, -74.8),  # PAYLOAD
-            vect(-3, -1.7, -17),      # STORE
-            vect(-2.2, -1.7, -40.4),  # MID
-            vect(18.76, -1.7, -50.5), # BANK
-            vect(39.5, -1.7, -71.4)   # JAIL
+                vect(9.66, -1.7, -74.8),  # PAYLOAD
+                vect(-3, -1.7, -17),      # STORE
+                vect(-2.2, -1.7, -40.4),  # MID
+                vect(18.76, -1.7, -50.5), # BANK
+                vect(39.5, -1.7, -71.4)   # JAIL
             ]
             
             JumpPadPower = [
-            21,
-            15,
-            20,
-            15,
-            16
+                21,
+                15,
+                20,
+                15,
+                16
             ]
             
             JumpPadSize = [
-            3.5, 
-            3.5,
-            3.5,
-            3.5,
-            3.5
+                3.5, 
+                3.5,
+                3.5,
+                3.5,
+                3.5
             ]
             break
+        case Map.LIJIANG_CONTROL_CENTER_LNY:
+        case Map.LIJIANG_CONTROL_CENTER:
+            JumpPadPos = [
+                vect(-25.15, 263.75, 291.55), # ROVER SIDE A
+                vect(25.15, 263.75, 291.55),   # ROVER SIDE B
+                vect(0, 263.85, 285.88),      # MID BIG PAD
+                vect(5.63, 267.79, 313.71),   # INTERIOR SIDE A
+                vect(-5.63, 267.79, 313.71),  # INTERIOR SIDE B
+            ]
+            
+            JumpPadPower = [
+                13,
+                13,
+                20.5,
+                18.5,
+                18.5,
+            ]
+            
+            JumpPadSize = [
+                3.4, 
+                3.4, 
+                4,
+                2.5,
+                2.5,
+            ]
+            break  
     for JumpPadFx in range(len(JumpPadPos)):
         createJumpPad(JUMP_PAD_COLOR, JumpPadPos[JumpPadFx], JumpPadSize[JumpPadFx])
 

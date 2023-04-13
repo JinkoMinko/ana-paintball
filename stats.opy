@@ -59,13 +59,13 @@ rule "Sleep Dart hits":
     eventPlayer.SleepAccuracy = round((eventPlayer.SleepHits / eventPlayer.SleepShots)*100)
     BestSleepAccuracyValue = sorted([sleeper for sleeper in getAllPlayers() if sleeper.SleepShots >= 10], lambda p: p.SleepAccuracy).last().SleepAccuracy
     BestSleepAccuracyPlayer = eventPlayer
-    chase(victim.SleepPunchRange, 10, duration=3.7, ChaseReeval.DESTINATION_AND_DURATION)
+    chase(victim.ExecuteRange, 10, duration=3.7, ChaseReeval.DESTINATION_AND_DURATION)
     wait(0.5)
     victim.SleepsOnground = true
     waitUntil(not victim.hasStatusEffect(Status.ASLEEP), 4)
-    stopChasingVariable(victim.SleepPunchRange)
+    stopChasingVariable(victim.ExecuteRange)
     victim.SleepsOnground = false
-    victim.SleepPunchRange = 30
+    victim.ExecuteRange = 30
     victim.stopForcingOutlineFor(getAllPlayers())
     if victim.isAlive():
         victim.SleepAuthor = null

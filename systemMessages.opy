@@ -19,16 +19,16 @@ rule "Initial spawn random message":
                                                 "    {0}  say GG at the end of the game!".format(iconString(Icon.HEART)),
                                                 "    {0}  I bet you're gonna win this one!".format(iconString(Icon.SPADE)),
 
-                                                "    {0}  Press [{1}] after dying to say 'nice shot'!".format(iconString(Icon.HEART), buttonString(Button.INTERACT)),
+                                                "    {0}  Press [{1}] after dying to honor your killer!".format(iconString(Icon.HEART), buttonString(Button.INTERACT)),
                                                 
                                                 "    {0}  You can see your stats in the top left corner!".format(abilityIconString(Hero.ANA, Button.ULTIMATE)),
                                                 "    {0}  Nanoboost reduces sleep dart's cooldown!".format(abilityIconString(Hero.ANA, Button.ULTIMATE)),
                                                 "    {0}  Scoped shots pierce through enemies!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
-                                                "    {0}{1}  You can punch sleeping players to kill them!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
-                                                "    {0}{1}  Sleep-Punch players with a better score to demote them!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.HAMMOND, Button.CROUCH)),
+                                                "    {0}{1}  You can punch sleeping players to execute them!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
+                                                "    {0}{1}  Execute players with a better score to demote them!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.HAMMOND, Button.CROUCH)),
                                                 
                                                 "    {0}  'ana' spelled backwards is 'ana'!".format(iconString(Icon.CHECKMARK)),
-                                                "    {0}  People who say 'nice shot' are 69% more likely to win!".format(iconString(Icon.CHECKMARK)),
+                                                "    {0}  Honoring others makes you 69% more likely to win!".format(iconString(Icon.CHECKMARK)),
                                                 "    {0}  Reject ranked, play Ana Paintball!".format(abilityIconString(Hero.LUCIO, Button.JUMP)),
                                                 "    {0}  100% bad teammates free!".format(iconString(Icon.CHECKMARK)),
                                                 "    {0}  ur cute if you read this".format(abilityIconString(Hero.ASHE, Button.ULTIMATE)),

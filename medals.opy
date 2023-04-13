@@ -74,7 +74,7 @@ rule "Killstreak effects & announcements":
             getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
         attacker.setStatusEffect(null, Status.BURNING, 9999)
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.ORANGE, OutlineVisibility.DEFAULT)
-        playEffect(getAllPlayers(), DynamicEffect.ASHE_DYNAMITE_EXPLOSION_SOUND, Color.TEAM_1, attacker, 200)
+        playEffect(getAllPlayers(), DynamicEffect.ASHE_DYNAMITE_EXPLOSION_SOUND, Color.TEAM_1, attacker, 70 if eventPlayer == localPlayer else 200)
         smallMessage(getAllPlayers().exclude(attacker), "    {0}  {1} is on fire!  {0}".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE), attacker))
     elif attacker.KillStreak == RAMPAGE_STREAK:
         attacker.MedalQueue.append(Medal.RAMPAGE)
@@ -176,7 +176,7 @@ rule "MEDALS":
     if eventPlayer.DisplayMedal != Medal.SYSTEM_MESSAGE:
         smallMessage(eventPlayer, {
             Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.NiceShotQueue[0], random.choice(["Nice one", "Sheeeesh", "Damn!", "wow!", "oof"])),
-            Medal.SLEEP_PUNCH:      "    {0}{1}  Sleep-Punch - max ammo!".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
+            Medal.EXECUTE:      "    {0}{1}  Execution - max ammo!".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
             Medal.PERFECT_QS:       "    {0}  Perfect quickscope!".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
             Medal.DEMOTED:          "    {0}  demoted {1}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), eventPlayer.DemotedVictim),
             Medal.STOLEN_KILL:      "    {0}  stole {1}'s kill!".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), eventPlayer.StolenFrom),
@@ -188,12 +188,12 @@ rule "MEDALS":
             Medal.ON_FIRE_SHUTDOWN: "    {0}  Ended {1}'s {2} Killstreak!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
             Medal.RAMPAGE_SHUTDOWN: "    {0}  Ended {1}'s {2} kills rampage!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
             Medal.BUZZKILL:         "    {0}  Buzzkill!".format(abilityIconString(Hero.DOOMFIST, Button.ABILITY_1)),
-            Medal.KILLJOY:          "    {0}  Killjoy!".format(iconString(Icon.SAD)),
+            Medal.SHOWSTOPPER:          "    {0}  SHOWSTOPPER!".format(iconString(Icon.SAD)),
             Medal.QUADFEED:         "    {0}  Quadfeed!".format(abilityIconString(Hero.JUNKER_QUEEN, Button.ULTIMATE)),
             Medal.ON_FIRE:          "    {0}  On fire!".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE)),
             Medal.RAMPAGE:          "    {0}  {1}".format(abilityIconString(Hero.REAPER, Button.ULTIMATE), random.choice(["You are on a rampage!", "Rampage!"])),
             Medal.JOLLY_JUMPER:     "    {0}  Jolly jumper!".format(abilityIconString(Hero.BAPTISTE, Button.CROUCH)),
-            Medal.COLLATERAL_SHOT:  "    {0}  Collateral shot!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
+            Medal.COLLATERAL_KILLS:  "    {0}  Collateral kills!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
             Medal.MUTUAL_SLEEP:     "    {0}  Mutual sleep! Awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2)),
         }[eventPlayer.DisplayMedal])
         if DEBUG_MODE:
