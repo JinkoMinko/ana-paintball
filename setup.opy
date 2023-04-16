@@ -48,6 +48,11 @@ rule "Pick spawn points & define playzone":
         RespawnHigherDistance = 55
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+    elif getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() ==Map.BLACK_FOREST_WINTER:
+        RespawnsBLACKFOREST()
+        RespawnHigherDistance = 55
+        RespawnLowerDistance = 25
+        RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.MALEVENTO:
         RespawnsMALEVENTO()
         RespawnHigherDistance = 55
@@ -78,8 +83,8 @@ rule "Pick spawn points & define playzone":
         RespawnHigherDistance = 55
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
-    elif getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() == Map.BLACK_FOREST_WINTER:
-        RespawnsBLACKFOREST()
+    elif getCurrentMap() == Map.KANEZAKA:
+        RespawnsKANEZAKA()
         RespawnHigherDistance = 55
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15

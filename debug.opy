@@ -25,8 +25,6 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    
-    hudSubtext(eventPlayer, "{}".format(angleBetweenVectors(localPlayer.getFacingDirection(), directionTowards(localPlayer.getEyePosition(), PlayzoneCenter))), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
     hudSubtext(eventPlayer, "{}".format(eventPlayer.getPosition()), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
     hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     

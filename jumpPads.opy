@@ -258,6 +258,25 @@ rule "CREATE all jump pads":
                 2.5,
                 2.5,
             ]
+            break
+        case Map.KANEZAKA:
+            JumpPadPos = [
+                vect(-38, 3.7, -40.58),   # car
+                vect(-38.13, 2.6, 3.2),   # mid
+                vect(-26.42, 2.65, 27),   # bridge
+            ]
+            
+            JumpPadPower = [
+                15,
+                17,
+                14,
+            ]
+            
+            JumpPadSize = [
+                3.5,
+                3.5,
+                3.5,
+            ]
             break  
     for JumpPadFx in range(len(JumpPadPos)):
         createJumpPad(JUMP_PAD_COLOR, JumpPadPos[JumpPadFx], JumpPadSize[JumpPadFx])

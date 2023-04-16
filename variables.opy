@@ -150,8 +150,10 @@ subroutine RespawnsEICHENWALDE
 subroutine RespawnsECOPOINT
 subroutine RespawnsBLACKFOREST
 subroutine RespawnsNEPALSHRINE
+subroutine RespawnsKANEZAKA
 subroutine RespawnsLIJANGCONTROL
 subroutine PlayZoneLIJANGCONTROL
+
 
 
 globalvar PlayzoneCenter
