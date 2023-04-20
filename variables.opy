@@ -1,8 +1,8 @@
 #!mainFile "ANA_PB.opy"
 
 # Constants
-globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
-globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
+globalvar ONFIRE_STREAK = (444 if DEBUG_MODE else 5)
+globalvar RAMPAGE_STREAK = (2 if DEBUG_MODE else 10)
 globalvar NUKE_STREAK = (33 if DEBUG_MODE else 15)
 globalvar NANO_SCORE = (24 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
@@ -137,7 +137,8 @@ playervar ChosenSpawnPoint
 globalvar SpawnPointSettings
 
 playervar DemotedEffect
-playervar KillstreakSFX
+playervar RampageVFX
+playervar RampageSFX
 
 subroutine RespawnSystem
 subroutine RespawnsCHATEAU

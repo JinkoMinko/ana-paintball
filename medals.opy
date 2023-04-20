@@ -78,11 +78,12 @@ rule "Killstreak effects & announcements":
         smallMessage(getAllPlayers().exclude(attacker), "    {0}  {1} is on fire!  {0}".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE), attacker))
     elif attacker.KillStreak == RAMPAGE_STREAK:
         attacker.MedalQueue.append(Medal.RAMPAGE)
+        attacker.RampageSFX = true
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.YELLOW, OutlineVisibility.DEFAULT)
         bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} is on a rampage!  {0}".format(abilityIconString(Hero.REAPER, Button.ULTIMATE), attacker))
-        attacker.KillstreakSFX = true
+        attacker.RampageVFX = true
         wait(1)
-        attacker.KillstreakSFX = false
+        attacker.RampageVFX = false
     
     
 rule "Killstreak shutdown announcements":

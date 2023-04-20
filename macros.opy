@@ -9,7 +9,7 @@
 #!define ScoreboardWallpaperIcon(icon) ("                                                         {0}    {0}       {0}    {0}".format(iconString(Icon.WARNING)))
 #!define KD(player) ((localPlayer.ScopedHits+localPlayer.NoscopeHits+localPlayer.Execute) / localPlayer.Deaths)
 
-#!define createStreakEffect(streak, effect, radius) createEffect(localPlayer if eventPlayer.KillStreak >= streak else [], effect, Color.TEAM_1, eventPlayer, radius, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+#!define createStreakEffect(condition, effect, radius) createEffect(condition, effect, Color.TEAM_1, eventPlayer, radius, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
 #!define playerCantSeeSpawnPoint(s, p) (not isInLoS(p, s + vect(0, 1.8, 0), BarrierLos.PASS_THROUGH_BARRIERS) if p != null else true)
 #!define distanceFromPointToPlayer(s, p) (distance(s, p) if p != null else 999999)

@@ -17,7 +17,8 @@ def RespawnSystem():
             playerCantSeeSpawnPoint(s[0], eventPlayer.AlivePlayers[3]) and 
             playerCantSeeSpawnPoint(s[0], eventPlayer.AlivePlayers[4]) and 
             playerCantSeeSpawnPoint(s[0], eventPlayer.AlivePlayers[5]) and 
-            playerCantSeeSpawnPoint(s[0], eventPlayer.AlivePlayers[6])
+            playerCantSeeSpawnPoint(s[0], eventPlayer.AlivePlayers[6]) and
+            playerCantSeeSpawnPoint(s[0], eventPlayer.AlivePlayers[7]) 
     ]
 
     if len(eventPlayer.SpawnPointsNotInLOS) == 0:
@@ -31,7 +32,8 @@ def RespawnSystem():
             distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[3], RespawnLowerDistance, RespawnHigherDistance) and
             distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[4], RespawnLowerDistance, RespawnHigherDistance) and
             distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[5], RespawnLowerDistance, RespawnHigherDistance) and
-            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[6], RespawnLowerDistance, RespawnHigherDistance)
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[6], RespawnLowerDistance, RespawnHigherDistance) and
+            distanceFromPointToPlayerBetween(s[0], eventPlayer.AlivePlayers[7], RespawnLowerDistance, RespawnHigherDistance)
     ]
 
     if len(eventPlayer.SpawnPointsFarEnoughFromPlayers) == 0:
@@ -44,7 +46,8 @@ def RespawnSystem():
             distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[3]) >= RespawnFailsafeDistance and 
             distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[4]) >= RespawnFailsafeDistance and 
             distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[5]) >= RespawnFailsafeDistance and 
-            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[6]) >= RespawnFailsafeDistance
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[6]) >= RespawnFailsafeDistance and 
+            distanceFromPointToPlayer(s[0], eventPlayer.AlivePlayers[7]) >= RespawnFailsafeDistance
         ]
     if len(eventPlayer.SpawnPointsFarEnoughFromPlayers) == 0:
         # failsafe
@@ -52,16 +55,16 @@ def RespawnSystem():
 
     eventPlayer.ChosenSpawnPoint = random.choice(eventPlayer.SpawnPointsFarEnoughFromPlayers)
     eventPlayer.teleport(eventPlayer.ChosenSpawnPoint[0])
+    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
+    wait()
+    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
+    wait()
+    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
+    wait()
+    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
+    wait()
+    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
     cancelMomentum(eventPlayer)
-    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
-    wait()
-    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
-    wait()
-    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
-    wait()
-    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
-    wait()
-    eventPlayer.setFacing(eventPlayer.ChosenSpawnPoint[1], Relativity.TO_WORLD)
 
 def RespawnsCHATEAU():
     SpawnPointSettings = [

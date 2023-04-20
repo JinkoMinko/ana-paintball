@@ -11,6 +11,7 @@ rule "Reset player's variables & effects upon death":
     eventPlayer.SleepUsedAndDied = true
     eventPlayer.SleepsOnground = false
     eventPlayer.clearStatusEffect(Status.BURNING)
+    eventPlayer.RampageSFX = false
     eventPlayer.NanoDelay = not eventPlayer.NanoDelay
 
     waitUntil(eventPlayer.isAlive(), 69)
@@ -22,6 +23,7 @@ rule "Reset player's variables & effects upon death":
         eventPlayer.setUltCharge((eventPlayer.getScore()/NANO_SCORE)*100)
     wait(2.1 - CUSTOM_RESPAWN_TIME)
     eventPlayer.NanoDelay = 1
+    wait(0.5)
     eventPlayer.DemotedEffect = null
 
 
@@ -53,9 +55,9 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.RaycastLastHitPlayer = attacker
         attacker.RaycastLastHitPos = attacker.getEyePosition()
         while attacker.RaycastLastHitPlayer != null:    #COLLATERALS
-            if DEBUG_MODE: createBeam(getAllPlayers(), Beam.GRAPPLE, attacker.RaycastLastHitPos, raycast(attacker.RaycastLastHitPos, attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition(), Color.GRAY, EffectReeval.VISIBILITY)
-            attacker.Temp = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition()
-            attacker.RaycastLastHitPlayer = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getPlayerHit()
+            #if DEBUG_MODE: createBeam(getAllPlayers(), Beam.GRAPPLE, attacker.RaycastLastHitPos, raycast(attacker.RaycastLastHitPos, attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getAllPlayers(), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition(), Color.GRAY, EffectReeval.VISIBILITY)
+            attacker.Temp = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getLivingPlayers(Team.ALL), [victim, attacker.RaycastLastHitPlayer], true).getHitPosition()
+            attacker.RaycastLastHitPlayer = raycast(attacker.RaycastLastHitPos,  attacker.RaycastLastHitPos + eventPlayer.getFacingDirection() * 250, getLivingPlayers(Team.ALL), [victim, attacker.RaycastLastHitPlayer], true).getPlayerHit()
             attacker.RaycastLastHitPos = attacker.Temp
 
             kill(attacker.RaycastLastHitPlayer, attacker)
