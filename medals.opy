@@ -176,7 +176,7 @@ rule "MEDALS":
     eventPlayer.DisplayMedal = eventPlayer.MedalQueue[0]
     if eventPlayer.DisplayMedal != Medal.SYSTEM_MESSAGE:
         smallMessage(eventPlayer, {
-            Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.NiceShotQueue[0], random.choice(["Nice one", "Sheeeesh", "Damn!", "wow!", "oof"])),
+            Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.HonorQueue[0], random.choice(["Nice one", "Sheeeesh", "Damn!", "wow!", "oof"])),
             Medal.EXECUTE:      "    {0}{1}  Execution - max ammo!".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
             Medal.PERFECT_QS:       "    {0}  Perfect quickscope!".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
             Medal.DEMOTED:          "    {0}  demoted {1}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), eventPlayer.DemotedVictim),
@@ -205,6 +205,6 @@ rule "MEDALS":
     del eventPlayer.MedalQueue[0]
     wait(0.5)
     if eventPlayer.DisplayMedal == Medal.NICE_SHOT:
-        del eventPlayer.NiceShotQueue[0]
+        del eventPlayer.HonorQueue[0]
     if RULE_CONDITION:
         goto RULE_START

@@ -139,7 +139,7 @@ rule "PLAYER HUDs":
     hudSubheader([localPlayer.DisplayStats and localPlayer.Jumps > 200], "Jumps: {0}{1}          ".format(localPlayer.Jumps, emptySpace), HudPosition.LEFT, 25, rgb(63, 191, 116), HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     hudSubheader([localPlayer.DisplayStats and localPlayer.Deaths > 0 and localPlayer.getScore() > 0], "K/D ratio: {0}{1}          ".format(KD(localPlayer), emptySpace), HudPosition.LEFT, 26, rgb(63, 191, 116), HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
 
-    progressBarHud([localPlayer.IsPlayer and localPlayer.HonorBar > 0 and localPlayer.HonorBar < 100], localPlayer.HonorBar, "press [{0}] to honor {1}".format(buttonString(Button.ABILITY_2), localPlayer.Killer), HudPosition.TOP, 10, rgb(rainbow(getTotalTimeElapsed() * 85)) if distance(localPlayer, localPlayer.Killer) >= LONGSHOT_DISTANCE else rgb(44,133,81), rgb(rainbow(getTotalTimeElapsed() * 85)) if distance(localPlayer, localPlayer.Killer) >= LONGSHOT_DISTANCE else rgb(44,133,81), ProgressHudReeval.VISIBILITY_AND_VALUES, SpecVisibility.NEVER)
+    progressBarHud([localPlayer.IsPlayer and localPlayer.HonorBar > 0 and localPlayer.HonorBar < 100], localPlayer.HonorBar, "press [{0}] to honor {1}".format(buttonString(Button.ABILITY_2), localPlayer.HonorTarget), HudPosition.TOP, 10, rgb(44,133,81), rgb(44,133,81), ProgressHudReeval.VISIBILITY_AND_VALUES, SpecVisibility.NEVER)
 
 
 rule "SPECTATOR HUDs":

@@ -129,7 +129,7 @@ rule "Respawns":
     @Hero ana
     @Condition SpawnPointSettings != 0
 
-    eventPlayer.disableNameplatesFor([getAllPlayers(), localPlayer])
+    eventPlayer.disableNameplatesFor([getAllPlayers(), not localPlayer.IsPlayer])
     wait(0.7)
     eventPlayer.setInvisibility(Invis.ALL)
     waitUntil(eventPlayer.isAlive(), 9)
