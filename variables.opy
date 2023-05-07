@@ -1,10 +1,10 @@
 #!mainFile "ANA_PB.opy"
 
 # Constants
-globalvar ONFIRE_STREAK = (444 if DEBUG_MODE else 5)
-globalvar RAMPAGE_STREAK = (244 if DEBUG_MODE else 10)
-globalvar NUKE_STREAK = (33 if DEBUG_MODE else 15)
-globalvar NANO_SCORE = (223 if DEBUG_MODE else 24)
+globalvar ONFIRE_STREAK = (99 if DEBUG_MODE else 5)
+globalvar RAMPAGE_STREAK = (99 if DEBUG_MODE else 10)
+globalvar NUKE_STREAK = (99 if DEBUG_MODE else 15)
+globalvar NANO_SCORE = (99 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
 globalvar NIGHT_MAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHT_MAPS else Color.PURPLE

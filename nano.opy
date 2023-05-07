@@ -38,8 +38,8 @@ rule "When score = NANO_SCORE, disable all except sleep dart, warn other players
     eventPlayer.disallowButton(Button.SECONDARY_FIRE)
     eventPlayer.disallowButton(Button.MELEE)
     eventPlayer.disallowButton(Button.RELOAD)
-    bigMessage(getAllPlayers().exclude(eventPlayer), "{0}  {1} wins in 1 kill!  {0}".format(iconString(Icon.WARNING), eventPlayer))
-    bigMessage(eventPlayer, "{0}  use sleep dart to win!  {0}".format(abilityIconString(Hero.ANA, Button.ABILITY_1)))
+    bigMessage(getAllPlayers().exclude(eventPlayer), "{0}  {1} wins in 1 kill  {0}".format(iconString(Icon.WARNING), eventPlayer))
+    bigMessage(eventPlayer, "{0}  use sleep dart to win  {0}".format(abilityIconString(Hero.ANA, Button.ABILITY_1)))
 
 
 rule "While score = NANO_SCORE, sleep CD is 1.5":

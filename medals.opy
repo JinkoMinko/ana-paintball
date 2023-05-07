@@ -58,7 +58,7 @@ rule "Detect stolen kills":
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
-    smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill!".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
+    smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
     wait(2, Wait.RESTART_WHEN_TRUE)
     attacker.StolenFrom = null
 
@@ -68,7 +68,7 @@ rule "Killstreak effects & announcements":
     @Hero ana
     @Condition not eventAbility == Button.ABILITY_1
 
-    if attacker.KillStreak == ONFIRE_STREAK:
+    if attacker.KillStreak == ONFIRE_STREAK and attacker.isAlive():
         attacker.MedalQueue.append(Medal.ON_FIRE)
             for i in range(getNumberOfPlayers(Team.ALL) - 1):
             getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
@@ -76,7 +76,7 @@ rule "Killstreak effects & announcements":
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.ORANGE, OutlineVisibility.DEFAULT)
         playEffect(getAllPlayers(), DynamicEffect.ASHE_DYNAMITE_EXPLOSION_SOUND, Color.TEAM_1, attacker, 70 if eventPlayer == localPlayer else 200)
         smallMessage(getAllPlayers().exclude(attacker), "    {0}  {1} is on fire!  {0}".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE), attacker))
-    elif attacker.KillStreak == RAMPAGE_STREAK:
+    elif attacker.KillStreak == RAMPAGE_STREAK and attacker.isAlive():
         attacker.MedalQueue.append(Medal.RAMPAGE)
         attacker.RampageSFX = true
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.YELLOW, OutlineVisibility.DEFAULT)
@@ -98,10 +98,10 @@ rule "Killstreak shutdown announcements":
     if victim.KillStreak < RAMPAGE_STREAK:
         attacker.MedalQueue.append(Medal.ON_FIRE_SHUTDOWN)
 
-        smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} killstreak ended!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
+        smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} killstreak ended".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
     else:
         attacker.MedalQueue.append(Medal.RAMPAGE_SHUTDOWN)
-        smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} kills rampage ended!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
+        smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} kills rampage ended".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
         
     for i in range(getNumberOfPlayers(Team.ALL) - 1):
         getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
@@ -176,26 +176,26 @@ rule "MEDALS":
     eventPlayer.DisplayMedal = eventPlayer.MedalQueue[0]
     if eventPlayer.DisplayMedal != Medal.SYSTEM_MESSAGE:
         smallMessage(eventPlayer, {
-            Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.HonorQueue[0], random.choice(["Nice one", "Sheeeesh", "Damn!", "wow!", "oof"])),
-            Medal.EXECUTE:      "    {0}{1}  Execution - max ammo!".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
-            Medal.PERFECT_QS:       "    {0}  Perfect quickscope!".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
-            Medal.DEMOTED:          "    {0}  demoted {1}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), eventPlayer.DemotedVictim),
-            Medal.STOLEN_KILL:      "    {0}  stole {1}'s kill!".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), eventPlayer.StolenFrom),
-            Medal.COMEBACK:         "    {0}  Comeback!".format(abilityIconString(Hero.MERCY, Button.ULTIMATE)),
-            Medal.FIRST_BLOOD:      "    {0}  First blood!".format(abilityIconString(Hero.BRIGITTE, Button.ULTIMATE)),
-            Medal.LONGSHOT:         "    {0}  {1}m longshot!".format(heroIcon(Hero.WIDOWMAKER), OofString(eventPlayer.OofDistance)),
-            Medal.NANOPUNCH:        "    {0}  Nanopunch!".format(abilityIconString(Hero.RAMATTRA, Button.ABILITY_1)),
-            Medal.ENV_KILL:         "    {0}  Environment kill!".format(abilityIconString(Hero.SIGMA, Button.ULTIMATE)),
-            Medal.ON_FIRE_SHUTDOWN: "    {0}  Ended {1}'s {2} Killstreak!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
-            Medal.RAMPAGE_SHUTDOWN: "    {0}  Ended {1}'s {2} kills rampage!".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
-            Medal.BUZZKILL:         "    {0}  Buzzkill!".format(abilityIconString(Hero.DOOMFIST, Button.ABILITY_1)),
-            Medal.SHOWSTOPPER:          "    {0}  SHOWSTOPPER!".format(iconString(Icon.SAD)),
-            Medal.QUADFEED:         "    {0}  Quadfeed!".format(abilityIconString(Hero.JUNKER_QUEEN, Button.ULTIMATE)),
-            Medal.ON_FIRE:          "    {0}  On fire!".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE)),
+            Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.HonorQueue[0], random.choice(["Nice one!", "Sheeeesh", "Damn!", "wow!", "oof"])),
+            Medal.EXECUTE:      "    {0}{1}  Execution - max ammo".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
+            Medal.PERFECT_QS:       "    {0}  Perfect quickscope".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
+            Medal.DEMOTED:          "    {0}  demoted {1}".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), eventPlayer.DemotedVictim),
+            Medal.STOLEN_KILL:      "    {0}  stole {1}'s kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), eventPlayer.StolenFrom),
+            Medal.COMEBACK:         "    {0}  Comeback".format(abilityIconString(Hero.MERCY, Button.ULTIMATE)),
+            Medal.FIRST_BLOOD:      "    {0}  First blood".format(abilityIconString(Hero.BRIGITTE, Button.ULTIMATE)),
+            Medal.LONGSHOT:         "    {0}  {1}m longshot".format(heroIcon(Hero.WIDOWMAKER), OofString(eventPlayer.OofDistance)),
+            Medal.NANOPUNCH:        "    {0}  Nanopunch".format(abilityIconString(Hero.RAMATTRA, Button.ABILITY_1)),
+            Medal.ENV_KILL:         "    {0}  Environment kill".format(abilityIconString(Hero.SIGMA, Button.ULTIMATE)),
+            Medal.ON_FIRE_SHUTDOWN: "    {0}  Ended {1}'s {2} Killstreak".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
+            Medal.RAMPAGE_SHUTDOWN: "    {0}  Ended {1}'s {2} kills rampage".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), eventPlayer.ShutdownVictim, eventPlayer.ShutdownVictim.KillStreakBeforeDeath),
+            Medal.BUZZKILL:         "    {0}  Buzzkill".format(abilityIconString(Hero.DOOMFIST, Button.ABILITY_1)),
+            Medal.SHOWSTOPPER:          "    {0}  SHOWSTOPPER".format(iconString(Icon.SAD)),
+            Medal.QUADFEED:         "    {0}  Quadfeed".format(abilityIconString(Hero.JUNKER_QUEEN, Button.ULTIMATE)),
+            Medal.ON_FIRE:          "    {0}  On fire".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE)),
             Medal.RAMPAGE:          "    {0}  {1}".format(abilityIconString(Hero.REAPER, Button.ULTIMATE), random.choice(["You are on a rampage!", "Rampage!"])),
-            Medal.JOLLY_JUMPER:     "    {0}  Jolly jumper!".format(abilityIconString(Hero.BAPTISTE, Button.CROUCH)),
-            Medal.COLLATERAL_KILLS:  "    {0}  Collateral kills!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
-            Medal.MUTUAL_SLEEP:     "    {0}  Mutual sleep! Awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2)),
+            Medal.JOLLY_JUMPER:     "    {0}  Jolly jumper".format(abilityIconString(Hero.BAPTISTE, Button.CROUCH)),
+            Medal.COLLATERAL_KILLS:  "    {0}  Collateral kills".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
+            Medal.MUTUAL_SLEEP:     "    {0}  Mutual sleep, Awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2)),
         }[eventPlayer.DisplayMedal])
         if DEBUG_MODE:
             eventPlayer.MedalCount += 1

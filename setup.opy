@@ -119,8 +119,8 @@ rule "Initial spawn":
 rule "PLAYER HUDs":
     @Event global
     
-    hudSubtext(localPlayer.IsPlayer, "                                                                                                                ana pb by jinko ▶  1DMTZ                  www.jinko.dev/discord"emptySpace, HudPosition.LEFT, 0,  rgb(rainbow(getTotalTimeElapsed() * 85)), HudReeval.VISIBILITY_AND_COLOR, SpecVisibility.NEVER)    
-    hudSubheader(localPlayer.IsPlayer, "always import code 1DMTZ to play on the latest version!", HudPosition.TOP, 1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
+    hudSubtext(localPlayer.IsPlayer, "                                                                                                                www.jinko.dev/discord                  use game code  ▶  1DMTZ"emptySpace, HudPosition.LEFT, 0,  rgb(rainbow(getTotalTimeElapsed() * 85)), HudReeval.VISIBILITY_AND_COLOR, SpecVisibility.NEVER)    
+    hudSubheader(localPlayer.IsPlayer, "always import code 1DMTZ to play the latest version!", HudPosition.TOP, 1, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
     hudSubtext(localPlayer.IsPlayer, " \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n                                                                                                                               ", HudPosition.TOP, 5, Color.WHITE, HudReeval.VISIBILITY, SpecVisibility.NEVER) # Makes the scoreboard larger and pushes the honor prompt down
     hudSubheader(localPlayer.IsPlayer, "\n "emptySpace, HudPosition.RIGHT, 0, Color.RED, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER) # Aligns the ScoreBoard Wallpapers horizontally
     hudSubtext(localPlayer.IsPlayer, "{}".format(ScoreboardWallpaperIcon(Icon.WARNING) if any([eventPlayer.getScore() == NANO_SCORE for eventPlayer in getAllPlayers()]) else ScoreboardWallpaperAbility(Hero.KIRIKO, Button.ULTIMATE)), HudPosition.RIGHT, 0, Color.WHITE, HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
@@ -140,9 +140,7 @@ rule "PLAYER HUDs":
     hudSubheader([localPlayer.DisplayStats and localPlayer.Deaths > 0 and localPlayer.getScore() > 0], "K/D ratio: {0}{1}          ".format(KD(localPlayer), emptySpace), HudPosition.LEFT, 26, rgb(63, 191, 116), HudReeval.VISIBILITY_AND_STRING, SpecVisibility.NEVER)
 
     progressBarHud([localPlayer.IsPlayer and localPlayer.HonorBar > 0 and localPlayer.HonorBar < 100], localPlayer.HonorBar, "press [{0}] to honor {1}".format(buttonString(Button.ABILITY_2), localPlayer.HonorTarget), HudPosition.TOP, 10, rgb(44,133,81), rgb(44,133,81), ProgressHudReeval.VISIBILITY_AND_VALUES, SpecVisibility.NEVER)
-
-
-rule "SPECTATOR HUDs":
+rule "SPECTATOR & POTG HUDs":
     @Event global
 
     hudText([not localPlayer.IsPlayer and BestScopedAccuracyValue > 0], "{}".format(abilityIconString(Hero.SOJOURN, Button.SECONDARY_FIRE)), "Best Scoped Accuracy          " emptySpace, "{0}: {1}%".format(BestScopedAccuracyPlayer, BestScopedAccuracyValue), HudPosition.LEFT, 10, rgb(63, 191, 116), Color.WHITE, rgb(63, 191, 116), HudReeval.VISIBILITY_SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
@@ -150,9 +148,9 @@ rule "SPECTATOR HUDs":
     hudText([not localPlayer.IsPlayer and BestSleepAccuracyValue > 0], "{}".format(abilityIconString(Hero.ANA, Button.ABILITY_1)), "Best Sleep Dart Accuracy          " emptySpace, "{0}: {1}%".format(BestSleepAccuracyPlayer, BestSleepAccuracyValue), HudPosition.LEFT, 12, rgb(63, 191, 116), Color.WHITE, rgb(63, 191, 116), HudReeval.VISIBILITY_SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
     hudText([not localPlayer.IsPlayer and MostKillStreakValue > 0], "{}".format(abilityIconString(Hero.REAPER, Button.ULTIMATE)), "Longest killstreak          " emptySpace, "{0} - {1}k".format(MostKillStreakPlayer, MostKillStreakValue), HudPosition.LEFT, 13, rgb(63, 191, 116), Color.WHITE, rgb(63, 191, 116), HudReeval.VISIBILITY_SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
     hudText([not localPlayer.IsPlayer and LongestLongshotValue >= 40], "{}".format(abilityIconString(Hero.MCCREE, Button.ULTIMATE)), "Longest longshot          " emptySpace, "{0}: {1}m".format(LongestLongshotPlayer, LongestLongshotValue), HudPosition.LEFT, 14, rgb(63, 191, 116), Color.WHITE, rgb(63, 191, 116), HudReeval.VISIBILITY_SORT_ORDER_AND_STRING, SpecVisibility.NEVER)
-    hudSubtext([not localPlayer.IsPlayer], "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nana paintball by jinko - code 1DMTZ\n             www.jinko.dev/discord", HudPosition.TOP, 100, rgb(rainbow(getTotalTimeElapsed() * 85)), HudReeval.VISIBILITY_AND_COLOR, SpecVisibility.NEVER)    
+    hudSubtext([not localPlayer.IsPlayer], "\n\n\nana paintball by jinko - code 1DMTZ\n             www.jinko.dev/discord", HudPosition.TOP, 100, rgb(rainbow(getTotalTimeElapsed() * 85)), HudReeval.VISIBILITY_AND_COLOR, SpecVisibility.NEVER)    
 
-
+    
 rule "toggle stats HUD":
     @Event eachPlayer
     @Hero ana

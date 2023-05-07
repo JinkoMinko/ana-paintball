@@ -88,7 +88,7 @@ rule "RIFLE & MELEE KILLS mechanics":
             attacker.MedalQueue.append(Medal.DEMOTED)
             smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1} demoted {2}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker, victim))
             victim.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(victim.MedalQueue)
-            smallMessage(victim, "    {0}  {1} demoted you!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker))
+            smallMessage(victim, "    {0}  {1} demoted you".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker))
             eventPlayer.DemotedVictim = victim
             victim.setScore(victim.getScore()-1)
             attacker.DemotedPlayers += 1

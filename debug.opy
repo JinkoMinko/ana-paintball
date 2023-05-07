@@ -25,9 +25,6 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    hudSubtext(eventPlayer, "HonorTarget {}".format(eventPlayer.HonorTarget), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
-    hudSubtext(eventPlayer, "HonorBar {}".format(eventPlayer.HonorBar), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
-
     #hudSubtext(eventPlayer, "{}".format(eventPlayer.getPosition()), HudPosition.TOP, 100, Color.GREEN, HudReeval.STRING)
     #hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     
@@ -95,7 +92,7 @@ rule "bots honor players'":
     @Event playerDied
     @Hero ana
     @Condition not strContains("{0}".format(eventPlayer), "Jinko")
-    #@Disabled
+    @Disabled
     wait(1)
     eventPlayer.startForcingButton(Button.ABILITY_2)
     wait()
