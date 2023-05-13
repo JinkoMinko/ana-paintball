@@ -33,8 +33,8 @@ rule "Initial spawn message":
                                                #"    {0}  ur cute if you read this".format(abilityIconString(Hero.ASHE, Button.ULTIMATE)),
                                                #"    {0}  An hour of Ana PB a day keeps bad teammates away!".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_2)),
                                             ]))
-    wait(0.2) #keep that
-    smallMessage(eventPlayer, "    Mode by Jinko")
+    #wait(0.2) #keep that
+    #smallMessage(eventPlayer, "    Mode by Jinko")
 
 
 rule "Hardscope messages":

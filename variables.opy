@@ -80,7 +80,7 @@ playervar SleepAuthor
 playervar SleepUsedAndDied = true    # Used to detect when a sleeping player should be awoken due to their SleepAuthor dying
 playervar SleepLock     # should be reworked
 playervar SleepsOnground = false    # Whether a player that was hit with a sleep dart has finished the "falling on the ground" animation
-playervar ExecuteRange = 30    # Used as a proximity-based visibility condition for "punch to kill" prompts
+playervar ExecuteRange = 30    # Proximity-based visibility condition for "punch to execute" prompts - the chase is so you don't get prompted to execute if too far
 playervar Temp
 playervar EarnedCollateral
 

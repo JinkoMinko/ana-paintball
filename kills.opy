@@ -27,7 +27,7 @@ rule "Reset player's variables & effects upon death":
     eventPlayer.DemotedEffect = null
 
 
-rule "fix movement bug after death":
+rule "fix movement bug after death": #get rid of this system when Blizzard fixes the bug
     @Event playerDied
     @Hero ana
     @Condition eventPlayer.FixMovementBug == true
@@ -50,7 +50,7 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.MedalQueue.append(Medal.FIRST_BLOOD)
         FirstBlood = not FirstBlood
 
-    if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED
+    if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED KILLS
         attacker.ScopedHits +=1
         attacker.RaycastLastHitPlayer = attacker
         attacker.RaycastLastHitPos = attacker.getEyePosition()
@@ -74,11 +74,11 @@ rule "RIFLE & MELEE KILLS mechanics":
             bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} got {2} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker, attacker.EarnedCollateral))
             bigMessage(attacker, "{0}  {1} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker.EarnedCollateral))
 
-    elif eventAbility == Button.PRIMARY_FIRE:    # NOSCOPE
+    elif eventAbility == Button.PRIMARY_FIRE:    # NOSCOPE KILLS
         attacker.KillStreak += 1
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
     
-    else:    # MELEE
+    else:    # MELEE KILLS
         attacker.KillStreak += 1
         attacker.Execute += 1
         attacker.setAmmo(0, 15)
