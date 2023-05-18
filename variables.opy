@@ -18,6 +18,7 @@ globalvar JumpPadSize
 globalvar JumpPadFx
 
 # Stats
+playervar LongshotCount
 globalvar LongestLongshotPlayer
 globalvar LongestLongshotValue
 
@@ -37,6 +38,7 @@ globalvar BestScopedAccuracyPlayer
 globalvar MatchEnded = false
 globalvar Winner
 globalvar FirstBlood
+globalvar FirstSleep
 globalvar FinalVictim
 globalvar LongshotWin
 globalvar Spawn    #used in debug to show spawn points
@@ -90,11 +92,10 @@ playervar SystemMessages = []
 playervar MedalQueue = []
 
 playervar ShutdownVictim
-playervar DemotedVictim
 playervar StolenFrom
 playervar DisplayMedal
-playervar MedalCount
-playervar SysMsgCount
+playervar MedalCount #debug
+playervar SysMsgCount #debug
 playervar HonorTarget
 
 playervar RaycastLastHitPlayer
@@ -104,16 +105,16 @@ playervar FixMovementBug
 
 globalvar Rainbow
 globalvar IndexValue
-playervar Xxx
 
 enum Medal:
     SYSTEM_MESSAGE,
     NICE_SHOT,
     EXECUTE,
     PERFECT_QS,
-    DEMOTED,
+    DEMOTION,
     STOLEN_KILL,
     FIRST_BLOOD,
+    FIRST_SLEEP,
     COMEBACK,
     LONGSHOT,
     NANOPUNCH,
@@ -128,6 +129,11 @@ enum Medal:
     JOLLY_JUMPER,
     COLLATERAL_KILLS,
     MUTUAL_SLEEP,
+    DECISIVE_SHOT,
+    DREAMCATCHER,
+    NO_SCOPE_NEEDED,
+    DEADEYE,
+    SLEEP_SNIPER,
 
 
 playervar AlivePlayers

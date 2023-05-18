@@ -79,17 +79,18 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
     
     else:    # MELEE KILLS
+        if victim.isInAir() and attacker.isInAir():
+            attacker.MedalQueue.append(Medal.DREAMCATCHER)  
         attacker.KillStreak += 1
         attacker.Execute += 1
         attacker.setAmmo(0, 15)
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
         playEffect(getAllPlayers() if victim.getScore() > attacker.getScore() else getAllPlayers().exclude(victim), DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
         if victim.getScore() >= attacker.getScore():
-            attacker.MedalQueue.append(Medal.DEMOTED)
+            attacker.MedalQueue.append(Medal.DEMOTION)
             smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1} demoted {2}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker, victim))
             victim.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(victim.MedalQueue)
             smallMessage(victim, "    {0}  {1} demoted you".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker))
-            eventPlayer.DemotedVictim = victim
             victim.setScore(victim.getScore()-1)
             attacker.DemotedPlayers += 1
             playEffect(attacker, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 200)
@@ -120,6 +121,9 @@ rule "RIFLE & MELEE KILLS mechanics":
 
     if attacker.getScore() > NANO_SCORE:
         attacker.setScore(NANO_SCORE)
+
+    if attacker.getAmmo(0) == 0:
+        attacker.MedalQueue.append(Medal.DECISIVE_SHOT)
         
     attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)
 

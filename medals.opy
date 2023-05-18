@@ -15,7 +15,7 @@ rule "Jumps":
     @Condition eventPlayer.isJumping()
 
     eventPlayer.Jumps +=1
-    if eventPlayer.Jumps == 250:
+    if eventPlayer.Jumps == 200:
         eventPlayer.MedalQueue.append(Medal.JOLLY_JUMPER)
 
 
@@ -151,9 +151,14 @@ rule "Longshot":
     @Condition not eventWasEnvironment
     @Condition attacker.getScore() != NANO_SCORE
 
+    attacker.LongshotCount += 1
     wait()
     attacker.MedalQueue.append(Medal.LONGSHOT)
-    attacker.OofDistance = distance(attacker, victim)
+    if attacker.LongshotCount >= 10:
+        attacker.MedalQueue.append(Medal.DEADEYE)
+    if eventAbility == Button.ABILITY_1:
+        attacker.MedalQueue.append(Medal.SLEEP_SNIPER)
+
     createInWorldText(getAllPlayers(), random.choice(["oof", "ouch", "damn", "owie", "bonk"]), victim, 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 150)), SpecVisibility.NEVER)
     attacker.OofText = getLastCreatedText()
     if attacker.OofDistance > attacker.LongestLongshot:
@@ -178,10 +183,11 @@ rule "MEDALS":
             Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.HonorQueue[0], random.choice(["Nice one!", "Sheeeesh", "Damn!", "wow!", "oof"])),
             Medal.EXECUTE:          "    {0}{1}  Execution - max ammo".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
             Medal.PERFECT_QS:       "    {0}  Perfect quickscope".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
-            Medal.DEMOTED:          "    {0}  Demoted {1}".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), eventPlayer.DemotedVictim),
+            Medal.DEMOTION:          "    {0}{1}  Demotion - max ammo".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), iconString(Icon.RECYCLE)),
             Medal.STOLEN_KILL:      "    {0}  Stole {1}'s kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), eventPlayer.StolenFrom),
             Medal.COMEBACK:         "    {0}  Comeback".format(abilityIconString(Hero.MERCY, Button.ULTIMATE)),
             Medal.FIRST_BLOOD:      "    {0}  First blood".format(abilityIconString(Hero.BRIGITTE, Button.ULTIMATE)),
+            Medal.FIRST_SLEEP:      "    {0}  First sleep".format(abilityIconString(Hero.BRIGITTE, Button.ULTIMATE)),
             Medal.LONGSHOT:         "    {0}  Longshot! {1}m".format(heroIcon(Hero.WIDOWMAKER), OofString(eventPlayer.OofDistance)),
             Medal.NANOPUNCH:        "    {0}  Nanopunch".format(abilityIconString(Hero.RAMATTRA, Button.ABILITY_1)),
             Medal.ENV_KILL:         "    {0}  Environment kill".format(abilityIconString(Hero.SIGMA, Button.ULTIMATE)),
@@ -195,7 +201,13 @@ rule "MEDALS":
             Medal.JOLLY_JUMPER:     "    {0}  Jolly jumper".format(abilityIconString(Hero.BAPTISTE, Button.CROUCH)),
             Medal.COLLATERAL_KILLS: "    {0}  Collateral kills".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
             Medal.MUTUAL_SLEEP:     "    {0}  Mutual sleep, awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2)),
-        }[eventPlayer.DisplayMedal])
+            Medal.DECISIVE_SHOT:    "    {0}  Decisive shot".format(iconString(Icon.CLUB)),
+            Medal.DREAMCATCHER:     "    {0}  Dreamcatcher".format(abilityIconString(Hero.RAMATTRA, Button.ABILITY_2)),
+            Medal.NO_SCOPE_NEEDED:  "    {0}  No scope needed".format(abilityIconString(Hero.SOJOURN, Button.ULTIMATE)),
+            Medal.DEADEYE:          "    {0}  Deadeye".format(abilityIconString(Hero.MCCREE, Button.ULTIMATE)),
+            Medal.SLEEP_SNIPER:     "    {0}  Sleep Sniper".format(abilityIconString(Hero.ORISA, Button.SECONDARY_FIRE)),
+            
+            }[eventPlayer.DisplayMedal])
         if DEBUG_MODE:
             eventPlayer.MedalCount += 1
         playEffect(eventPlayer, DynamicEffect.BRIGITTE_REPAIR_PACK_ARMOR_SOUND, Color.WHITE, eventPlayer, 200)

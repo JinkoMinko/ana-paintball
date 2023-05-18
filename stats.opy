@@ -26,13 +26,15 @@ rule "Noscope shots":
 rule "Noscope hits":
     @Event playerDealtFinalBlow
     @Hero ana
-    @Condition not eventPlayer.isFiringSecondaryFire()
-    @Condition not eventPlayer.isMeleeing()
+    @Condition not attacker.isFiringSecondaryFire()
+    @Condition not attacker.isMeleeing()
 
-    eventPlayer.NoscopeHits += 1
-    eventPlayer.NoscopeAccuracy = round((eventPlayer.NoscopeHits / eventPlayer.NoscopeShots)*100)
+    attacker.NoscopeHits += 1
+    attacker.NoscopeAccuracy = round((attacker.NoscopeHits / attacker.NoscopeShots)*100)
     BestNoscopeAccuracyValue = sorted([noscoper for noscoper in getAllPlayers() if noscoper.NoscopeShots >= 15], lambda p: p.NoscopeAccuracy).last().NoscopeAccuracy
     BestNoscopeAccuracyPlayer = eventPlayer
+    if attacker.NoscopeHits == 10:
+        attacker.MedalQueue.append(Medal.NO_SCOPE_NEEDED)
 
 
 rule "Sleep Dart shots":
@@ -53,6 +55,10 @@ rule "Sleep Dart hits":
     @Condition eventAbility == Button.ABILITY_1
     @Condition not eventWasEnvironment
 
+    if not FirstSleep:
+        attacker.MedalQueue.append(Medal.FIRST_SLEEP)
+        FirstSleep = not FirstSleep
+    
     victim.SleepAuthor = attacker
     victim.startForcingOutlineFor(getAllPlayers(), true, rgb(63, 191, 116) if victim.getScore() > attacker.getScore() else Color.SKY_BLUE, OutlineVisibility.DEFAULT)
     eventPlayer.SleepHits += 1

@@ -1,15 +1,5 @@
 #!mainFile "ANA_PB.opy"
 
-rule "PETRA trigger broken floor jump pad":
-    @Event eachPlayer
-    @Hero ana
-    @Condition getCurrentMap() == Map.PETRA
-    @Condition distance(eventPlayer, vect(2.051, -4.5, -19.133)) <= 1.3
-    
-    eventPlayer.applyImpulse(vectorTowards(eventPlayer, vect(1.998, 8, -13.868)), 13, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
-    playEffect(getAllPlayers(), DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, eventPlayer, 30)
-
-
 rule "ECOPOINT create TPs":
     @Event global
     @Condition getCurrentMap() == Map.ECOPOINT_ANTARCTICA or getCurrentMap() == Map.ECOPOINT_ANTARCTICA_WINTER

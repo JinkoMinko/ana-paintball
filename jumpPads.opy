@@ -30,7 +30,7 @@ rule "CREATE all jump pads":
             vect(-2.54, -11.77, 16.85),  # mid
             vect(-15.33, -10.7, 30.07),  # staircase
             vect(-38.52, -15.72, 18.04), # sanctuary
-            vect(2.051, -4.5, -19.133),  # broken floor
+            vect(1.96, -5.8, -19),  # broken floor
             vect(16.05, -11.4, 8.72)     # broken stairs mid
             ]
         
@@ -48,7 +48,7 @@ rule "CREATE all jump pads":
             2.4,
             2,
             3.5,
-            1.3,
+            2.2,
             2.7
             ]
             break
@@ -285,6 +285,8 @@ rule "CREATE all jump pads":
 rule "TRIGGER any jump pad":
     @Event eachPlayer
     @Hero ana
+    @Condition eventPlayer.hasSpawned()
+    @Condition len(JumpPadPos) > 0
     @Condition any([distance(eventPlayer, pos) <= JumpPadSize[i] for pos, i in JumpPadPos])
 
     eventPlayer.ClosestPadIndex = JumpPadPos.index(sorted(JumpPadPos, lambda pos: distance(eventPlayer, pos)))
