@@ -58,6 +58,7 @@ rule "Sleep Dart hits":
     if not FirstSleep:
         attacker.MedalQueue.append(Medal.FIRST_SLEEP)
         FirstSleep = not FirstSleep
+
     
     victim.SleepAuthor = attacker
     victim.startForcingOutlineFor(getAllPlayers(), true, rgb(63, 191, 116) if victim.getScore() > attacker.getScore() else Color.SKY_BLUE, OutlineVisibility.DEFAULT)

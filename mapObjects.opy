@@ -120,28 +120,6 @@ rule "HOLLYWOOD Locked zone 2":
         goto RULE_START
 
 
-rule "CREATE Chateau launcher":
-    @Event global
-    @Condition getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN
-    @Disabled
-
-    createEffect(getAllPlayers(), Effect.GOOD_AURA, Color.YELLOW, vect(206.3, 9, 107), 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-
-
-rule "TRIGGER Chateau launcher":
-    @Event eachPlayer
-    @Hero ana
-    @Condition getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN
-    @Condition (distance(eventPlayer, vect(206.3, 8.5, 107))) <= 1.13
-    @Disabled
-
-    cancelMomentum(eventPlayer)
-    eventPlayer.setStatusEffect(null, Status.ROOTED, 1)
-    playEffect(eventPlayer, DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(206.3, 9, 107), 30)
-    playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(206.3, 9, 107), 40)
-    eventPlayer.applyImpulse(vectorTowards(vect(206.3, 9, 107), vect(206.3, 15, 92)), 46, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
-
-
 rule "CREATE Dorado launcher":
     @Event global
     @Condition getCurrentMap() == Map.DORADO
@@ -159,8 +137,10 @@ rule "TRIGGER Dorado launcher":
     eventPlayer.setStatusEffect(null, Status.ROOTED, 1)
     playEffect(eventPlayer, DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(123.4, 10, -17.5), 30)
     playEffect(getAllPlayers().exclude(eventPlayer), DynamicEffect.BUFF_IMPACT_SOUND, Color.WHITE, vect(123.4, 10, -17.5), 40)
-    eventPlayer.applyImpulse(vectorTowards(vect(123.4, 10, -17.5), vect(102.3, 34, 9.9)), 46, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
-
+    eventPlayer.applyImpulse(vectorTowards(vect(123.4, 10, -17.5), vect(102.3, 30, 9.9)), 44, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
+    eventPlayer.disableEnvironmentCollision(false)
+    wait(0.4)
+    eventPlayer.enableEnvironmentCollision()
 
 rule "CREATE Lijang Control launcher":
     @Event global

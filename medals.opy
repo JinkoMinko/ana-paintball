@@ -151,14 +151,9 @@ rule "Longshot":
     @Condition not eventWasEnvironment
     @Condition attacker.getScore() != NANO_SCORE
 
-    attacker.LongshotCount += 1
     wait()
     attacker.MedalQueue.append(Medal.LONGSHOT)
-    if attacker.LongshotCount >= 10:
-        attacker.MedalQueue.append(Medal.DEADEYE)
-    if eventAbility == Button.ABILITY_1:
-        attacker.MedalQueue.append(Medal.SLEEP_SNIPER)
-
+    attacker.OofDistance = distance(attacker, victim)
     createInWorldText(getAllPlayers(), random.choice(["oof", "ouch", "damn", "owie", "bonk"]), victim, 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 150)), SpecVisibility.NEVER)
     attacker.OofText = getLastCreatedText()
     if attacker.OofDistance > attacker.LongestLongshot:
@@ -167,9 +162,29 @@ rule "Longshot":
     if attacker.LongestLongshot > LongestLongshotValue:
         LongestLongshotPlayer = attacker
         LongestLongshotValue = attacker.LongestLongshot
+    
+    attacker.LongshotCount += 1
+    if attacker.LongshotCount >= 10:
+        attacker.MedalQueue.append(Medal.DEADEYE)
+    if eventAbility == Button.ABILITY_1:
+        attacker.MedalQueue.append(Medal.SLEEP_SNIPER)
     wait(0.5)
     destroyInWorldText(attacker.OofText)
 
+
+
+rule "Sandman":
+    @Event playerDealtDamage
+    @Hero ana
+    @Condition eventAbility == Button.ABILITY_1
+    @Condition not eventWasEnvironment
+    @Condition attacker.isAlive()
+    @Condition not victim.hasStatusEffect(Status.ASLEEP)
+
+    attacker.Sandman += 1
+    if attacker.Sandman == 5:
+        attacker.MedalQueue.append(Medal.SANDMAN)
+        attacker.Sandman = 0
 
 rule "MEDALS":
     @Event eachPlayer
@@ -183,7 +198,7 @@ rule "MEDALS":
             Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.HonorQueue[0], random.choice(["Nice one!", "Sheeeesh", "Damn!", "wow!", "oof"])),
             Medal.EXECUTE:          "    {0}{1}  Execution - max ammo".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
             Medal.PERFECT_QS:       "    {0}  Perfect quickscope".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
-            Medal.DEMOTION:          "    {0}{1}  Demotion - max ammo".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), iconString(Icon.RECYCLE)),
+            Medal.DEMOTION:         "    {0}{1}  Demotion - max ammo".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), iconString(Icon.RECYCLE)),
             Medal.STOLEN_KILL:      "    {0}  Stole {1}'s kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), eventPlayer.StolenFrom),
             Medal.COMEBACK:         "    {0}  Comeback".format(abilityIconString(Hero.MERCY, Button.ULTIMATE)),
             Medal.FIRST_BLOOD:      "    {0}  First blood".format(abilityIconString(Hero.BRIGITTE, Button.ULTIMATE)),
@@ -206,6 +221,10 @@ rule "MEDALS":
             Medal.NO_SCOPE_NEEDED:  "    {0}  No scope needed".format(abilityIconString(Hero.SOJOURN, Button.ULTIMATE)),
             Medal.DEADEYE:          "    {0}  Deadeye".format(abilityIconString(Hero.MCCREE, Button.ULTIMATE)),
             Medal.SLEEP_SNIPER:     "    {0}  Sleep Sniper".format(abilityIconString(Hero.ORISA, Button.SECONDARY_FIRE)),
+            Medal.SANDMAN:          "    {0}{1}  Sandman".format(abilityIconString(Hero.ANA, Button.ABILITY_1), abilityIconString(Hero.ECHO, Button.ULTIMATE)),
+            Medal.PUNCH_DRUNK:      "    {0}{1}  Punch drunk".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.DIZZY)),
+            Medal.FROM_THE_GRAVE:   "    {0}  From the grave".format(abilityIconString(Hero.REAPER, Button.ULTIMATE)),
+            
             
             }[eventPlayer.DisplayMedal])
         if DEBUG_MODE:

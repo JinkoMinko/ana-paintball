@@ -6,8 +6,8 @@ rule "PETRA create FLOORBREAKER":
     @Condition getNumberOfHeroes(Hero.ANA, Team.ALL) > 1
 
     createDummy(Hero.WIDOWMAKER, Team.ALL, 11, vect(500, 500, 0), Vector.UP)
-    OutOfBoundBot1.setScore(-69)
     OutOfBoundBot1 = getLastCreatedEntity()
+    OutOfBoundBot1.setScore(-69)
     OutOfBoundBot1.setGravity(0)
     OutOfBoundBot1.setInvisibility(Invis.ALL)
     OutOfBoundBot1.startScalingSize(0.2, false)
@@ -36,9 +36,9 @@ rule "HAMMOND spawn - CHATEAU":
     @Condition getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN
 
     createDummy(Hero.HAMMOND, Team.ALL, 11, vect(200, 200, 80), Vector.FORWARD)
+    OutOfBoundBot1 = getLastCreatedEntity()
     OutOfBoundBot1.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
     OutOfBoundBot1.setScore(-69)
-    OutOfBoundBot1 = getLastCreatedEntity()
     OutOfBoundBot1.startForcingName("giant cheese eater")
     #OutOfBoundBot1.disableNameplatesFor(getAllPlayers())
     OutOfBoundBot1.disableEnvironmentCollision(true)
@@ -71,9 +71,9 @@ rule "HAMMOND spawn - HOLLYWOOD":
     @Condition getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN
 
     createDummy(Hero.HAMMOND, Team.ALL, 11, vect(200, 200, 80), Vector.FORWARD)
+    OutOfBoundBot1 = getLastCreatedEntity()
     OutOfBoundBot1.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
     OutOfBoundBot1.setScore(-69)
-    OutOfBoundBot1 = getLastCreatedEntity()
     OutOfBoundBot1.startForcingName("giant cheese eater")
     #OutOfBoundBot1.disableNameplatesFor(getAllPlayers())
     OutOfBoundBot1.disableEnvironmentCollision(true)
@@ -106,9 +106,9 @@ rule "SIGMA spawn - BLACK FOREST":
     @Condition getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() == Map.BLACK_FOREST_WINTER
 
     createDummy(Hero.SIGMA, Team.ALL, 11, vect(1000, 1000, 1000), Vector.FORWARD)
+    OutOfBoundBot1 = getLastCreatedEntity()
     OutOfBoundBot1.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
     OutOfBoundBot1.setScore(-69)
-    OutOfBoundBot1 = getLastCreatedEntity()
     OutOfBoundBot1.startForcingName("Bigma")
     #OutOfBoundBot1.disableNameplatesFor(getAllPlayers())
     OutOfBoundBot1.disableEnvironmentCollision(true)

@@ -13,6 +13,8 @@ rule "Reset player's variables & effects upon death":
     eventPlayer.clearStatusEffect(Status.BURNING)
     eventPlayer.RampageSFX = false
     eventPlayer.NanoDelay = not eventPlayer.NanoDelay
+    eventPlayer.Sandman = 0
+    eventPlayer.PunchDrunk = 0
 
     waitUntil(eventPlayer.isAlive(), 69)
 
@@ -44,12 +46,17 @@ rule "RIFLE & MELEE KILLS mechanics":
     @Condition eventAbility == Button.PRIMARY_FIRE or (eventAbility == Button.MELEE and victim.hasStatusEffect(Status.ASLEEP))
     
     attacker.EarnedCollateral = 0
+    attacker.ComebackCount = 0
     kill(victim, attacker)
+
+    if attacker.ComebackCount >= 3:
+        attacker.MedalQueue.append(Medal.COMEBACK)
+        attacker.ComebackCount = 0
 
     if not FirstBlood:
         attacker.MedalQueue.append(Medal.FIRST_BLOOD)
         FirstBlood = not FirstBlood
-
+    
     if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED KILLS
         attacker.ScopedHits +=1
         attacker.RaycastLastHitPlayer = attacker
@@ -83,6 +90,7 @@ rule "RIFLE & MELEE KILLS mechanics":
             attacker.MedalQueue.append(Medal.DREAMCATCHER)  
         attacker.KillStreak += 1
         attacker.Execute += 1
+        attacker.PunchDrunk += 1
         attacker.setAmmo(0, 15)
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
         playEffect(getAllPlayers() if victim.getScore() > attacker.getScore() else getAllPlayers().exclude(victim), DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
@@ -95,25 +103,23 @@ rule "RIFLE & MELEE KILLS mechanics":
             attacker.DemotedPlayers += 1
             playEffect(attacker, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 200)
             victim.DemotedEffect = true
-            
+
             if victim.getScore() == NANO_SCORE -1:
                 attacker.MedalQueue.append(Medal.SHOWSTOPPER)
         
-        if attacker.getScore() < NANO_SCORE:
+        elif attacker.getScore() < NANO_SCORE:
             attacker.MedalQueue.append(Medal.EXECUTE)
             attacker.setAmmo(0, 15)
+        
+        if attacker.PunchDrunk == 5:
+            attacker.MedalQueue.append(Medal.PUNCH_DRUNK)  
+            attacker.PunchDrunk = 0
     
     if victim.KillStreak == ONFIRE_STREAK-1 or victim.KillStreak == RAMPAGE_STREAK-1:
         attacker.MedalQueue.append(Medal.BUZZKILL)
-    
-    if attacker.ComebackCount >= 3:
-        attacker.MedalQueue.append(Medal.COMEBACK)
-        attacker.ComebackCount = 0
 
     if victim.KillStreak == 0:
         victim.ComebackCount +=1
-
-    attacker.ComebackCount = 0
 
     if attacker.KillStreak > MostKillStreakValue and attacker.KillStreak >= ONFIRE_STREAK:
         MostKillStreakPlayer = attacker
@@ -124,6 +130,9 @@ rule "RIFLE & MELEE KILLS mechanics":
 
     if attacker.getAmmo(0) == 0:
         attacker.MedalQueue.append(Medal.DECISIVE_SHOT)
+    
+    if attacker.isDead():
+        attacker.MedalQueue.append(Medal.FROM_THE_GRAVE)
         
     attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)
 

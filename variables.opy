@@ -1,8 +1,8 @@
 #!mainFile "ANA_PB.opy"
 
 # Constants
-globalvar ONFIRE_STREAK = (99 if DEBUG_MODE else 5)
-globalvar RAMPAGE_STREAK = (99 if DEBUG_MODE else 10)
+globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
+globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
 globalvar NUKE_STREAK = (99 if DEBUG_MODE else 15)
 globalvar NANO_SCORE = (99 if DEBUG_MODE else 24)
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
@@ -85,6 +85,9 @@ playervar SleepsOnground = false    # Whether a player that was hit with a sleep
 playervar ExecuteRange = 30    # Proximity-based visibility condition for "punch to execute" prompts - the chase is so you don't get prompted to execute if too far
 playervar Temp
 playervar EarnedCollateral
+playervar Sandman
+playervar PunchDrunk
+playervar FallingSFX
 
 playervar QuadFeedTimes = []
 playervar HonorQueue = []
@@ -134,6 +137,9 @@ enum Medal:
     NO_SCOPE_NEEDED,
     DEADEYE,
     SLEEP_SNIPER,
+    SANDMAN,
+    PUNCH_DRUNK,
+    FROM_THE_GRAVE,
 
 
 playervar AlivePlayers
