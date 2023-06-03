@@ -9,7 +9,7 @@ settings "settings.opy.json"
 
 #!include "macros.opy"
 
-#!define DEBUG_MODE true
+#!define DEBUG_MODE false
 
 #!include "variables.opy"
 #!include "debug.opy"

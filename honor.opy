@@ -7,7 +7,7 @@ rule "When player dies, display honor HUD":
     
     victim.HonorTarget = attacker
     victim.HonorBar = 100
-    chase(victim.HonorBar, 0, duration=2.5, ChaseReeval.DESTINATION_AND_DURATION)
+    chase(victim.HonorBar, 0, duration=CUSTOM_RESPAWN_TIME + 0.8, ChaseReeval.DESTINATION_AND_DURATION)
 
 rule "Send honor message if GRENADE is pressed":
     @SuppressWarnings w_ow2_rule_condition_chase
