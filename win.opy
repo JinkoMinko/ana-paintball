@@ -40,7 +40,7 @@ rule "NANO_SCORE":
     FinalVictim = victim
     Winner = attacker
     declarePlayerVictory(eventPlayer)
-    attacker.setScore(NANO_SCORE)
+    attacker.setScore(NANO_SCORE+1)
     victim.OofDistance = distance(attacker, victim)
     if victim.OofDistance >= LONGSHOT_DISTANCE:
         LongshotWin = not LongshotWin

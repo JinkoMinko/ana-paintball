@@ -76,5 +76,6 @@ rule "Detect mutual sleeps":
     @Hero ana
 
     [eventPlayer, victim].MedalQueue.append(Medal.MUTUAL_SLEEP)
-    wait(1)
+    wait(1.5)
+    if [eventPlayer, victim].isAlive() == true:
     damage([eventPlayer, victim], null, 1.5)

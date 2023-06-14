@@ -52,10 +52,23 @@ rule "RIFLE & MELEE KILLS mechanics":
     if attacker.ComebackCount >= 3:
         attacker.MedalQueue.append(Medal.COMEBACK)
         attacker.ComebackCount = 0
+    
 
     if not FirstBlood:
         attacker.MedalQueue.append(Medal.FIRST_BLOOD)
         FirstBlood = not FirstBlood
+        if attacker.isAlive():
+            wait(0.5)
+            switch random.randint(1,4):
+                case 1:
+                    eventPlayer.communicate(Comms.VOICE_LINE_UP)
+                case 2:
+                    eventPlayer.communicate(Comms.VOICE_LINE_RIGHT)
+                case 3:
+                    eventPlayer.communicate(Comms.VOICE_LINE_DOWN)
+                case 4:
+                    eventPlayer.communicate(Comms.VOICE_LINE_LEFT)
+    
     
     if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED KILLS
         attacker.ScopedHits +=1
@@ -132,9 +145,13 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.MedalQueue.append(Medal.DECISIVE_SHOT)
     
     if attacker.isDead():
+        waitUntil(attacker.isAlive(), 69)
         attacker.MedalQueue.append(Medal.FROM_THE_GRAVE)
         
     attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)
+
+    if eventPlayer.getScore() == NANO_SCORE - 2:
+        eventPlayer.communicate(Comms.ULTIMATE_STATUS)
 
 
 rule "Respawns":

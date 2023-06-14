@@ -55,6 +55,7 @@ rule "Detect stolen kills":
     attacker.StolenFrom = victim.SleepAuthor
     attacker.StolenKills +=1
     attacker.MedalQueue.append(Medal.STOLEN_KILL)
+    attacker.communicate(Comms.THANKS)
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
     attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
@@ -97,12 +98,14 @@ rule "Killstreak shutdown announcements":
 
     if victim.KillStreak < RAMPAGE_STREAK:
         attacker.MedalQueue.append(Medal.ON_FIRE_SHUTDOWN)
-
+        attacker.communicate(Comms.GOODBYE)
         smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} killstreak ended".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
+    
     else:
         attacker.MedalQueue.append(Medal.RAMPAGE_SHUTDOWN)
         smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1}'s {2} kills rampage ended".format(abilityIconString(Hero.TRACER, Button.ABILITY_2), victim, victim.KillStreak))
-        
+        attacker.communicate(Comms.GOODBYE)
+
     for i in range(getNumberOfPlayers(Team.ALL) - 1):
         getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
     playEffect(getAllPlayers(), DynamicEffect.SOMBRA_TRANSLOCATOR_DISAPPEAR_SOUND, Color.WHITE, victim.getPosition(), 200)
@@ -126,19 +129,17 @@ rule "Environement death":
     wait(CUSTOM_RESPAWN_TIME)
     eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
     smallMessage(eventPlayer, random.choice([
-        "    {}  no wings?".format(heroIcon(Hero.ECHO)),
-        "    {}  no wings?".format(heroIcon(Hero.MERCY)),
+        "    {}  no wings?".format(heroIcon(random.choice([Hero.ECHO, Hero.MERCY]))),
         "    {}  no jetpacks?".format(heroIcon(Hero.PHARAH)),
         "    {}  no translocators?".format(heroIcon(Hero.SOMBRA)),
-        "    {}  no grapples?".format(heroIcon(Hero.HAMMOND)),
-        "    {}  no grapples?".format(heroIcon(Hero.WIDOWMAKER)),
+        "    {}  no grapples?".format(heroIcon(random.choice([Hero.HAMMOND, Hero.WIDOWMAKER]))),
         "    {}  no swift steps?".format(heroIcon(Hero.KIRIKO)),
         "    {}  no recalls?".format(heroIcon(Hero.TRACER)),
         "    {}  no wallrides?".format(heroIcon(Hero.LUCIO)),
         "    {}  no slams?".format(heroIcon(Hero.DOOMFIST)),
-        "    {}  no jumps?".format(heroIcon(Hero.WINSTON)),
+        "    {}  no monkey legs?".format(heroIcon(Hero.WINSTON)),
         "    {}  no mekas?".format(heroIcon(Hero.DVA)),
-        "    {}  no jumps?".format(heroIcon(Hero.GENJI)),
+        "    {}  no double jumps?".format(heroIcon(Hero.GENJI)),
         "    {}  no wallclimbs?".format(heroIcon(Hero.HANZO))
         ]))
 
@@ -225,7 +226,7 @@ rule "MEDALS":
             Medal.PUNCH_DRUNK:      "    {0}{1}  Punch drunk".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.DIZZY)),
             Medal.FROM_THE_GRAVE:   "    {0}  From the grave".format(abilityIconString(Hero.REAPER, Button.ULTIMATE)),
             
-            
+
             }[eventPlayer.DisplayMedal])
         if DEBUG_MODE:
             eventPlayer.MedalCount += 1
