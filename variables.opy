@@ -153,6 +153,8 @@ playervar DemotedEffect
 playervar RampageVFX
 playervar RampageSFX
 
+subroutine SleepDarts
+
 subroutine RespawnSystem
 subroutine RespawnsCHATEAU
 subroutine RespawnsPETRA

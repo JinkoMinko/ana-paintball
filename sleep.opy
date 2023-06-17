@@ -31,10 +31,8 @@ rule "If SleepLock = 2, execute attacker, wake victim, reset attacker SleepLock 
     attacker.setScore(attacker.getScore() - 1)
     victim.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(victim.MedalQueue)
     smallMessage(victim, "    {0}  Executed {1} for sleep-locking".format(abilityIconString(Hero.GENJI, Button.ABILITY_2), eventPlayer))
-    wait(1)
     attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
     smallMessage(attacker, "    {0}  Executed for sleep-locking {1}".format(abilityIconString(Hero.GENJI, Button.ABILITY_2), victim))
-    damage(victim, attacker, 1)
 
 
 rule "Sleep-lock resets after 5s without sleeping anyone":
@@ -59,13 +57,15 @@ rule "Wake slept player if attacker dies after using sleep dart":
         if victim.isDead() and attacker.isAlive():
             attacker.SleepUsedAndDied = true
             return
-        wait(0.5)
+        wait(0.5, Wait.ABORT_WHEN_FALSE)
         damage(victim, null, 1)
-    if attacker.SleepUsedAndDied: # if the attacker is dead when sleep dart hits
+    else: # if the attacker is dead when sleep dart hits
         victim.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(victim.MedalQueue)
         smallMessage(victim, "    {0}  {1} died, awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2), attacker))
-        wait(0.5)
+        wait(0.5, Wait.ABORT_WHEN_FALSE)
         damage(victim, null, 1)
+        wait(0.5, Wait.ABORT_WHEN_FALSE)
+        victim.communicate(Comms.GOODBYE)
 
 
 rule "Detect mutual sleeps":
@@ -76,6 +76,6 @@ rule "Detect mutual sleeps":
     @Hero ana
 
     [eventPlayer, victim].MedalQueue.append(Medal.MUTUAL_SLEEP)
-    wait(1.5)
-    if [eventPlayer, victim].isAlive() == true:
-    damage([eventPlayer, victim], null, 1.5)
+    wait(1.5, Wait.ABORT_WHEN_FALSE)
+    if attacker.isAlive() and victim.isAlive() == true:
+        damage([eventPlayer, victim], null, 1)

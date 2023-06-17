@@ -68,6 +68,6 @@ rule "If nanoboosted player uses disabled buttons":
     @Condition any([eventPlayer.isHoldingButton(b) for b in [Button.MELEE, Button.RELOAD, Button.PRIMARY_FIRE, Button.SECONDARY_FIRE]])
     
     eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
-    smallMessage(eventPlayer, "    {0}  Use sleep dart to win!  {0}".format(iconString(Icon.EXCLAMATION_MARK)))
+    smallMessage(eventPlayer, "    {0}  Use sleep dart to win  {0}".format(iconString(Icon.EXCLAMATION_MARK)))
     playEffect(eventPlayer, DynamicEffect.DEBUFF_IMPACT_SOUND, Color.WHITE, eventPlayer, 120)
     wait(1)

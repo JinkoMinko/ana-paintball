@@ -45,57 +45,57 @@ rule "Pick spawn points & define playzone":
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.PETRA:
         RespawnsPETRA()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() ==Map.BLACK_FOREST_WINTER:
         RespawnsBLACKFOREST()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.MALEVENTO:
         RespawnsMALEVENTO()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.DORADO:
         RespawnsDORADO()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN:
         RespawnsHOLLYWOOD()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.BLIZZ_WORLD or getCurrentMap() == Map.BLIZZ_WORLD_WINTER:
         RespawnsBLIZZWORLD()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.EICHENWALDE or getCurrentMap() == Map.EICHENWALDE_HALLOWEEN:
         RespawnsEICHENWALDE()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.ECOPOINT_ANTARCTICA or getCurrentMap() == Map.ECOPOINT_ANTARCTICA_WINTER:
         RespawnsECOPOINT()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.KANEZAKA:
         RespawnsKANEZAKA()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.NEPAL_SHRINE:
         RespawnsNEPALSHRINE()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY:
         RespawnsLIJANGCONTROL()
-        RespawnHigherDistance =65
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 35
         RespawnFailsafeDistance = 20
         PlayzoneCenter = vect(0, 267.28, 282.52)
