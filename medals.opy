@@ -45,24 +45,6 @@ rule "quadfeed kills":
         attacker.MedalQueue.append(Medal.QUADFEED)
         attacker.QuadFeedTimes = []
 
-
-rule "Detect stolen kills":
-    @Event playerEarnedElimination
-    @Hero ana
-    @Condition victim.SleepAuthor != null
-    @Condition victim.SleepAuthor != attacker
-   
-    attacker.StolenFrom = victim.SleepAuthor
-    attacker.StolenKills +=1
-    attacker.MedalQueue.append(Medal.STOLEN_KILL)
-    attacker.communicate(Comms.THANKS)
-    attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
-    attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
-    attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
-    smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
-    wait(2, Wait.RESTART_WHEN_TRUE)
-    attacker.StolenFrom = null
-
     
 rule "Killstreak effects & announcements":
     @Event playerEarnedElimination

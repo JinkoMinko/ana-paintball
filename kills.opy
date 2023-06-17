@@ -70,6 +70,18 @@ rule "RIFLE & MELEE KILLS mechanics":
                     eventPlayer.communicate(Comms.VOICE_LINE_LEFT)
     
     
+    if victim.SleepAuthor != null and victim.SleepAuthor != attacker:    # STOLEN KILLS
+        attacker.StolenFrom = victim.SleepAuthor
+        attacker.StolenKills +=1
+        attacker.MedalQueue.append(Medal.STOLEN_KILL)
+        attacker.communicate(Comms.THANKS)
+        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
+        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
+        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
+        smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
+        wait(2, Wait.RESTART_WHEN_TRUE)
+        attacker.StolenFrom = null
+                
     if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED KILLS
         attacker.ScopedHits +=1
         attacker.RaycastLastHitPlayer = attacker
