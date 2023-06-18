@@ -37,6 +37,8 @@ rule "INTERACT: create bots":
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
     createDummy(Hero.ANA, Team.ALL, -1, eventPlayer.getPosition(), eventPlayer.getPosition())
+    getLastCreatedEntity().startForcingName("Ana {0}".format(BotName))
+    BotName += 1
     wait(0.3, Wait.ABORT_WHEN_FALSE)
     
 
@@ -108,6 +110,7 @@ rule "Kill all bots":
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
     destroyAllDummies()
+    BotName = 1
 
 
 rule "show spawn points":

@@ -15,6 +15,7 @@
 #!define distanceFromPointToPlayer(s, p) (distance(s, p) if p != null else 999999)
 #!define distanceFromPointToPlayerBetween(s, p, lower, upper) (abs(distance(s, p) - (upper + lower) / 2) <= (upper - lower) / 2 if p != null else true)
 
+#!define customGreen (rgb(63, 191, 116))
 #!define rSaturation 0.55
 #!define rValue 1.0
 #!define rMin (255 * (1-rSaturation) * (rValue))

@@ -53,18 +53,16 @@ def SleepDarts():
         attacker.MedalQueue.append(Medal.FIRST_SLEEP)
         FirstSleep = true
     victim.SleepAuthor = attacker
-    victim.startForcingOutlineFor(getAllPlayers(), true, rgb(63, 191, 116) if victim.getScore() > attacker.getScore() else Color.SKY_BLUE, OutlineVisibility.DEFAULT)
+    for i in range(len(getAllPlayers())):
+        victim.startForcingOutlineFor(getAllPlayers()[i], true, customGreen if victim.getScore() > getAllPlayers()[i].getScore() else Color.SKY_BLUE, OutlineVisibility.DEFAULT)
     attacker.SleepHits += 1
     attacker.SleepAccuracy = round((attacker.SleepHits / attacker.SleepShots)*100)
     BestSleepAccuracyValue = sorted([sleeper for sleeper in getAllPlayers() if sleeper.SleepShots >= 10], lambda p: p.SleepAccuracy).last().SleepAccuracy
     BestSleepAccuracyPlayer = attacker
-    chase(victim.ExecuteRange, 10, duration=3.7, ChaseReeval.DESTINATION_AND_DURATION)
     wait(0.5)
     victim.SleepsOnground = true
     waitUntil(not victim.hasStatusEffect(Status.ASLEEP), 4)
-    stopChasingVariable(victim.ExecuteRange)
     victim.SleepsOnground = false
-    victim.ExecuteRange = 30
     victim.stopForcingOutlineFor(getAllPlayers())
     if victim.isAlive():
         victim.SleepAuthor = null

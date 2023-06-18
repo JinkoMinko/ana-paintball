@@ -281,7 +281,7 @@ rule "CREATE all jump pads":
     for JumpPadFx in range(len(JumpPadPos)):
         createJumpPad(JUMP_PAD_COLOR, JumpPadPos[JumpPadFx], JumpPadSize[JumpPadFx])
 
-
+        
 rule "TRIGGER any jump pad":
     @Event eachPlayer
     @Hero ana

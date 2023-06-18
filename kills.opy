@@ -40,7 +40,7 @@ rule "fix movement bug after death": #get rid of this system when Blizzard fixes
     eventPlayer.FixMovementBug = false
 
 
-rule "RIFLE & MELEE KILLS mechanics":
+rule "KILLS mechanics":
     @Event playerDealtDamage
     @Hero ana
     @Condition eventAbility == Button.PRIMARY_FIRE or (eventAbility == Button.MELEE and victim.hasStatusEffect(Status.ASLEEP))
@@ -59,28 +59,16 @@ rule "RIFLE & MELEE KILLS mechanics":
         FirstBlood = not FirstBlood
         if attacker.isAlive():
             wait(0.5)
-            switch random.randint(1,4):
-                case 1:
-                    eventPlayer.communicate(Comms.VOICE_LINE_UP)
-                case 2:
-                    eventPlayer.communicate(Comms.VOICE_LINE_RIGHT)
-                case 3:
-                    eventPlayer.communicate(Comms.VOICE_LINE_DOWN)
-                case 4:
-                    eventPlayer.communicate(Comms.VOICE_LINE_LEFT)
-    
-    
-    if victim.SleepAuthor != null and victim.SleepAuthor != attacker:    # STOLEN KILLS
-        attacker.StolenFrom = victim.SleepAuthor
-        attacker.StolenKills +=1
-        attacker.MedalQueue.append(Medal.STOLEN_KILL)
-        attacker.communicate(Comms.THANKS)
-        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
-        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
-        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
-        smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
-        wait(2, Wait.RESTART_WHEN_TRUE)
-        attacker.StolenFrom = null
+            if attacker.isAlive():
+                switch random.randint(1,4):
+                    case 1:
+                        eventPlayer.communicate(Comms.VOICE_LINE_UP)
+                    case 2:
+                        eventPlayer.communicate(Comms.VOICE_LINE_RIGHT)
+                    case 3:
+                        eventPlayer.communicate(Comms.VOICE_LINE_DOWN)
+                    case 4:
+                        eventPlayer.communicate(Comms.VOICE_LINE_LEFT)
                 
     if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED KILLS
         attacker.ScopedHits +=1
@@ -119,7 +107,7 @@ rule "RIFLE & MELEE KILLS mechanics":
         attacker.setAmmo(0, 15)
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
         playEffect(getAllPlayers() if victim.getScore() > attacker.getScore() else getAllPlayers().exclude(victim), DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
-        if victim.getScore() >= attacker.getScore():
+        if victim.getScore() >= attacker.getScore():    # DEMOTIONS
             victim.communicate(Comms.SORRY)
             attacker.MedalQueue.append(Medal.DEMOTION)
             smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1} demoted {2}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker, victim))
@@ -156,6 +144,16 @@ rule "RIFLE & MELEE KILLS mechanics":
 
     if attacker.getAmmo(0) == 0:
         attacker.MedalQueue.append(Medal.DECISIVE_SHOT)
+
+    if victim.SleepAuthor != null and victim.SleepAuthor != attacker:    # STOLEN KILLS
+        attacker.StolenFrom = victim.SleepAuthor
+        attacker.StolenKills +=1
+        attacker.MedalQueue.append(Medal.STOLEN_KILL)
+        attacker.communicate(Comms.THANKS)
+        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
+        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
+        attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
+        smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
     
     if attacker.isDead():
         waitUntil(attacker.isAlive(), 69)

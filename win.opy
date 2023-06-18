@@ -25,14 +25,13 @@ rule "NUKE_STREAK":
     setSlowMotion(5)
 
 
-rule "NANO_SCORE":
+rule "Winning sleep dart hit":
     @Event playerDealtDamage
     @Hero ana
     @Condition eventAbility == Button.ABILITY_1
     @Condition attacker.getScore() == NANO_SCORE
     @Condition not MatchEnded
 
-    #getAllPlayers().disableKillFeed()
     getAllPlayers().disableGamemodeHud()
     getAllPlayers().disableHeroHUD()
 
@@ -40,7 +39,7 @@ rule "NANO_SCORE":
     FinalVictim = victim
     Winner = attacker
     declarePlayerVictory(eventPlayer)
-    attacker.setScore(NANO_SCORE+1)
+    Winner.setScore(NANO_SCORE+1)
     victim.OofDistance = distance(attacker, victim)
     if victim.OofDistance >= LONGSHOT_DISTANCE:
         LongshotWin = not LongshotWin
@@ -56,7 +55,7 @@ rule "NANO_SCORE":
     getAllPlayers().startCamera(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim()) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 25)
     wait(0.5)
     #Amazing in-world text code by josbird https://workshop.codes/wiki/articles/rendering-an-inworld-text-at-a-specific-onscreen-position
-    createInWorldText(getAllPlayers(),"longshot victory! {0}m hit!".format(OofString(victim.OofDistance)) if victim.OofDistance >= LONGSHOT_DISTANCE else "{0}m sleep dart hit!".format(OofString(victim.OofDistance)), WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, 0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)) if victim.OofDistance >= LONGSHOT_DISTANCE else rgb(63, 191, 116), SpecVisibility.NEVER)
+    createInWorldText(getAllPlayers(),"longshot victory! {0}m hit!".format(OofString(victim.OofDistance)) if victim.OofDistance >= LONGSHOT_DISTANCE else "{0}m sleep dart hit!".format(OofString(victim.OofDistance)), WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, 0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)) if victim.OofDistance >= LONGSHOT_DISTANCE else customGreen, SpecVisibility.NEVER)
     createInWorldText(getAllPlayers(),"www.jinko.dev/discord\nwww.jinko.dev/discord\nwww.jinko.dev/discord", WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, -1), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
     wait(0.95)
     playEffect(getAllPlayers(), DynamicEffect.DVA_SELF_DESTRUCT_EXPLOSION, Color.ROSE, victim.getPosition(), 999)

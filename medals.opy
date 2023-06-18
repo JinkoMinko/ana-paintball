@@ -45,7 +45,7 @@ rule "quadfeed kills":
         attacker.MedalQueue.append(Medal.QUADFEED)
         attacker.QuadFeedTimes = []
 
-    
+
 rule "Killstreak effects & announcements":
     @Event playerEarnedElimination
     @Hero ana
@@ -67,8 +67,8 @@ rule "Killstreak effects & announcements":
         attacker.RampageVFX = true
         wait(1)
         attacker.RampageVFX = false
-    
-    
+
+
 rule "Killstreak shutdown announcements":
     @Event playerDealtFinalBlow
     @Hero ana
@@ -155,7 +155,6 @@ rule "Longshot":
     destroyInWorldText(attacker.OofText)
 
 
-
 rule "Sandman":
     @Event playerDealtDamage
     @Hero ana
@@ -168,6 +167,7 @@ rule "Sandman":
     if attacker.Sandman == 5:
         attacker.MedalQueue.append(Medal.SANDMAN)
         attacker.Sandman = 0
+
 
 rule "MEDALS":
     @Event eachPlayer
