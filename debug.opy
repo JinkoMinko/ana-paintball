@@ -55,7 +55,6 @@ rule "PRIMARY FIRE: make bots attack":
     getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.PRIMARY_FIRE)
     #kill(eventPlayer, eventPlayer)
 
-
 rule "GRENADE: make bots punch":
     @Condition DEBUG_MODE
     @Event eachPlayer

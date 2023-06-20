@@ -59,12 +59,13 @@ rule "Wake slept player if attacker dies after using sleep dart":
             return
         wait(0.5, Wait.ABORT_WHEN_FALSE)
         damage(victim, null, 1)
+        victim.communicate(Comms.THANKS)
     else: # if the attacker is dead when sleep dart hits
         victim.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(victim.MedalQueue)
         smallMessage(victim, "    {0}  {1} died, awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2), attacker))
         wait(0.5, Wait.ABORT_WHEN_FALSE)
         damage(victim, null, 1)
-        wait(0.5, Wait.ABORT_WHEN_FALSE)
+        wait(0.5)
         victim.communicate(Comms.GOODBYE)
 
 

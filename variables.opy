@@ -47,7 +47,7 @@ globalvar Spawn    #used in debug to show spawn points
 globalvar OutOfBoundBot1
 globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 globalvar i    # used to loop medals sent globally
-
+globalvar BotName = 1
 
 
 playervar HonorBar = 0
@@ -82,13 +82,12 @@ playervar SleepAuthor
 playervar SleepUsedAndDied = true    # Used to detect when a sleeping player should be awoken due to their SleepAuthor dying
 playervar SleepLock     # should be reworked
 playervar SleepsOnground = false    # Whether a player that was hit with a sleep dart has finished the "falling on the ground" animation
-playervar ExecuteRange = 20    # Proximity-based visibility condition for "punch to execute" prompts
 playervar Temp
 playervar EarnedCollateral
 playervar Sandman
 playervar PunchDrunk
-playervar AlmostNano = true
-globalvar BotName = 1
+playervar IsOnFire = false
+playervar IsOnRampage = false
 
 playervar QuadFeedTimes = []
 playervar HonorQueue = []
@@ -133,7 +132,7 @@ enum Medal:
     JOLLY_JUMPER,
     COLLATERAL_KILLS,
     MUTUAL_SLEEP,
-    DECISIVE_SHOT,
+    LAST_BULLET,
     DREAMCATCHER,
     NO_SCOPE_NEEDED,
     DEADEYE,
@@ -155,6 +154,12 @@ playervar RampageVFX
 playervar RampageSFX
 
 subroutine SleepDarts
+subroutine SayVoiceline
+subroutine FromTheGraveMedal
+subroutine SayUltStatus
+subroutine SayThanks
+subroutine SaySorry
+
 
 subroutine RespawnSystem
 subroutine RespawnsCHATEAU

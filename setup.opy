@@ -169,7 +169,7 @@ rule "PLAYER SETTINGS & KILLSTREAK EFFECTS":
     createInWorldText(localPlayer if     # PUNCH TO EXECUTE / DEMOTE PROMPTS
                         not localPlayer.hasStatusEffect(Status.ASLEEP)
                         and eventPlayer.hasStatusEffect(Status.ASLEEP)
-                        and distance(localPlayer, eventPlayer) <= eventPlayer.ExecuteRange
+                        and distance(localPlayer, eventPlayer) <= 20
                         and eventPlayer.isAlive() and eventPlayer.SleepsOnground
                         and angleBetweenVectors(localPlayer.getFacingDirection(), directionTowards(localPlayer.getEyePosition(), eventPlayer)) < 5
                         and not MatchEnded

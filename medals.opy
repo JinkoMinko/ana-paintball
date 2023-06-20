@@ -32,6 +32,7 @@ rule "perfect quickscopes":
         if not eventPlayer.isFiringSecondaryFire() and eventPlayer.KillStreak == eventPlayer.ElimsBeforeQS + 1:
             eventPlayer.MedalQueue.append(Medal.PERFECT_QS)
             eventPlayer.PerfectQuickscopes += 1
+            playEffect(eventPlayer, DynamicEffect.WRECKING_BALL_MINEFIELD_EXPLOSION_SOUND, Color.TEAM_1, eventPlayer.getPosition()+eventPlayer.getThrottle()*eventPlayer.getSpeed(), 200)
 
 
 rule "quadfeed kills":
@@ -44,6 +45,8 @@ rule "quadfeed kills":
     if len(attacker.QuadFeedTimes) >= 4:
         attacker.MedalQueue.append(Medal.QUADFEED)
         attacker.QuadFeedTimes = []
+        playEffect(eventPlayer, DynamicEffect.ECHO_STICKY_BOMB_EXPLOSION_SOUND, Color.TEAM_1, eventPlayer.getPosition()+eventPlayer.getThrottle()*eventPlayer.getSpeed(), 200)
+        playEffect(eventPlayer, DynamicEffect.ECHO_STICKY_BOMB_EXPLOSION_SOUND, Color.TEAM_1, eventPlayer.getPosition()+eventPlayer.getThrottle()*eventPlayer.getSpeed(), 200)
 
 
 rule "Killstreak effects & announcements":
@@ -51,7 +54,8 @@ rule "Killstreak effects & announcements":
     @Hero ana
     @Condition not eventAbility == Button.ABILITY_1
 
-    if attacker.KillStreak == ONFIRE_STREAK and attacker.isAlive():
+    if attacker.KillStreak >= ONFIRE_STREAK and attacker.isAlive() and not attacker.IsOnFire:
+        attacker.IsOnFire = true
         attacker.MedalQueue.append(Medal.ON_FIRE)
             for i in range(getNumberOfPlayers(Team.ALL) - 1):
             getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
@@ -59,7 +63,8 @@ rule "Killstreak effects & announcements":
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.ORANGE, OutlineVisibility.DEFAULT)
         playEffect(getAllPlayers(), DynamicEffect.ASHE_DYNAMITE_EXPLOSION_SOUND, Color.TEAM_1, attacker, 70 if eventPlayer == localPlayer else 200)
         smallMessage(getAllPlayers().exclude(attacker), "    {0}  {1} is on fire!  {0}".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE), attacker))
-    elif attacker.KillStreak == RAMPAGE_STREAK and attacker.isAlive():
+    elif attacker.KillStreak >= RAMPAGE_STREAK and attacker.isAlive() and not attacker.IsOnRampage:
+        attacker.IsOnRampage = true
         attacker.MedalQueue.append(Medal.RAMPAGE)
         attacker.RampageSFX = true
         attacker.startForcingOutlineFor(getAllPlayers(), true, Color.YELLOW, OutlineVisibility.DEFAULT)
@@ -199,7 +204,7 @@ rule "MEDALS":
             Medal.JOLLY_JUMPER:     "    {0}  Jolly jumper".format(abilityIconString(Hero.BAPTISTE, Button.CROUCH)),
             Medal.COLLATERAL_KILLS: "    {0}  Collateral kills".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
             Medal.MUTUAL_SLEEP:     "    {0}  Mutual sleep, awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2)),
-            Medal.DECISIVE_SHOT:    "    {0}  Decisive shot".format(iconString(Icon.CLUB)),
+            Medal.LAST_BULLET:    "    {0}  Decisive shot".format(iconString(Icon.CLUB)),
             Medal.DREAMCATCHER:     "    {0}  Dreamcatcher".format(abilityIconString(Hero.RAMATTRA, Button.ABILITY_2)),
             Medal.NO_SCOPE_NEEDED:  "    {0}  No scope needed".format(abilityIconString(Hero.SOJOURN, Button.ULTIMATE)),
             Medal.DEADEYE:          "    {0}  Deadeye".format(abilityIconString(Hero.MCCREE, Button.ULTIMATE)),

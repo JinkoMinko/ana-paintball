@@ -79,7 +79,7 @@ rule "Sleep Dart hits":
     @Condition eventAbility == Button.ABILITY_1
     @Condition not eventWasEnvironment
 
-    async(SleepDarts,AsyncBehavior.RESTART)
+    async(SleepDarts, AsyncBehavior.RESTART)
 
 rule "detect movement bug":
     @Event playerDealtDamage

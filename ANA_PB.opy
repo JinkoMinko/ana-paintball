@@ -45,3 +45,6 @@ settings "settings.opy.json"
 # Launchers, teleporters, etc
 #!include "mapObjects.opy"
 #!include "bots.opy"
+
+# Subroutines
+#!include "subroutines.opy"
