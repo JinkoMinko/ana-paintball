@@ -62,6 +62,16 @@ rule "Winning sleep dart hit":
     wait(18.5)
     restartMatch()
 
+
+rule "Fix camera if last victim leaves the game":
+    @Event playerLeft
+    @Condition MatchEnded
+
+    if FinalVictim == eventPlayer:
+        destroyAllInWorldTexts()
+        getAllPlayers().startCamera(raycast(Winner.getPosition(), (Winner.getPosition() * 3 + Vector.UP * 1.5), null, null, true).getHitPosition(), Winner.getEyePosition(), 0)
+
+
 rule "rainbow outline if last dart was a longshot":
     @Event eachPlayer
     @Hero ana

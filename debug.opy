@@ -25,8 +25,8 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    #hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
-    
+    hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+    #hudSubtext(eventPlayer, updateEveryTick("{}".format(eventPlayer.getPosition())), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
 
     
@@ -115,12 +115,12 @@ rule "Kill all bots":
 rule "show spawn points":
     @Condition DEBUG_MODE
     @Event global
-    @Disabled
+    #@Disabled
 
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
         createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.3, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-        createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)]+vect(0,2,0), 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+        #createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)]+vect(0,2,0), 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
         createInWorldText(getAllPlayers(), "{0}".format(SpawnPointSettings[evalOnce(Spawn)]), SpawnPointSettings[evalOnce(Spawn)]+vect(0,0.5,0), 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_AND_STRING, Color.GREEN, SpecVisibility.NEVER)
 
     
@@ -129,7 +129,7 @@ rule "cycle through to spawn points":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.RELOAD)
-    @Disabled
+    #@Disabled
 
     eventPlayer.teleport(SpawnPointSettings[IndexValue][0])
     eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
@@ -140,7 +140,7 @@ rule "log spawn point and facing direction":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
-    @Disabled
+    #@Disabled
 
     printLog(eventPlayer.getPosition())
     printLog(eventPlayer.getFacingDirection())

@@ -96,10 +96,10 @@ rule "Pick spawn points & define playzone":
     elif getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY:
         RespawnsLIJANGCONTROL()
         RespawnHigherDistance = 999
-        RespawnLowerDistance = 35
-        RespawnFailsafeDistance = 20
+        RespawnLowerDistance = 30
+        RespawnFailsafeDistance = 15
         PlayzoneCenter = vect(0, 267.28, 282.52)
-        PlayzoneRadius = 60.4
+        PlayzoneRadius = 75
     else:
         SpawnPointSettings = 0
         PlayzoneCenter = 0

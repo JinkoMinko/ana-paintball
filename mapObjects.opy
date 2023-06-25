@@ -15,7 +15,6 @@ rule "ECOPOINT create TPs":
     createEffect(getAllPlayers(), Effect.BAD_AURA, Color.ROSE, vect(-25, 31.5, -10.89), 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(getAllPlayers(), Effect.BAD_AURA, Color.ROSE, vect(-25, 31.5, 10.89), 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
-
 rule "ECOPOINT trigger right side TP":
     @Event eachPlayer
     @Hero ana
@@ -37,7 +36,6 @@ rule "ECOPOINT trigger right side TP":
     playEffect(getAllPlayers(), DynamicEffect.SOMBRA_TRANSLOCATOR_REAPPEAR, Color.WHITE, eventPlayer.getPosition(), 20)
     wait(0.5)
     eventPlayer.stopAcceleration()
-
 
 rule "ECOPOINT trigger left side TP":
     @Event eachPlayer
@@ -71,7 +69,6 @@ rule "FOREST create TP":
     createEffect(getAllPlayers(), Effect.SPARKLES, Color.PURPLE, vect(-32, 13, 8), 3, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(getAllPlayers(), Effect.BEACON_SOUND, Color.BLUE, vect(-32, 13, 8), 100, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
-
 rule "FOREST trigger TP":
     @Event eachPlayer
     @Hero ana
@@ -96,14 +93,14 @@ rule "HOLLYWOOD Locked zone 1":
     @Event eachPlayer
     @Hero ana
     @Condition getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN
-    @Condition (distance(eventPlayer, vect(2.88, 7.75, -15.9))) <= 1
+    @Condition eventPlayer.isOnGround()
+    @Condition (distance(eventPlayer, vect(2.88, 7.75, -15.9))) <= 2
 
     eventPlayer.applyImpulse(vectorTowards(vect(2.88, 7.75, -15.9), eventPlayer), 1, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
     eventPlayer.setStatusEffect(null, Status.ROOTED, 0.2)
-    wait(0.5)
+    wait(0.1)
     if RULE_CONDITION:
         goto RULE_START
-
 
 rule "HOLLYWOOD Locked zone 2":
     @Event eachPlayer
@@ -126,7 +123,6 @@ rule "CREATE Dorado launcher":
 
     createEffect(getAllPlayers(), Effect.GOOD_AURA, Color.YELLOW, vect(123.4, 10, -17.5), 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
-
 rule "TRIGGER Dorado launcher":
     @Event eachPlayer
     @Hero ana
@@ -142,18 +138,20 @@ rule "TRIGGER Dorado launcher":
     wait(0.4)
     eventPlayer.enableEnvironmentCollision()
 
+
 rule "CREATE Lijang Control launcher":
     @Event global
     @Condition getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY
+    @Disabled
 
     createEffect(getAllPlayers(), Effect.GOOD_AURA, Color.YELLOW, vect(0, 271, 268), 0.5, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-
 
 rule "TRIGGER Lijang Control launcher":
     @Event eachPlayer
     @Hero ana
     @Condition getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY
     @Condition (distance(eventPlayer, vect(0, 271, 268))) <= 1.2
+    @Disabled
 
     cancelMomentum(eventPlayer)
     eventPlayer.setStatusEffect(null, Status.ROOTED, 1)
@@ -163,3 +161,37 @@ rule "TRIGGER Lijang Control launcher":
     eventPlayer.disableEnvironmentCollision(false)
     wait(1.2)
     eventPlayer.enableEnvironmentCollision()
+
+
+rule "HOLLYWOOD platform boost PAYLOAD SIDE":
+    @Event eachPlayer
+    @Hero ana
+    @Condition getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN
+    @Condition distance(eventPlayer, vect(13.2, 10.55, -32.1)) <= 2.3
+    @Condition eventPlayer.isOnGround()
+    @Condition updateEveryTick(eventPlayer.getPosition().y >= 9 and eventPlayer.getPosition().y < 10.4)
+
+    wait()
+    if not eventPlayer.isJumping():
+        if RULE_CONDITION:
+            goto RULE_START
+        waitUntil(eventPlayer.isJumping(), 0.016)
+        if not eventPlayer.isJumping():
+            return
+    eventPlayer.applyImpulse(Vector.UP, 12, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
+    playEffect(getAllPlayers(), DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, eventPlayer, 20)
+
+rule "HOLLYWOOD platform boost WALL SIDE":
+    @Event eachPlayer
+    @Hero ana
+    @Condition getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN
+    @Condition distance(eventPlayer, vect(-6.21, 10.13, -58.94)) <= 2.3
+    @Condition eventPlayer.isOnGround()
+    @Condition updateEveryTick(eventPlayer.getPosition().y >= 8.3 and eventPlayer.getPosition().y < 9.88)
+
+    wait()
+    if RULE_CONDITION:
+        goto RULE_START
+    if eventPlayer.isJumping():
+        eventPlayer.applyImpulse(Vector.UP, 12, Relativity.TO_WORLD, Impulse.CANCEL_CONTRARY_MOTION)
+        playEffect(getAllPlayers(), DynamicEffect.RING_EXPLOSION_SOUND, Color.WHITE, eventPlayer, 20)

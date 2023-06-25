@@ -210,53 +210,53 @@ rule "CREATE all jump pads":
         case Map.HOLLYWOOD_HALLOWEEN:
         case Map.HOLLYWOOD:
             JumpPadPos = [
-                vect(9.66, -1.7, -74.8),  # PAYLOAD
-                vect(-3, -1.7, -17),      # STORE
-                vect(-2.2, -1.7, -40.4),  # MID
-                vect(18.76, -1.7, -50.5), # BANK
-                vect(39.5, -1.7, -71.4)   # JAIL
+                vect(-6.15, -3.65, -34.4),  # GENERAL STORE
+                vect(18.25, -3.65, -70.56),      # JAIL
+                vect(2.73, -1.04, -15.85),  # PACMAN
             ]
             
             JumpPadPower = [
-                21,
-                15,
                 20,
-                15,
-                16
+                22.5,
+                17,
             ]
             
             JumpPadSize = [
-                3.5, 
-                3.5,
-                3.5,
-                3.5,
-                3.5
+                5.5, 
+                5.6,
+                3.2,
             ]
             break
         case Map.LIJIANG_CONTROL_CENTER_LNY:
         case Map.LIJIANG_CONTROL_CENTER:
             JumpPadPos = [
-                vect(-25.15, 263.75, 291.55), # ROVER SIDE A
-                vect(25.15, 263.75, 291.55),   # ROVER SIDE B
                 vect(0, 263.85, 285.88),      # MID BIG PAD
-                vect(5.63, 267.79, 313.71),   # INTERIOR SIDE A
-                vect(-5.63, 267.79, 313.71),  # INTERIOR SIDE B
+                vect(25.15, 263.75, 291.55),  # ROVER + SIDE
+                vect(-25.15, 263.75, 291.55), # ROVER - SIDE 
+                vect(5.63, 267.79, 313.71),   # INTERIOR + SIDE
+                vect(-5.63, 267.79, 313.71),  # INTERIOR - SIDE
+                vect(7.22, 264, 271.4),       # SMALL MID + SIDE
+                vect(-7.22, 264, 271.4),      # SMALL MID - SIDE
             ]
             
             JumpPadPower = [
-                13,
-                13,
                 20.5,
+                13,
+                13,
                 18.5,
                 18.5,
+                13,
+                13,
             ]
             
             JumpPadSize = [
-                3.4, 
-                3.4, 
                 4,
+                3.4, 
+                3.4, 
                 2.5,
                 2.5,
+                3.35,
+                3.35,
             ]
             break
         case Map.KANEZAKA:
