@@ -4,6 +4,7 @@ rule "Kill logic":
     @Event playerDealtDamage
     @Hero ana
     @Condition eventAbility == Button.PRIMARY_FIRE or (eventAbility == Button.MELEE and victim.hasStatusEffect(Status.ASLEEP))
+    @Condition not MatchEnded
     
     attacker.EarnedCollateral = 0
     attacker.ComebackCount = 0
@@ -97,8 +98,8 @@ rule "Kill logic":
     if attacker.getAmmo(0) == 0:
         attacker.MedalQueue.append(Medal.LAST_BULLET)
 
-    if victim.SleepAuthor != null and victim.SleepAuthor != attacker:    # STOLEN KILLS
-        attacker.StolenFrom = victim.SleepAuthor
+    if victim.LastSleptBy != null and victim.LastSleptBy != attacker:    # STOLEN KILLS
+        attacker.StolenFrom = victim.LastSleptBy
         attacker.StolenKills +=1
         attacker.MedalQueue.append(Medal.STOLEN_KILL)
         attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
@@ -113,7 +114,6 @@ rule "Kill logic":
     attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)
     
     if attacker.getScore() == NANO_SCORE - 2:
-        #waitUntil(attacker.isAlive(), 69)
         async(SayUltStatus, AsyncBehavior.NOOP)
 
 
@@ -136,7 +136,7 @@ rule "Reset players upon death":
     @Hero ana
 
     eventPlayer.stopForcingOutlineFor(getAllPlayers())
-    eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
+    eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue) # for the death system message
     eventPlayer.KillStreakBeforeDeath = eventPlayer.KillStreak
     eventPlayer.Deaths +=1
     eventPlayer.SleepUsedAndDied = true
@@ -153,7 +153,7 @@ rule "Reset players upon death":
 
     eventPlayer.SleepLock = 0
     eventPlayer.KillStreak = 0
-    eventPlayer.SleepAuthor = null
+    eventPlayer.LastSleptBy = null
     if eventPlayer.getScore() < NANO_SCORE:
         eventPlayer.setUltCharge((eventPlayer.getScore()/NANO_SCORE)*100)
     wait(2.1 - CUSTOM_RESPAWN_TIME)

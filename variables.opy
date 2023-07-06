@@ -1,24 +1,26 @@
 #!mainFile "ANA_PB.opy"
 
-# Constants
+# CONSTANTS
 globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
 globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
-globalvar NUKE_STREAK = (15 if DEBUG_MODE else 15)
+globalvar NUCLEAR_STREAK = (15 if DEBUG_MODE else 15)
 globalvar NANO_SCORE = (29 if DEBUG_MODE else 29)
 
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
-globalvar CUSTOM_RESPAWN_TIME = 1.1
+globalvar CUSTOM_RESPAWN_TIME = 1.5
 globalvar NIGHT_MAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHT_MAPS else Color.PURPLE
 globalvar DEATH_PLANE_BOT_MAPS = [Map.BLACK_FOREST, Map.BLACK_FOREST_WINTER, Map.HOLLYWOOD, Map.HOLLYWOOD_HALLOWEEN, Map.CHATEAU_GUILLARD, Map.CHATEAU_GUILLARD_HALLOWEEN]
 
 
-# Jump pads
+# JUMP PADS
 globalvar CreateJumpPad    # Macro call
 globalvar JumpPadPos
 globalvar JumpPadPower
 globalvar JumpPadSize
 globalvar JumpPadFx
+playervar ClosestPadIndex    # Closest Jump Pad relative to the player
+
 
 # STATS
 playervar LongshotCount
@@ -60,12 +62,15 @@ playervar DemotedPlayers
 playervar Deaths
 playervar ElimsBeforeQS
 
+playervar KillStreak = 0
+playervar KillStreakBeforeDeath
+
+
 # END GAME
 globalvar MatchEnded = false
 globalvar Winner
 globalvar FinalVictim
 globalvar LongshotWin
-
 
 # KILLSTREAKS
 playervar DemotedEffect
@@ -73,6 +78,7 @@ playervar RampageVFX
 playervar RampageSFX
 playervar IsOnFire = false
 playervar IsOnRampage = false
+playervar IsNuclear = false
 
 
 # COMMS
@@ -80,10 +86,12 @@ subroutine SayVoiceline
 subroutine SayUltStatus
 subroutine SayThanks
 subroutine SaySorry
+subroutine RandomEmote
 
 
 # MEDALS
 globalvar i    # used to loop medals sent globally
+playervar DisplayMedal
 playervar SystemMessages = []
 playervar MedalQueue = []
 playervar QuadFeedTimes = []
@@ -114,6 +122,7 @@ enum Medal:
     QUADFEED,
     ON_FIRE,
     RAMPAGE,
+    NUCLEAR,
     JOLLY_JUMPER,
     COLLATERAL_KILLS,
     MUTUAL_SLEEP,
@@ -163,6 +172,7 @@ subroutine PlayZoneLIJANGCONTROL
 
 # BOTS
 globalvar OutOfBoundBot1
+globalvar NuclearBot
 globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 
 
@@ -172,8 +182,13 @@ playervar HonorBar = 0
 playervar HonorTarget
 
 
-# JUMP PADS
-playervar ClosestPadIndex    # Closest Jump Pad relative to the player
+# COLLATERALS
+playervar RaycastLastHitPlayer
+playervar RaycastLastHitPos
+
+
+# HUD
+globalvar Rainbow
 
 
 # DEBUG
@@ -185,29 +200,23 @@ globalvar IndexValue # cycle through spawn points
 playervar FixMovementBug # delete this system when blizz fixes the bug
 
 
-playervar DisplayStats = true
-playervar OofDistance    # Distance between attacker and victim. >= Longshot Distance
-playervar OofText
-playervar NanoDelay = 1    # Used to know when a player can cast Nanoboost
+# TRACKERS
 playervar IsPlayer 
-playervar KillStreak = 0
-playervar KillStreakBeforeDeath
-
 playervar Killer
-playervar SleepAuthor
-playervar SleepUsedAndDied = true    # detect when a sleeping player should be awoken due to their SleepAuthor dying
+playervar LastSleptBy
+playervar SleepUsedAndDied = true    # detect when a sleeping player should be awoken due to their LastSleptBy dying
 playervar SleepLock     # needs reworked
 playervar SleepsOnground = false    # Whether a player that was hit with a sleep dart has finished the "falling on the ground" animation - needs reworked
-playervar Temp
 playervar DemotionVictim
 playervar ShutdownVictim
 playervar StolenFrom
-playervar DisplayMedal
-
-# COLLATERALS
-playervar RaycastLastHitPlayer
-playervar RaycastLastHitPos
+playervar NanoDelay = 1    # Used to know when a player can cast Nanoboost
 
 
-# HUD
-globalvar Rainbow
+# OTHER
+playervar DisplayStats = true
+playervar OofDistance    # Distance between attacker and victim. >= Longshot Distance
+playervar OofText
+playervar Temp
+
+globalvar SlowMo = 100

@@ -13,7 +13,7 @@ rule "Sleeping an already sleeping player adds 1 to your SleepLock":
     @Hero ana
     @Condition eventAbility == Button.ABILITY_1
     @Condition victim.hasStatusEffect(Status.ASLEEP)
-    @Condition victim.SleepAuthor == attacker
+    @Condition victim.LastSleptBy == attacker
 
     eventPlayer.SleepLock += 1
 
@@ -23,7 +23,7 @@ rule "If SleepLock = 2, execute attacker, wake victim, reset attacker SleepLock 
     @Hero ana
     @Condition eventAbility == Button.ABILITY_1
     @Condition victim.hasStatusEffect(Status.ASLEEP)
-    @Condition victim.SleepAuthor == attacker
+    @Condition victim.LastSleptBy == attacker
     @Condition eventPlayer.SleepLock == 2
     @Condition not eventWasEnvironment
 
@@ -73,7 +73,7 @@ rule "Detect mutual sleeps":
     @Event playerDealtDamage
     @Condition attacker.hasStatusEffect(Status.ASLEEP)
     @Condition eventAbility == Button.ABILITY_1
-    @Condition victim == attacker.SleepAuthor
+    @Condition victim == attacker.LastSleptBy
     @Hero ana
 
     [eventPlayer, victim].MedalQueue.append(Medal.MUTUAL_SLEEP)

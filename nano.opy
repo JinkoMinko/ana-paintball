@@ -5,7 +5,7 @@ rule "While score < NANO_SCORE, allow all buttons":
     @Hero ana
     @Condition (eventPlayer.getScore() < NANO_SCORE and eventPlayer.isAlive())
     
-    wait(0.2)
+    wait(0.2) #?
     eventPlayer.allowButton(Button.PRIMARY_FIRE)
     eventPlayer.allowButton(Button.SECONDARY_FIRE)
     eventPlayer.allowButton(Button.MELEE)
@@ -25,8 +25,8 @@ rule "When reaching NANO_SCORE, nanoboost self":
     eventPlayer.setUltCharge(100)
     eventPlayer.setAbilityCooldown(Button.ABILITY_1, 1)
     eventPlayer.forceButtonPress(Button.ULTIMATE)
-    wait()
-    eventPlayer.forceButtonPress(Button.ULTIMATE)    # for people using "confirm nano target"
+    wait() # for people using "confirm nano target"
+    eventPlayer.forceButtonPress(Button.ULTIMATE)
 
 
 rule "When score = NANO_SCORE, disable all except sleep dart, warn other players, display  objective":
@@ -42,7 +42,7 @@ rule "When score = NANO_SCORE, disable all except sleep dart, warn other players
     bigMessage(eventPlayer, "{0}  use sleep dart to win  {0}".format(abilityIconString(Hero.ANA, Button.ABILITY_1)))
 
 
-rule "While score = NANO_SCORE, sleep CD is 1.5":
+rule "While score = NANO_SCORE, sleep dart cooldown is 1.5":
     @Event eachPlayer
     @Hero ana
     @Condition eventPlayer.getScore() == NANO_SCORE

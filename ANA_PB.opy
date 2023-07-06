@@ -6,20 +6,21 @@ settings "settings.opy.json"
 #!extension energyExplosionEffects
 #!extension explosionSounds
 #!extension debuffStatusEffects
+#!extension projectiles
 
 #!include "macros.opy"
 
+# Toggle debug mode
 #!define DEBUG_MODE true
-
-#!include "variables.opy"
-#!include "debug.opy"
+# # # # # # # # # # # # # # # # # # # # # # 
 
 # Pre-match
+#!include "variables.opy"
+#!include "debug.opy"
 #!include "setup.opy"
 #!include "huds.opy"
 #!include "respawns.opy"
 #!include "playzones.opy"
-
 
 # Context messages
 #!include "systemMessages.opy"

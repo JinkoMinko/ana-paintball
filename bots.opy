@@ -1,5 +1,19 @@
 #!mainFile "ANA_PB.opy"
 
+rule "GLOBAL create Nuclear Bomb Bastion":
+    @Event global
+
+    createDummy(Hero.BASTION, Team.ALL, 10, vect(0, 999, 0), Vector.UP)
+    NuclearBot = getLastCreatedEntity()
+    NuclearBot.startForcingName("Join jinko.dev/discord !")
+    NuclearBot.setScore(-69)
+    NuclearBot.setStatusEffect(null, Status.PHASED_OUT, 999)
+    NuclearBot.setGravity(0)
+    NuclearBot.setInvisibility(Invis.ALL)
+    NuclearBot.disableEnvironmentCollision(true)
+    NuclearBot.disablePlayerCollision()
+    NuclearBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+
 rule "PETRA create FLOORBREAKER":
     @Event global
     @Condition getCurrentMap() == Map.PETRA

@@ -25,7 +25,7 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+    #hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     #hudSubtext(eventPlayer, updateEveryTick("{}".format(eventPlayer.getPosition())), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
 
@@ -126,7 +126,7 @@ rule "Kill all bots":
 rule "show spawn points":
     @Condition DEBUG_MODE
     @Event global
-    #@Disabled
+    @Disabled
 
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
@@ -140,7 +140,7 @@ rule "cycle through to spawn points":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.RELOAD)
-    #@Disabled
+    @Disabled
 
     eventPlayer.teleport(SpawnPointSettings[IndexValue][0])
     eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
@@ -151,9 +151,8 @@ rule "log spawn point and facing direction":
     @Event eachPlayer
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
     @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
-    #@Disabled
+    @Disabled
 
-    printLog(eventPlayer.getPosition())
-    printLog(eventPlayer.getFacingDirection())
-    smallMessage(eventPlayer, "    printed log")
+    printLog("[vect{0}, vect{1}]".format(eventPlayer.getPosition(), eventPlayer.getFacingDirection()))
+    smallMessage(eventPlayer, "    {0} printed log".format(iconString(Icon.CHECKMARK)))
     createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.PURPLE, eventPlayer.getPosition(), 0.3, EffectReeval.NONE)

@@ -52,7 +52,7 @@ def SleepDarts():
     if not FirstSleep:
         attacker.MedalQueue.append(Medal.FIRST_SLEEP)
         FirstSleep = true
-    victim.SleepAuthor = attacker
+    victim.LastSleptBy = attacker
     for i in range(len(getAllPlayers())):
         victim.startForcingOutlineFor(getAllPlayers()[i], true, customGreen if victim.getScore() > getAllPlayers()[i].getScore() else Color.SKY_BLUE, OutlineVisibility.DEFAULT)
     attacker.SleepHits += 1
@@ -65,7 +65,7 @@ def SleepDarts():
     victim.SleepsOnground = false
     victim.stopForcingOutlineFor(getAllPlayers())
     if victim.isAlive():
-        victim.SleepAuthor = null
+        victim.LastSleptBy = null
         if victim.KillStreak >= RAMPAGE_STREAK:
             victim.startForcingOutlineFor(getAllPlayers(), true, Color.YELLOW, OutlineVisibility.DEFAULT)
         elif  victim.KillStreak >= ONFIRE_STREAK:

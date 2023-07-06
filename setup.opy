@@ -9,6 +9,14 @@ rule "Disable inspector & match ending and initiate text rainbow":
     chase(Rainbow, vect(rainbow(getTotalTimeElapsed() * 50)), rate=99999, ChaseReeval.DESTINATION_AND_RATE)
 
 
+rule "Player damage & HP settings":
+    @Event eachPlayer
+    @Hero ana
+
+    eventPlayer.setDamageReceived(0.0001)
+    eventPlayer.setMaxHealth(34.5)
+
+
 rule "Start match sooner & pause timer":
     @Condition not DEBUG_MODE
     @Condition isAssemblingHeroes()
@@ -28,6 +36,24 @@ rule "Detect players": # Differentiate players from spectators & bots
     eventPlayer.setRespawnTime(CUSTOM_RESPAWN_TIME)
 
 
+rule "Initial spawn message":
+    @Event eachPlayer
+    @Hero ana
+    @Condition eventPlayer.hasSpawned()
+    @Condition eventPlayer.getNumberOfDeaths() == 0
+
+    wait(0.1) # required
+    smallMessage(eventPlayer, random.choice([
+                                                "    {0}  Discord link on top !  {0}".format(iconString(Icon.ARROW_UP)),
+                                                "    {0}  Ana Paintball on TikTok: @Jinko_OW".format(heroIcon(Hero.ANA)),
+                                                "    {0}  Scoped shots pierce through enemies!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
+                                                "    {0}{1}  You can punch sleeping players!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
+                                                "    {0}  Guaranteed without bad teammates!".format(iconString(Icon.CHECKMARK)),
+                                            ]))
+    wait(0.2) # required
+    smallMessage(eventPlayer, "    Mode by Jinko#2838")
+
+
 rule "Restart game when lobby is empty": # For when I spectate randoms
     @Event playerLeft
     @Condition not MatchEnded
@@ -36,20 +62,12 @@ rule "Restart game when lobby is empty": # For when I spectate randoms
         restartMatch()
 
 
-rule "Player damage & HP settings":
-    @Event eachPlayer
-    @Hero ana
-
-    eventPlayer.setDamageReceived(0.0001)
-    eventPlayer.setMaxHealth(34.5)
-
-
 rule "Pick spawn points & define playzone":
     @Event global
 
     if getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN:
         RespawnsCHATEAU()
-        RespawnHigherDistance = 55
+        RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
     elif getCurrentMap() == Map.PETRA:
@@ -104,7 +122,7 @@ rule "Pick spawn points & define playzone":
         RespawnFailsafeDistance = 15
         PlayzoneCenter = vect(0, 267.28, 282.52)
         PlayzoneRadius = 75
-    else:
+    else: # if the current map is not supported by the mode, use default spawn system
         SpawnPointSettings = 0
         PlayzoneCenter = 0
         PlayzoneRadius = 0
@@ -140,6 +158,7 @@ rule "PLAYER EFFECTS":
     createEffect(localPlayer if eventPlayer.DemotedEffect == true else [], Effect.SOMBRA_HACKED_SOUND, Color.TEAM_1, eventPlayer, 100 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer.exclude(eventPlayer) if eventPlayer.RampageVFX == true else [], Effect.WINSTON_PRIMAL_RAGE, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer if eventPlayer.RampageVFX == true else [], Effect.WRECKING_BALL_ADAPTIVE_SHIELD_TARGET, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer if MatchEnded else [], Effect.ZENYATTA_ORB_OF_DISCORD_TARGET, Color.TEAM_1, eventPlayer.exclude(Winner), 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
 
 rule "AFK detection":

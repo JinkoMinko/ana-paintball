@@ -1,43 +1,72 @@
 #!mainFile "ANA_PB.opy"
 
-rule "NUKE_STREAK":
+
+rule "Nuclear victory":
     @Event playerEarnedElimination
     @Hero ana
-    @Condition attacker.KillStreak >= NUKE_STREAK
+    @Condition attacker.KillStreak >= NUCLEAR_STREAK
     @Condition not MatchEnded
-    @Disabled
-    
-    getAllPlayers().disableKillFeed()
-    getAllPlayers().disableScoreboard()
-    getAllPlayers().disableGamemodeHud()
-    getAllPlayers().disableHeroHUD()
+    #@Disabled
 
     MatchEnded = true
-    FinalVictim = victim
     Winner = attacker
-    declarePlayerVictory(eventPlayer)
-    attacker.setScore(25)
-    createEffect(getAllPlayers(), Effect.SOLDIER_SPRINTING, Color.WHITE, victim, 1, EffectReeval.POSITION_AND_RADIUS)
-    getAllPlayers().setStatusEffect(null, Status.INVINCIBLE, 999)
-    getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
-    getAllPlayers().setAimSpeed(10)
-    getAllPlayers().setMoveSpeed(10)
-    setSlowMotion(5)
+
+    #NuclearBot.teleport(Winner)
+    #wait(0.5)
+    #NuclearBot.forceButtonPress(Button.ULTIMATE)
+    #wait()
+    #NuclearBot.cancelPrimaryAction()
+    #wait()    
+    #destroyDummy(Team.ALL, 10)
+#
+    #createInWorldText(localPlayer, "{0} 15 kills streak! {1} is nuclear! {0}".format(iconString(Icon.RADIOACTIVE), attacker), updateEveryTick(localPlayer.getEyePosition() + (100 * (0 * worldVector(Vector.RIGHT, localPlayer, Transform.ROTATION) + ((0.69 - 0.2) * (angleToDirection(horizontalAngleOfDirection(localPlayer.getFacingDirection()), verticalAngleOfDirection(localPlayer.getFacingDirection()) - 90))) + 3 * localPlayer.getFacingDirection()))), 9, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.DEFAULT)
+#
+    #wait(6)
+    #getAllPlayers().disableRespawn()
+    #getAllPlayers().disableNameplatesFor(getAllPlayers())
+#
+    #createDummy(Hero.BASTION, Team.ALL, 10, vect(0, 999, 0), Vector.UP)
+    #NuclearBot = getLastCreatedEntity()
+    #NuclearBot.startForcingName("Nuclear Bomb")
+    #NuclearBot.setGravity(0)
+    #NuclearBot.setInvisibility(Invis.ALL)
+#
+    #kill(getAllPlayers().exclude([attacker, OutOfBoundBot1, NuclearBot]), NuclearBot)
+    #declarePlayerVictory(attacker)
+    #async(RandomEmote, AsyncBehavior.NOOP)
+#
+    #wait(1)
+    #destroyAllInWorldTexts()
+    #getAllPlayers().startCamera(raycast(updateEveryTick(attacker.getEyePosition()), 1 * (updateEveryTick(attacker.getFacingDirection())) + updateEveryTick(attacker.getEyePosition()), null, null, true).getHitPosition(), updateEveryTick(attacker.getEyePosition()), 0)
+    #getAllPlayers().setStatusEffect(null, Status.INVINCIBLE, 999)
+    #getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
+    #getAllPlayers().setAimSpeed(10)
+    #createInWorldText(getAllPlayers(), "{0} Nuclear victory! {0}".format(iconString(Icon.RADIOACTIVE)), Winner, 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
+#
+    #wait(0.45)
+    #playEffect(getAllPlayers(), DynamicEffect.DVA_SELF_DESTRUCT_EXPLOSION, Color.TEAM_1, attacker, 999)
+    #playEffect(getAllPlayers(), DynamicEffect.SOMBRA_EMP_EXPLOSION_EFFECT, Color.TEAM_1, attacker, 999)
+    #playEffect(getAllPlayers(), DynamicEffect.ZARYA_PARTICLE_CANNON_EXPLOSION, Color.TEAM_1, attacker, 999)
+    #playEffect(getAllPlayers(), DynamicEffect.ECHO_STICKY_BOMB_EXPLOSION, Color.TEAM_1, attacker, 999)
+#
+    #wait(18.5)
+    #restartMatch()
 
 
-rule "Winning sleep dart hit":
+rule "Sleep Dart victory":
     @Event playerDealtDamage
     @Hero ana
     @Condition eventAbility == Button.ABILITY_1
     @Condition attacker.getScore() == NANO_SCORE
     @Condition not MatchEnded
 
-    getAllPlayers().disableGamemodeHud()
-    getAllPlayers().disableHeroHUD()
-
     MatchEnded = true
     FinalVictim = victim
     Winner = attacker
+
+    getAllPlayers().disableGamemodeHud()
+    getAllPlayers().disableHeroHUD()
+
     declarePlayerVictory(eventPlayer)
     Winner.setScore(NANO_SCORE+1)
     victim.OofDistance = distance(attacker, victim)

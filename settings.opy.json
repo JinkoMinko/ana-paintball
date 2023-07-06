@@ -1,7 +1,7 @@
 {
     "main": {
-        "description":  "The best Ana Paintball since 2019!\n๏ 8 players FFA, first to 30 points!\n๏ Demote others to slow their progress!\n๏ Land a sleep dart to earn the final point!\n๏ Stats tracker, honor mechanic...\nand much more!\n\nDiscord server ≫ www.jinko.dev/discord\nTikTok ≫ @Jinko_OW\nFull mode details ≫ www.jinko.dev/anapb\n\nDON'T SAVE SETTINGS, always import code 1DMTZ to play the latest version!",
-        "modeName": "｢︻デ≡一一 ANA PAINTBALL by Jinko"
+        "description": "NEVER SAVE THE SETTINGS,\nalways import the code, thanks: 1DMTZ\n\nThe best Ana Paintball since 2019!\nStats tracker, honors, demotions...\n\nSupport me ≫ ko-fi.com/jinkofi\nDiscord ≫ jinko.dev/discord\nTikTok ≫ @Jinko_OW\nFull mode details ≫ www.jinko.dev/anapb",
+        "modeName": "\u0001｢︻デ≡一一 ANA PAINTBALL by Jinko"
     },
     "lobby": {
         "allowPlayersInQueue": true,
@@ -46,6 +46,11 @@
                 "combatUltGen%": 0,
                 "passiveUltGen%": 0
             },
+            "bastion": {
+                "enableInfiniteUlt": true,
+                "enableSpawningWithUlt": true,
+                "ultDuration%": 500
+            },
             "enabledHeroes": [
                 "ana"
             ],
@@ -55,7 +60,6 @@
                 "combatUltGen%": 0,
                 "passiveUltGen%": 0
             }
-            
         }
     }
 }
