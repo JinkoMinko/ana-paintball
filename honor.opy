@@ -18,7 +18,7 @@ rule "Send honor message if GRENADE is pressed":
     @Condition eventPlayer.HonorBar != 0
 
     eventPlayer.HonorTarget.HonorQueue.append(eventPlayer)
-    eventPlayer.HonorTarget.MedalQueue.append(Medal.NICE_SHOT)
+    eventPlayer.HonorTarget.MedalQueue.append(Medal.HONOR)
     eventPlayer.HonorBar = 0
 
     eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)

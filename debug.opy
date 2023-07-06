@@ -30,7 +30,7 @@ rule "Debug HUDs":
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
 
     
-rule "INTERACT: create bots":
+rule "INTERACT: spawn bots":
     @Condition DEBUG_MODE
     @Event eachPlayer
     @Condition eventPlayer.isHoldingButton(Button.INTERACT)
@@ -41,6 +41,17 @@ rule "INTERACT: create bots":
     BotName += 1
     wait(0.3, Wait.ABORT_WHEN_FALSE)
     
+
+rule "ULT + INTERACT":
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.INTERACT) and eventPlayer.isHoldingButton(Button.SECONDARY_FIRE)
+    @Condition strContains("{0}".format(eventPlayer), "Jinko")
+
+    eventPlayer.disableEnvironmentCollision(false)
+    waitUntil(not eventPlayer.isHoldingButton(Button.INTERACT) and eventPlayer.isHoldingButton(Button.SECONDARY_FIRE), 5)
+    eventPlayer.enableEnvironmentCollision()
+
 
 rule "PRIMARY FIRE: make bots attack":
     @Condition DEBUG_MODE

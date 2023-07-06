@@ -9,13 +9,14 @@ settings "settings.opy.json"
 
 #!include "macros.opy"
 
-#!define DEBUG_MODE false
+#!define DEBUG_MODE true
 
 #!include "variables.opy"
 #!include "debug.opy"
 
 # Pre-match
 #!include "setup.opy"
+#!include "huds.opy"
 #!include "respawns.opy"
 #!include "playzones.opy"
 

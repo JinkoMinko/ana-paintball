@@ -1,6 +1,6 @@
 #!mainFile "ANA_PB.opy"
 
-def FromTheGraveMedal():
+def FromTheGrave():
     waitUntil(attacker.isAlive(), 69)
     attacker.MedalQueue.append(Medal.FROM_THE_GRAVE)
 

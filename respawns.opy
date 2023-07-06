@@ -1,5 +1,15 @@
 #!mainFile "ANA_PB.opy"
 
+rule "Initial spawn":
+    @Event eachPlayer
+    @Condition not eventPlayer.isDummy()
+    @Hero ana
+    @Condition eventPlayer.getNumberOfDeaths() == 0
+    @Condition SpawnPointSettings != 0
+
+    waitUntil(eventPlayer.hasSpawned(), 99999)
+    RespawnSystem()
+
 def RespawnSystem():
     eventPlayer.AlivePlayers = [
         p for p in getAllPlayers() if 

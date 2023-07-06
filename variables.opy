@@ -5,10 +5,13 @@ globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
 globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
 globalvar NUKE_STREAK = (15 if DEBUG_MODE else 15)
 globalvar NANO_SCORE = (29 if DEBUG_MODE else 29)
+
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
+globalvar CUSTOM_RESPAWN_TIME = 1.1
 globalvar NIGHT_MAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHT_MAPS else Color.PURPLE
-globalvar CUSTOM_RESPAWN_TIME = 1.1
+globalvar DEATH_PLANE_BOT_MAPS = [Map.BLACK_FOREST, Map.BLACK_FOREST_WINTER, Map.HOLLYWOOD, Map.HOLLYWOOD_HALLOWEEN, Map.CHATEAU_GUILLARD, Map.CHATEAU_GUILLARD_HALLOWEEN]
+
 
 # Jump pads
 globalvar CreateJumpPad    # Macro call
@@ -17,14 +20,18 @@ globalvar JumpPadPower
 globalvar JumpPadSize
 globalvar JumpPadFx
 
-# Stats
+# STATS
 playervar LongshotCount
-globalvar LongestLongshotPlayer
-globalvar LongestLongshotValue
+playervar LongestLongshot = 0
+globalvar LongestShotPlayer
+globalvar LongestShotValue
 
-globalvar MostKillStreakPlayer
-globalvar MostKillStreakValue
+globalvar BestKillstreakPlayer
+globalvar BestKillstreakValue
 
+playervar SleepShots
+playervar SleepHits
+playervar SleepAccuracy
 globalvar BestSleepAccuracyPlayer
 globalvar BestSleepAccuracyValue
 
@@ -34,85 +41,63 @@ globalvar BestNoscopeAccuracyValue
 globalvar BestScopedAccuracyValue
 globalvar BestScopedAccuracyPlayer
 
-# General
-globalvar MatchEnded = false
-globalvar Winner
-globalvar FirstBlood
-globalvar FirstSleep
-globalvar FinalVictim
-globalvar LongshotWin
-globalvar Spawn    #used in debug to show spawn points
-
-# Other
-globalvar OutOfBoundBot1
-globalvar PetraPunches    # Petra's Floorbreaker bot hits count
-globalvar i    # used to loop medals sent globally
-globalvar BotName = 1
-
-
-playervar HonorBar = 0
-playervar DisplayStats = true
-playervar OofDistance    # Distance between attacker and victim. >= Longshot Distance
-playervar OofText
-playervar NanoDelay = 1    # Used to know when a player can cast Nanoboost
-playervar ClosestPadIndex    # Closest Jump Pad relative to the player
-playervar IsPlayer 
-playervar LongestLongshot = 0
-playervar KillStreak = 0
-playervar KillStreakBeforeDeath
-playervar SleepShots
-playervar SleepHits
-playervar SleepAccuracy
 playervar NoscopeShots
 playervar NoscopeHits
 playervar NoscopeAccuracy
+
 playervar ScopedShots
 playervar ScopedHits
 playervar ScopedAccuracy
+
 playervar Jumps
-playervar Execute
+subroutine SleepDarts
+playervar PerfectQuickscopes
+playervar ComebackCount # Player consecutive deaths without a kill
+
+playervar Executes
 playervar StolenKills
 playervar DemotedPlayers
 playervar Deaths
 playervar ElimsBeforeQS
-playervar PerfectQuickscopes
-playervar ComebackCount # Numbers of deaths without a kill
-playervar Killer
-playervar SleepAuthor
-playervar SleepUsedAndDied = true    # Used to detect when a sleeping player should be awoken due to their SleepAuthor dying
-playervar SleepLock     # should be reworked
-playervar SleepsOnground = false    # Whether a player that was hit with a sleep dart has finished the "falling on the ground" animation
-playervar Temp
-playervar EarnedCollateral
-playervar Sandman
-playervar PunchDrunk
+
+# END GAME
+globalvar MatchEnded = false
+globalvar Winner
+globalvar FinalVictim
+globalvar LongshotWin
+
+
+# KILLSTREAKS
+playervar DemotedEffect
+playervar RampageVFX
+playervar RampageSFX
 playervar IsOnFire = false
 playervar IsOnRampage = false
 
-playervar QuadFeedTimes = []
-playervar HonorQueue = []
+
+# COMMS
+subroutine SayVoiceline
+subroutine SayUltStatus
+subroutine SayThanks
+subroutine SaySorry
+
+
+# MEDALS
+globalvar i    # used to loop medals sent globally
 playervar SystemMessages = []
 playervar MedalQueue = []
-
-playervar ShutdownVictim
-playervar StolenFrom
-playervar DisplayMedal
-playervar MedalCount #debug
-playervar SysMsgCount #debug
-playervar HonorTarget
-
-playervar RaycastLastHitPlayer
-playervar RaycastLastHitPos
-
-playervar FixMovementBug
-
-globalvar Rainbow
-globalvar IndexValue
+playervar QuadFeedTimes = []
+playervar EarnedCollateral
+playervar Sandman
+playervar PunchDrunk
+globalvar FirstBlood
+globalvar FirstSleep
+subroutine FromTheGrave
 
 enum Medal:
     SYSTEM_MESSAGE,
-    NICE_SHOT,
-    EXECUTE,
+    HONOR,
+    EXECUTED,
     PERFECT_QS,
     DEMOTION,
     STOLEN_KILL,
@@ -142,26 +127,19 @@ enum Medal:
     FROM_THE_GRAVE,
 
 
+# RESPAWN SYSTEM
+subroutine RespawnSystem
+
 playervar AlivePlayers
 playervar SpawnPointsNotInLOS
 playervar SpawnPointsFarEnoughFromPlayers
 playervar ChosenSpawnPoint
 
+globalvar RespawnHigherDistance
+globalvar RespawnLowerDistance
+globalvar RespawnFailsafeDistance
 globalvar SpawnPointSettings
 
-playervar DemotedEffect
-playervar RampageVFX
-playervar RampageSFX
-
-subroutine SleepDarts
-subroutine SayVoiceline
-subroutine FromTheGraveMedal
-subroutine SayUltStatus
-subroutine SayThanks
-subroutine SaySorry
-
-
-subroutine RespawnSystem
 subroutine RespawnsCHATEAU
 subroutine RespawnsPETRA
 subroutine RespawnsMALEVENTO
@@ -173,12 +151,63 @@ subroutine RespawnsECOPOINT
 subroutine RespawnsBLACKFOREST
 subroutine RespawnsNEPALSHRINE
 subroutine RespawnsKANEZAKA
-subroutine RespawnsLIJANGCONTROL
-subroutine PlayZoneLIJANGCONTROL
 
+
+# PLAYZONES
 globalvar PlayzoneCenter
 globalvar PlayzoneRadius
 
-globalvar RespawnHigherDistance
-globalvar RespawnLowerDistance
-globalvar RespawnFailsafeDistance
+subroutine RespawnsLIJANGCONTROL
+subroutine PlayZoneLIJANGCONTROL
+
+
+# BOTS
+globalvar OutOfBoundBot1
+globalvar PetraPunches    # Petra's Floorbreaker bot hits count
+
+
+# HONOR SYSTEM
+playervar HonorQueue = []
+playervar HonorBar = 0
+playervar HonorTarget
+
+
+# JUMP PADS
+playervar ClosestPadIndex    # Closest Jump Pad relative to the player
+
+
+# DEBUG
+globalvar BotName = 1
+playervar MedalCount
+playervar SysMsgCount
+globalvar Spawn      # shows spawn points
+globalvar IndexValue # cycle through spawn points
+playervar FixMovementBug # delete this system when blizz fixes the bug
+
+
+playervar DisplayStats = true
+playervar OofDistance    # Distance between attacker and victim. >= Longshot Distance
+playervar OofText
+playervar NanoDelay = 1    # Used to know when a player can cast Nanoboost
+playervar IsPlayer 
+playervar KillStreak = 0
+playervar KillStreakBeforeDeath
+
+playervar Killer
+playervar SleepAuthor
+playervar SleepUsedAndDied = true    # detect when a sleeping player should be awoken due to their SleepAuthor dying
+playervar SleepLock     # needs reworked
+playervar SleepsOnground = false    # Whether a player that was hit with a sleep dart has finished the "falling on the ground" animation - needs reworked
+playervar Temp
+playervar DemotionVictim
+playervar ShutdownVictim
+playervar StolenFrom
+playervar DisplayMedal
+
+# COLLATERALS
+playervar RaycastLastHitPlayer
+playervar RaycastLastHitPos
+
+
+# HUD
+globalvar Rainbow

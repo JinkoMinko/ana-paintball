@@ -147,9 +147,9 @@ rule "Longshot":
     if attacker.OofDistance > attacker.LongestLongshot:
         attacker.LongestLongshot = distance(attacker, victim)
     wait()
-    if attacker.LongestLongshot > LongestLongshotValue:
-        LongestLongshotPlayer = attacker
-        LongestLongshotValue = attacker.LongestLongshot
+    if attacker.LongestLongshot > LongestShotValue:
+        LongestShotPlayer = attacker
+        LongestShotValue = attacker.LongestLongshot
     
     attacker.LongshotCount += 1
     if attacker.LongshotCount >= 10:
@@ -183,10 +183,10 @@ rule "MEDALS":
     eventPlayer.DisplayMedal = eventPlayer.MedalQueue[0]
     if eventPlayer.DisplayMedal != Medal.SYSTEM_MESSAGE:
         smallMessage(eventPlayer, {
-            Medal.NICE_SHOT:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.HonorQueue[0], random.choice(["Nice one!", "Sheeeesh", "Damn!", "wow!", "oof"])),
-            Medal.EXECUTE:          "    {0}{1}  Execution - max ammo".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
+            Medal.HONOR:        "    {0}  {1} said: '{2}'".format(heroIcon(Hero.ANA), eventPlayer.HonorQueue[0], random.choice(["Nice one!", "Sheeeesh", "Damn!", "wow!", "oof"])),
+            Medal.EXECUTED:          "    {0}{1}  Execution - max ammo".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.RECYCLE)),
             Medal.PERFECT_QS:       "    {0}  Perfect quickscope".format(abilityIconString(Hero.KIRIKO, Button.JUMP)),
-            Medal.DEMOTION:         "    {0}{1}  Demotion - max ammo".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), iconString(Icon.RECYCLE)),
+            Medal.DEMOTION:         "    {0}  Demotion! {1} lost a point".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), eventPlayer.DemotionVictim),
             Medal.STOLEN_KILL:      "    {0}  Stole {1}'s kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), eventPlayer.StolenFrom),
             Medal.COMEBACK:         "    {0}  Comeback".format(abilityIconString(Hero.MERCY, Button.ULTIMATE)),
             Medal.FIRST_BLOOD:      "    {0}  First blood".format(abilityIconString(Hero.BRIGITTE, Button.ULTIMATE)),
@@ -222,7 +222,7 @@ rule "MEDALS":
         eventPlayer.SysMsgCount += 1
     del eventPlayer.MedalQueue[0]
     wait(0.5)
-    if eventPlayer.DisplayMedal == Medal.NICE_SHOT:
+    if eventPlayer.DisplayMedal == Medal.HONOR:
         del eventPlayer.HonorQueue[0]
     if RULE_CONDITION:
         goto RULE_START

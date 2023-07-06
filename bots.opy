@@ -31,7 +31,17 @@ rule "PETRA break floor over time":
     destroyAllDummies()
 
 
-rule "HAMMOND spawn - CHATEAU":
+################################### DEATH PLANE BOTS
+    
+rule "Death plane exploit loop":
+    @Condition getCurrentMap() in DEATH_PLANE_BOT_MAPS
+
+    wait(10)
+    OutOfBoundBot1.setEnvironmentalKillCreditor(OutOfBoundBot1)
+    OutOfBoundBot1.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+        goto RULE_START
+
+rule "Death plane HAMMOND CHATEAU":
     @Condition isGameInProgress()
     @Condition getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN
 
@@ -57,16 +67,7 @@ rule "HAMMOND spawn - CHATEAU":
     OutOfBoundBot1.startFacing(directionTowards(OutOfBoundBot1.getEyePosition(), getClosestPlayer(OutOfBoundBot1, Team.ALL)) if distance(getClosestPlayer(OutOfBoundBot1, Team.ALL), vect(206.4, 0, 92)) <= 25 and distance(getClosestPlayer(OutOfBoundBot1, Team.ALL), vect(206, 0, 73)) <= 13 and getClosestPlayer(OutOfBoundBot1, Team.ALL).getPosition().y < 3.5 and getClosestPlayer(OutOfBoundBot1, Team.ALL).hasSpawned() else Vector.BACKWARD, 20, Relativity.TO_WORLD, FacingReeval.DIRECTION_AND_TURN_RATE)
 
 
-rule "HAMMOND exploit - CHATEAU":
-    @Condition getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN
-
-    wait(10)
-    OutOfBoundBot1.setEnvironmentalKillCreditor(OutOfBoundBot1)
-    OutOfBoundBot1.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
-        goto RULE_START
-
-
-rule "HAMMOND spawn - HOLLYWOOD":
+rule "Death plane HAMMOND HOLLYWOOD":
     @Condition isGameInProgress()
     @Condition getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN
 
@@ -92,16 +93,7 @@ rule "HAMMOND spawn - HOLLYWOOD":
     OutOfBoundBot1.startFacing(directionTowards(OutOfBoundBot1.getEyePosition(), getClosestPlayer(OutOfBoundBot1, Team.ALL)) if distance(getClosestPlayer(OutOfBoundBot1, Team.ALL), vect(-7, 0.8, -7)) <= 12.2 else directionTowards(OutOfBoundBot1.getEyePosition(), vect(-4, 3, -12)), 20, Relativity.TO_WORLD, FacingReeval.DIRECTION_AND_TURN_RATE)
 
 
-rule "HAMMOND exploit - HOLLYWOOD":
-    @Condition getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN
-
-    wait(10)
-    OutOfBoundBot1.setEnvironmentalKillCreditor(OutOfBoundBot1)
-    OutOfBoundBot1.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
-        goto RULE_START
-
-
-rule "SIGMA spawn - BLACK FOREST":
+rule "Death plane SIGMA BLACK FOREST":
     @Condition isGameInProgress()
     @Condition getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() == Map.BLACK_FOREST_WINTER
 
@@ -124,12 +116,3 @@ rule "SIGMA spawn - BLACK FOREST":
 
     OutOfBoundBot1.teleport(vect(-44, -25, -2))
     OutOfBoundBot1.setFacing(directionTowards(OutOfBoundBot1.getEyePosition(), vect(-16.4, 15, -6)), Relativity.TO_WORLD)
-
-
-rule "SIGMA exploit - BLACK FOREST":
-    @Condition getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() == Map.BLACK_FOREST_WINTER
-
-    wait(10)
-    OutOfBoundBot1.setEnvironmentalKillCreditor(OutOfBoundBot1)
-    OutOfBoundBot1.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
-        goto RULE_START

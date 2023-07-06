@@ -52,12 +52,13 @@ rule "Kill logic":
             attacker.MedalQueue.append(Medal.DREAMCATCHER)  
 
         attacker.KillStreak += 1
-        attacker.Execute += 1
+        attacker.Executes += 1
         attacker.PunchDrunk += 1
         attacker.setAmmo(0, 15)
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
         playEffect(getAllPlayers() if victim.getScore() > attacker.getScore() else getAllPlayers().exclude(victim), DynamicEffect.SIGMA_ACCRETION_IMPACT_SOUND, Color.WHITE, victim.getPosition(), 55)
         if victim.getScore() >= attacker.getScore():    # DEMOTIONS
+            attacker.DemotionVictim = victim
             attacker.MedalQueue.append(Medal.DEMOTION)
             async(SaySorry, AsyncBehavior.NOOP)
             smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1} demoted {2}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker, victim))
@@ -72,7 +73,7 @@ rule "Kill logic":
                 attacker.MedalQueue.append(Medal.SHOWSTOPPER)
         
         elif attacker.getScore() < NANO_SCORE:
-            attacker.MedalQueue.append(Medal.EXECUTE)
+            attacker.MedalQueue.append(Medal.EXECUTED)
             attacker.setAmmo(0, 15)
         
         if attacker.PunchDrunk == 5:
@@ -86,9 +87,9 @@ rule "Kill logic":
     if victim.KillStreak == 0:
         victim.ComebackCount +=1
 
-    if attacker.KillStreak > MostKillStreakValue and attacker.KillStreak >= ONFIRE_STREAK:
-        MostKillStreakPlayer = attacker
-        MostKillStreakValue = attacker.KillStreak
+    if attacker.KillStreak > BestKillstreakValue and attacker.KillStreak >= ONFIRE_STREAK:
+        BestKillstreakPlayer = attacker
+        BestKillstreakValue = attacker.KillStreak
 
     if attacker.getScore() > NANO_SCORE:
         attacker.setScore(NANO_SCORE)
@@ -107,7 +108,7 @@ rule "Kill logic":
         async(SayThanks, AsyncBehavior.NOOP)
     
     if attacker.isDead():
-        async(FromTheGraveMedal, AsyncBehavior.NOOP)
+        async(FromTheGrave, AsyncBehavior.NOOP)
 
     attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)
     
