@@ -5,10 +5,14 @@ rule "Kill logic":
     @Hero ana
     @Condition eventAbility == Button.PRIMARY_FIRE or (eventAbility == Button.MELEE and victim.hasStatusEffect(Status.ASLEEP))
     @Condition not MatchEnded
-    
+
+    kill(victim, attacker)
     attacker.EarnedCollateral = 0
     attacker.ComebackCount = 0
-    kill(victim, attacker)
+    
+    victim.HonorTarget = attacker
+    victim.HonorBar = 100
+    chase(victim.HonorBar, 0, duration=CUSTOM_RESPAWN_TIME + 0.9, ChaseReeval.DESTINATION_AND_DURATION)
 
     if attacker.ComebackCount >= 3:
         attacker.MedalQueue.append(Medal.COMEBACK)

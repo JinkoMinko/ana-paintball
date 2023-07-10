@@ -29,18 +29,16 @@ def SaySorry():
     wait(0.4)
     attacker.communicate(Comms.SORRY)
 
-def RandomEmote():
-    wait(0.4)
-    if attacker.isAlive():
-        switch random.randint(1,4):
-            case 1:
-                eventPlayer.communicate(Comms.EMOTE_UP)
-            case 2:
-                eventPlayer.communicate(Comms.EMOTE_RIGHT)
-            case 3:
-                eventPlayer.communicate(Comms.EMOTE_DOWN)
-            case 4:
-                eventPlayer.communicate(Comms.EMOTE_LEFT)
+def RandomEmote():  # Used in nuclear win
+    switch random.randint(1,4):
+        case 1:
+            eventPlayer.communicate(Comms.EMOTE_UP)
+        case 2:
+            eventPlayer.communicate(Comms.EMOTE_RIGHT)
+        case 3:
+            eventPlayer.communicate(Comms.EMOTE_DOWN)
+        case 4:
+            eventPlayer.communicate(Comms.EMOTE_LEFT)
     wait(1)
     if not attacker.isCommunicatingEmote():
         attacker.communicate(Comms.HELLO)

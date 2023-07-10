@@ -25,6 +25,9 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
+    #hudSubtext(eventPlayer, "Cam pos: {}".format(updateEveryTick(NukeImpactPos + normalize(vect(eventPlayer.getFacingDirection().x, 0, eventPlayer.getFacingDirection().z)) * 55 + vect(0, NukeImpactPos.y, 0) + vect(0, 80, 0)), NukeImpactPos, 0), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+    #hudSubtext(eventPlayer, "NukeImpactPos: {}".format(NukeImpactPos), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+
     #hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     #hudSubtext(eventPlayer, updateEveryTick("{}".format(eventPlayer.getPosition())), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
@@ -60,11 +63,7 @@ rule "PRIMARY FIRE: make bots attack":
     @Condition eventPlayer.isHoldingButton(Button.PRIMARY_FIRE)
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    #getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.MELEE)
-    #getAllPlayers().exclude(eventPlayer).startForcingButton(Button.SECONDARY_FIRE)
-    #wait(0.5)
     getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.PRIMARY_FIRE)
-    #kill(eventPlayer, eventPlayer)
 
 rule "GRENADE: make bots punch":
     @Condition DEBUG_MODE
@@ -74,7 +73,6 @@ rule "GRENADE: make bots punch":
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
     getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.MELEE)
-    eventPlayer.setAmmo(0, 2)
 
 
 rule "CROUCH: teleport to closest bot":
@@ -96,7 +94,6 @@ rule "SLEEP DART: make bots use sleep dart":
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
     getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.ABILITY_1)
-    #getAllPlayers().exclude(eventPlayer).startThrottleInDirection(directionTowards(localPlayer.getEyePosition(), Vector.FORWARD), 1, Relativity.TO_PLAYER, Throttle.ADD_TO_EXISTING, ThrottleReeval.DIRECTION_AND_MAGNITUDE)
 
 
 rule "bots honor players'":
@@ -105,6 +102,7 @@ rule "bots honor players'":
     @Hero ana
     @Condition not strContains("{0}".format(eventPlayer), "Jinko")
     @Disabled
+
     wait(1)
     eventPlayer.startForcingButton(Button.ABILITY_2)
     wait()
@@ -131,10 +129,22 @@ rule "show spawn points":
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
         createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.3, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-        #createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)]+vect(0,2,0), 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
         createInWorldText(getAllPlayers(), "{0}".format(SpawnPointSettings[evalOnce(Spawn)]), SpawnPointSettings[evalOnce(Spawn)]+vect(0,0.5,0), 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_AND_STRING, Color.GREEN, SpecVisibility.NEVER)
+        #createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)]+vect(0,2,0), 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
     
+rule "log spawn point and facing direction":
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Condition strContains("{0}".format(eventPlayer), "Jinko")
+    @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
+    @Disabled
+
+    printLog("[vect{0}, vect{1}],".format(eventPlayer.getPosition(), normalize(eventPlayer.getFacingDirection() * vect(1, 0, 1))))
+    smallMessage(eventPlayer, "    {0} printed log".format(iconString(Icon.CHECKMARK)))
+    createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.PURPLE, eventPlayer.getPosition(), 0.3, EffectReeval.NONE)
+
+
 rule "cycle through to spawn points":
     @Condition DEBUG_MODE
     @Event eachPlayer
@@ -146,13 +156,56 @@ rule "cycle through to spawn points":
     eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
     IndexValue +=1
 
-rule "log spawn point and facing direction":
+
+
+
+
+    # NUKE TOOL
+
+rule "Debug HUDs":
     @Condition DEBUG_MODE
     @Event eachPlayer
+    @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
-    @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
     @Disabled
 
-    printLog("[vect{0}, vect{1}]".format(eventPlayer.getPosition(), eventPlayer.getFacingDirection()))
-    smallMessage(eventPlayer, "    {0} printed log".format(iconString(Icon.CHECKMARK)))
-    createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.PURPLE, eventPlayer.getPosition(), 0.3, EffectReeval.NONE)
+    hudSubtext(eventPlayer, "Cam pos: {}".format(updateEveryTick(NukeImpactPos + normalize(vect(eventPlayer.getFacingDirection().x, 0, eventPlayer.getFacingDirection().z)) * 55 + vect(0, NukeImpactPos.y, 0) + vect(0, 80, 0)), NukeImpactPos, 0), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+    hudSubtext(eventPlayer, "NukeImpactPos: {}".format(NukeImpactPos), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+
+
+rule "Define NukeImpactPos":
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.ABILITY_2)
+    @Disabled
+
+    destroyAllEffects()
+    NukeImpactPos = raycast(eventPlayer.getEyePosition(),  eventPlayer.getEyePosition() + eventPlayer.getFacingDirection() * 500, null, eventPlayer, false).getHitPosition()
+    createEffect(getAllPlayers(), Effect.SPHERE, Color.GREEN, NukeImpactPos, 0.5, EffectReeval.NONE)
+
+
+rule "Show nuke cam":
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.SECONDARY_FIRE)
+    @Disabled
+
+    #!define dist 55
+    #!define heightOffset vect(0, 80, 0)
+    eventPlayer().startCamera(updateEveryTick(NukeImpactPos + normalize(vect(eventPlayer.getFacingDirection().x, 0, eventPlayer.getFacingDirection().z)) * dist + vect(0, NukeImpactPos.y, 0) + heightOffset), NukeImpactPos, 0)
+    waitUntil(eventPlayer.isMeleeing(), 99)
+    eventPlayer.stopCamera()
+
+
+rule "Print vectors":
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Condition eventPlayer.isHoldingButton(Button.ABILITY_1)
+    @Disabled
+
+    printLog("NukeImpactPos = vect{}".format(NukeImpactPos))
+    printLog("NukeCamPos = vect{}".format(updateEveryTick(NukeImpactPos + normalize(vect(eventPlayer.getFacingDirection().x, 0, eventPlayer.getFacingDirection().z)) * dist + vect(0, NukeImpactPos.y, 0) + heightOffset), NukeImpactPos, 0))
+    smallMessage(eventPlayer, "    {} printed log".format(iconString(Icon.CHECKMARK)))
+
+
+

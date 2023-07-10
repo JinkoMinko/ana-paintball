@@ -3,11 +3,11 @@
 # CONSTANTS
 globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
 globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
-globalvar NUCLEAR_STREAK = (15 if DEBUG_MODE else 15)
+globalvar NUCLEAR_STREAK = (1 if DEBUG_MODE else 15)
 globalvar NANO_SCORE = (29 if DEBUG_MODE else 29)
 
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
-globalvar CUSTOM_RESPAWN_TIME = 1.5
+globalvar CUSTOM_RESPAWN_TIME = 1.6
 globalvar NIGHT_MAPS = [Map.EICHENWALDE_HALLOWEEN, Map.CHATEAU_GUILLARD_HALLOWEEN, Map.BLIZZ_WORLD_WINTER, Map.ECOPOINT_ANTARCTICA_WINTER, Map.HOLLYWOOD_HALLOWEEN]
 globalvar JUMP_PAD_COLOR = Color.BLUE if getCurrentMap() in NIGHT_MAPS else Color.PURPLE
 globalvar DEATH_PLANE_BOT_MAPS = [Map.BLACK_FOREST, Map.BLACK_FOREST_WINTER, Map.HOLLYWOOD, Map.HOLLYWOOD_HALLOWEEN, Map.CHATEAU_GUILLARD, Map.CHATEAU_GUILLARD_HALLOWEEN]
@@ -171,7 +171,7 @@ subroutine PlayZoneLIJANGCONTROL
 
 
 # BOTS
-globalvar OutOfBoundBot1
+globalvar OutOfBoundBot
 globalvar NuclearBot
 globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 
@@ -186,6 +186,20 @@ playervar HonorTarget
 playervar RaycastLastHitPlayer
 playervar RaycastLastHitPos
 
+
+# NUCLEAR BOMB
+playervar Count
+playervar NukeEffects
+globalvar NukeExplodeFxPos = 1
+
+globalvar NukeCamHorizontalDist
+globalvar Camdist
+globalvar NukePos
+globalvar NukeImpactPos
+globalvar NukeCamPos
+globalvar NukeCamShakeX
+globalvar NukeCamShakeY
+globalvar NukeCamShakeZ
 
 # HUD
 globalvar Rainbow

@@ -43,15 +43,15 @@ rule "Initial spawn message":
     @Condition eventPlayer.getNumberOfDeaths() == 0
 
     wait(0.1) # required
-    smallMessage(eventPlayer, random.choice([
-                                                "    {0}  Discord link on top !  {0}".format(iconString(Icon.ARROW_UP)),
-                                                "    {0}  Ana Paintball on TikTok: @Jinko_OW".format(heroIcon(Hero.ANA)),
-                                                "    {0}  Scoped shots pierce through enemies!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
-                                                "    {0}{1}  You can punch sleeping players!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
-                                                "    {0}  Guaranteed without bad teammates!".format(iconString(Icon.CHECKMARK)),
-                                            ]))
-    wait(0.2) # required
     smallMessage(eventPlayer, "    Mode by Jinko#2838")
+    wait(0.2) # required
+    smallMessage(eventPlayer, random.choice([
+                                                "    {0}  Discord server link on top  {0}".format(iconString(Icon.ARROW_UP)),
+                                                "    {0}  Ana Paintball TikTok: @Jinko_OW".format(iconString(Icon.EYE)),
+                                                "    {0}  Scoped shots pierce through enemies".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
+                                                "    {0}{1}  You can punch sleeping players".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
+                                                "    {0}  Guaranteed without bad teammates".format(iconString(Icon.CHECKMARK)),
+                                            ]))
 
 
 rule "Restart game when lobby is empty": # For when I spectate randoms
@@ -62,7 +62,7 @@ rule "Restart game when lobby is empty": # For when I spectate randoms
         restartMatch()
 
 
-rule "Pick spawn points & define playzone":
+rule "Define spawn points, play zone and nuke settings depending on map":
     @Event global
 
     if getCurrentMap() == Map.CHATEAU_GUILLARD or getCurrentMap() == Map.CHATEAU_GUILLARD_HALLOWEEN:
@@ -70,51 +70,83 @@ rule "Pick spawn points & define playzone":
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(200.75, 21.89, 67.00)
+        NukeCamPos = vect(241.37, 123.78, 29.92)
     elif getCurrentMap() == Map.PETRA:
         RespawnsPETRA()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(15.57, -6.60, 35.95)
+        NukeCamPos = vect(25.80, 66.80, 89.99)
     elif getCurrentMap() == Map.BLACK_FOREST or getCurrentMap() ==Map.BLACK_FOREST_WINTER:
         RespawnsBLACKFOREST()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(-21.97, 12.09, 5.58)
+        NukeCamPos = vect(-54.85, 104.18, -38.50)
     elif getCurrentMap() == Map.MALEVENTO:
         RespawnsMALEVENTO()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(0.31, -1.00, -7.36)
+        NukeCamPos = vect(30.10, 78.00, -53.59)
     elif getCurrentMap() == Map.DORADO:
         RespawnsDORADO()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(99.13, 21.23, 1.93)
+        NukeCamPos = vect(119.79, 122.46, -49.05)
     elif getCurrentMap() == Map.HOLLYWOOD or getCurrentMap() == Map.HOLLYWOOD_HALLOWEEN:
         RespawnsHOLLYWOOD()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(1.95, 1.60, -47.40)
+        NukeCamPos = vect(1.08, 83.21, 7.60)
+
     elif getCurrentMap() == Map.BLIZZ_WORLD or getCurrentMap() == Map.BLIZZ_WORLD_WINTER:
         RespawnsBLIZZWORLD()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(-51.16, 11.03, 96.46)
+        NukeCamPos = vect(-105.76, 102.05, 89.83)
     elif getCurrentMap() == Map.EICHENWALDE or getCurrentMap() == Map.EICHENWALDE_HALLOWEEN:
         RespawnsEICHENWALDE()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(56, 18, -80)
+        NukeCamPos = vect(117, 95, -114)
     elif getCurrentMap() == Map.ECOPOINT_ANTARCTICA or getCurrentMap() == Map.ECOPOINT_ANTARCTICA_WINTER:
         RespawnsECOPOINT()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(2.68, 7.30, 1.25)
+        NukeCamPos = vect(-13.77, 92.29, -51.37)
+
     elif getCurrentMap() == Map.KANEZAKA:
         RespawnsKANEZAKA()
         RespawnHigherDistance = 999
         RespawnLowerDistance = 25
         RespawnFailsafeDistance = 15
+
+        NukeImpactPos = vect(-36.31, 5.84, -7.69)
+        NukeCamPos = vect(-66.48, 91.68, -53.68)
     elif getCurrentMap() == Map.LIJIANG_CONTROL_CENTER or getCurrentMap() == Map.LIJIANG_CONTROL_CENTER_LNY:
         RespawnsLIJANGCONTROL()
         RespawnHigherDistance = 999
@@ -122,11 +154,17 @@ rule "Pick spawn points & define playzone":
         RespawnFailsafeDistance = 15
         PlayzoneCenter = vect(0, 267.28, 282.52)
         PlayzoneRadius = 75
+
+        NukeImpactPos = vect(44.84, 243.67, 257.17)
+        NukeCamPos = vect(93.75, 567.33, 282.32)
+
     else: # if the current map is not supported by the mode, use default spawn system
         SpawnPointSettings = 0
         PlayzoneCenter = 0
         PlayzoneRadius = 0
 
+        NukeImpactPos = vect(0, 0, 0)
+        NukeCamPos = vect(55, 80, 0)
 
 rule "PLAYER EFFECTS":
     @Event eachPlayer

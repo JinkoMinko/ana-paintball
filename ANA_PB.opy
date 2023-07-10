@@ -11,7 +11,7 @@ settings "settings.opy.json"
 #!include "macros.opy"
 
 # Toggle debug mode
-#!define DEBUG_MODE true
+#!define DEBUG_MODE false
 # # # # # # # # # # # # # # # # # # # # # # 
 
 # Pre-match
@@ -21,32 +21,23 @@ settings "settings.opy.json"
 #!include "huds.opy"
 #!include "respawns.opy"
 #!include "playzones.opy"
+#!include "mapObjects.opy"
+#!include "bots.opy"
 
-# Context messages
 #!include "systemMessages.opy"
 
-# Trackers
 #!include "stats.opy"
-#!include "medals.opy"
-#!include "honor.opy"
 
-# Kills & deaths
 #!include "kills.opy"
+#!include "medals.opy"
 
-# Sleep mechanics
 #!include "sleep.opy"
 
-# End-game nanoboost
 #!include "nano.opy"
 
-# When a player wins
 #!include "win.opy"
 
 #!include "jumpPads.opy"
-
-# Launchers, teleporters, etc
-#!include "mapObjects.opy"
-#!include "bots.opy"
 
 # Subroutines
 #!include "subroutines.opy"

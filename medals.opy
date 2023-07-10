@@ -1,5 +1,22 @@
 #!mainFile "ANA_PB.opy"
 
+rule "Send honor medal":
+    @SuppressWarnings w_ow2_rule_condition_chase
+    @Event eachPlayer
+    @Hero ana
+    @Condition eventPlayer.isHoldingButton(Button.ABILITY_2)
+    @Condition eventPlayer.HonorTarget != null
+    @Condition eventPlayer.HonorBar != 0
+
+    eventPlayer.HonorTarget.HonorQueue.append(eventPlayer)
+    eventPlayer.HonorTarget.MedalQueue.append(Medal.HONOR)
+    eventPlayer.HonorBar = 0
+
+    eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
+    smallMessage(eventPlayer, "    {0}  honor sent to {1}!".format(iconString(Icon.HAPPY), eventPlayer.HonorTarget))
+    playEffect(eventPlayer, DynamicEffect.BRIGITTE_REPAIR_PACK_ARMOR_SOUND, Color.WHITE, eventPlayer, 200)
+
+
 rule "sleep hit sys msg":
     @Event playerDealtDamage
     @Hero ana
@@ -75,6 +92,8 @@ rule "Killstreak effects & announcements":
     elif attacker.KillStreak >= NUCLEAR_STREAK:
         attacker.IsNuclear = true
         attacker.MedalQueue.append(Medal.NUCLEAR)
+        playEffect(getAllPlayers(), DynamicEffect.ANA_BIOTIC_GRENAGE_NO_HEALING_SOUND, Color.WHITE, attacker, 200)
+        createInWorldText(attacker, "    {0} Nuclear killstreak! {0}\nPress [{1}] to request Nano-nuke".format(iconString(Icon.RADIOACTIVE), buttonString(Button.ULTIMATE)), updateEveryTick(localPlayer.getEyePosition() + (100 * (0 * worldVector(Vector.RIGHT, localPlayer, Transform.ROTATION) + ((0.69 - 0.2) * (angleToDirection(horizontalAngleOfDirection(localPlayer.getFacingDirection()), verticalAngleOfDirection(localPlayer.getFacingDirection()) - 90))) + 3 * localPlayer.getFacingDirection()))), 9, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.DEFAULT)
 
 
 
@@ -162,7 +181,7 @@ rule "Longshot":
     if eventAbility == Button.ABILITY_1:
         attacker.MedalQueue.append(Medal.SLEEP_SNIPER)
     wait(0.5)
-    destroyInWorldText(attacker.OofText)
+    destroyInWorldText(victim.OofText)
 
 
 rule "Sandman":
@@ -183,6 +202,7 @@ rule "MEDALS":
     @Event eachPlayer
     @Hero ana
     @Condition len(eventPlayer.MedalQueue) > 0
+    @Condition not MatchEnded
 
     wait()
     eventPlayer.DisplayMedal = eventPlayer.MedalQueue[0]
@@ -206,7 +226,7 @@ rule "MEDALS":
             Medal.QUADFEED:         "    {0}  Quadfeed".format(abilityIconString(Hero.JUNKER_QUEEN, Button.ULTIMATE)),
             Medal.ON_FIRE:          "    {0}  On fire".format(abilityIconString(Hero.TORBJORN, Button.ULTIMATE)),
             Medal.RAMPAGE:          "    {0}  {1}".format(abilityIconString(Hero.REAPER, Button.ULTIMATE), random.choice(["You are on a rampage!", "Rampage!"])),
-            Medal.RAMPAGE:          "    {0}  Nuclear".format(iconString(Icon.RADIOACTIVE)),
+            Medal.NUCLEAR:          "    {0}  Nuclear".format(iconString(Icon.RADIOACTIVE)),
             Medal.JOLLY_JUMPER:     "    {0}  Jolly jumper".format(abilityIconString(Hero.BAPTISTE, Button.CROUCH)),
             Medal.COLLATERAL_KILLS: "    {0}  Collateral kills".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
             Medal.MUTUAL_SLEEP:     "    {0}  Mutual sleep, awaking...".format(abilityIconString(Hero.MERCY, Button.ABILITY_2)),
@@ -218,8 +238,6 @@ rule "MEDALS":
             Medal.SANDMAN:          "    {0}{1}  Sandman".format(abilityIconString(Hero.ANA, Button.ABILITY_1), abilityIconString(Hero.ECHO, Button.ULTIMATE)),
             Medal.PUNCH_DRUNK:      "    {0}{1}  Punch drunk".format(abilityIconString(Hero.ANA, Button.MELEE), iconString(Icon.DIZZY)),
             Medal.FROM_THE_GRAVE:   "    {0}  From the grave".format(abilityIconString(Hero.REAPER, Button.ULTIMATE)),
-            
-
             }[eventPlayer.DisplayMedal])
         if DEBUG_MODE:
             eventPlayer.MedalCount += 1
