@@ -40,5 +40,5 @@ def RandomEmote():  # Used in nuclear win
         case 4:
             eventPlayer.communicate(Comms.EMOTE_LEFT)
     wait(1)
-    if not attacker.isCommunicatingEmote():
-        attacker.communicate(Comms.HELLO)
+    if not attacker.isCommunicatingAnything():
+        attacker.communicate(Comms.GOODBYE)

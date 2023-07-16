@@ -1,15 +1,14 @@
 #!mainFile "ANA_PB.opy"
 
-rule "Kill logic":
-    @Event playerDealtDamage
+rule "Kill logic": 
+    @Event playerDealtDamage #cant use final blow because it breaks eventability conditions
     @Hero ana
     @Condition eventAbility == Button.PRIMARY_FIRE or (eventAbility == Button.MELEE and victim.hasStatusEffect(Status.ASLEEP))
     @Condition not MatchEnded
 
     kill(victim, attacker)
     attacker.EarnedCollateral = 0
-    attacker.ComebackCount = 0
-    
+
     victim.HonorTarget = attacker
     victim.HonorBar = 100
     chase(victim.HonorBar, 0, duration=CUSTOM_RESPAWN_TIME + 0.9, ChaseReeval.DESTINATION_AND_DURATION)
@@ -89,6 +88,13 @@ rule "Kill logic":
         attacker.MedalQueue.append(Medal.BUZZKILL)
         async(SaySorry(), AsyncBehavior.NOOP)
 
+    if victim.KillStreak == NUCLEAR_STREAK -1:
+        attacker.MedalQueue.append(Medal.COUNTERMEASURE)
+        async(SaySorry(), AsyncBehavior.NOOP)
+    
+    if victim.IsNuclear:
+        attacker.MedalQueue.append(Medal.CATASTROPHE)
+
     if victim.KillStreak == 0:
         victim.ComebackCount +=1
 
@@ -119,6 +125,8 @@ rule "Kill logic":
     
     if attacker.getScore() == NANO_SCORE - 2:
         async(SayUltStatus, AsyncBehavior.NOOP)
+    
+    attacker.ComebackCount = 0
 
 
 rule "Respawn logic":

@@ -1,18 +1,30 @@
 #!mainFile "ANA_PB.opy"
 
-rule "GLOBAL create Nuclear Bomb Bastion":
-    @Event global
-    @Condition isGameInProgress()
+rule "Hammond says hello back":
+    @Event eachPlayer
+    @Condition eventPlayer.isCommunicating(Comms.HELLO)
+    @Condition distance(eventPlayer, OutOfBoundBot.getEyePosition()) < 15
+    @Condition angleBetweenVectors(eventPlayer.getFacingDirection(), directionTowards(eventPlayer.getEyePosition(), OutOfBoundBot.getEyePosition())) <= 6.5
+    @Condition isInLoS(eventPlayer.getEyePosition(), OutOfBoundBot.getEyePosition(), BarrierLos.PASS_THROUGH_BARRIERS)
 
+    smallMessage(eventPlayer, "    hello triggered")
+    wait(0.5)
+    OutOfBoundBot.communicate(Comms.HELLO)
+    wait(3)
+
+rule "GLOBAL create Nano-Nuke Bastion":
+    @Event global
+    @Condition isGameInProgress()    
+    
     createDummy(Hero.BASTION, Team.ALL, 10, vect(0, 999, 0), Vector.UP)
-    NuclearBot = getLastCreatedEntity()
-    NuclearBot.startForcingName("jinko.dev/discord")
-    NuclearBot.setScore(-69)
-    NuclearBot.setInvisibility(Invis.ALL)
-    NuclearBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
-    NuclearBot.setGravity(0)
-    NuclearBot.startModifyingVoicelinePitch(0.5, false)
-    NuclearBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+    NanoNukeBot = getLastCreatedEntity()
+    NanoNukeBot.startForcingName("join www.jinko.dev/discord")
+    NanoNukeBot.setScore(-69)
+    NanoNukeBot.setInvisibility(Invis.ALL)
+    NanoNukeBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
+    NanoNukeBot.setGravity(0)
+    NanoNukeBot.startModifyingVoicelinePitch(0.5, false)
+    NanoNukeBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
 
 rule "PETRA create FLOORBREAKER":
     @Event global

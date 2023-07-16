@@ -188,7 +188,7 @@ rule "CREATE all jump pads":
             vect(92.5, 9.67, 31.88),  # TREES
             vect(102.9, 7.7, 8.9),    # CHURCH
             vect(110.9, 7.66, 17.8),  # CHURCH WINDOWS
-            vect(149.14, 6.7, 12.35)  # BANK STAIRCASE
+            #vect(149.14, 6.7, 12.35)  # BANK STAIRCASE
             ]
             
             JumpPadPower = [
@@ -196,7 +196,7 @@ rule "CREATE all jump pads":
             18.5,
             17.5,
             16.3,
-            17.5
+            #17.5
             ]
             
             JumpPadSize = [
@@ -204,7 +204,7 @@ rule "CREATE all jump pads":
             3.5,
             3.5,
             3.6,
-            3.5
+            #3.5
             ]
             break
         case Map.HOLLYWOOD_HALLOWEEN:

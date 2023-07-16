@@ -9,6 +9,7 @@ rule "Nuclear victory":
 
     MatchEnded = true
     Winner = eventPlayer
+    damage(Winner, null, 1) # in case winner is asleep
 
     NukeCamHorizontalDist = horizontalAngleOfDirection(directionTowards(NukeImpactPos, NukeCamPos))
     Camdist = magnitude((NukeCamPos - NukeImpactPos) * vect(1, 0, 1))
@@ -16,27 +17,28 @@ rule "Nuclear victory":
 
     destroyAllInWorldTexts()
     destroyAllHudTexts()
-    createInWorldText(Winner, "{0} Nano-nuke requested! {0}".format(iconString(Icon.CHECKMARK)), updateEveryTick(localPlayer.getEyePosition() + (100 * (0 * worldVector(Vector.RIGHT, localPlayer, Transform.ROTATION) + ((0.69 - 0.2) * (angleToDirection(horizontalAngleOfDirection(localPlayer.getFacingDirection()), verticalAngleOfDirection(localPlayer.getFacingDirection()) - 90))) + 3 * localPlayer.getFacingDirection()))), 3, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.DEFAULT)
+    createInWorldText(Winner, "{0} Nano-nuke requested! {0}".format(iconString(Icon.WARNING)), updateEveryTick(localPlayer.getEyePosition() + (100 * (0 * worldVector(Vector.RIGHT, localPlayer, Transform.ROTATION) + ((0.69 - 0.2) * (angleToDirection(horizontalAngleOfDirection(localPlayer.getFacingDirection()), verticalAngleOfDirection(localPlayer.getFacingDirection()) - 90))) + 3 * localPlayer.getFacingDirection()))), 3, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.DEFAULT)
     getAllPlayers().disableGamemodeHud()
     getAllPlayers().disableHeroHUD()
-    NuclearBot.teleport(Winner)
+    getAllPlayers().setStatusEffect(null, Status.PHASED_OUT, 69)
+    NanoNukeBot.teleport(Winner)
     wait(0.5)
-    NuclearBot.forceButtonPress(Button.ULTIMATE)
+    NanoNukeBot.forceButtonPress(Button.ULTIMATE)
     wait()
-    NuclearBot.cancelPrimaryAction()
+    NanoNukeBot.cancelPrimaryAction()
     wait()
     destroyDummy(Team.ALL, 10)
     wait()
 
     # Create bot for 2nd siren
     createDummy(Hero.BASTION, Team.ALL, 10, vect(0, 999, 0), Vector.UP)
-    NuclearBot = getLastCreatedEntity()
-    NuclearBot.startForcingName("NUCLEAR BOMB")
-    NuclearBot.setInvisibility(Invis.ALL)
-    NuclearBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
-    NuclearBot.setGravity(0)
-    NuclearBot.startModifyingVoicelinePitch(0.5, false)
-    NuclearBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+    NanoNukeBot = getLastCreatedEntity()
+    NanoNukeBot.startForcingName("NANO-NUKE")
+    NanoNukeBot.setInvisibility(Invis.ALL)
+    NanoNukeBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
+    NanoNukeBot.setGravity(0)
+    NanoNukeBot.startModifyingVoicelinePitch(0.5, false)
+    NanoNukeBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
     wait(2)
 
     # Winner cam
@@ -45,7 +47,9 @@ rule "Nuclear victory":
     getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
     getAllPlayers().setAimSpeed(10)
     getAllPlayers().setMoveSpeed(10)
+    getAllPlayers().disallowButton([Button.ABILITY_1, Button.ABILITY_2, Button.CROUCH, Button.CROUCH, Button.PRIMARY_FIRE, Button.SECONDARY_FIRE, Button.RELOAD, Button.MELEE])
     RandomEmote()
+    Winner.communicate(Comms.GOODBYE)
     wait(2)
     destroyAllInWorldTexts()
 
@@ -55,10 +59,10 @@ rule "Nuclear victory":
     getAllPlayers().startCamera(NukeCamPos, NukeImpactPos, 1)
 
     # 2nd siren
-    NuclearBot.teleport(worldVector(vect(0, 30, 0), Winner, Transform.ROTATION_AND_TRANSLATION))
+    NanoNukeBot.teleport(worldVector(vect(0, 30, 0), Winner, Transform.ROTATION_AND_TRANSLATION))
     wait(0.5)
     destroyAllInWorldTexts()
-    NuclearBot.forceButtonPress(Button.ULTIMATE)
+    NanoNukeBot.forceButtonPress(Button.ULTIMATE)
     wait()
     destroyDummy(Team.ALL, 10)
     wait(2)
@@ -66,12 +70,16 @@ rule "Nuclear victory":
     # Create nuke effect
     createProjectileEffect(getAllPlayers(), Projectile.BAPTISTE_BIOTIC_LAUNCHER, null, NukePos, directionTowards(NukePos, NukeImpactPos), 0.4, ProjectileEffectReeval.VISIBILITY_POSITION_DIRECTION_AND_SIZE)
     Winner.NukeEffects[0] = getLastCreatedEntity()
+    createProjectileEffect(getAllPlayers(), Projectile.PHARAH_ROCKET, null, NukePos, directionTowards(NukePos, NukeImpactPos), 1, ProjectileEffectReeval.VISIBILITY_POSITION_DIRECTION_AND_SIZE)
+    Winner.NukeEffects[1] = getLastCreatedEntity()
     wait(2)
     chase(NukePos, NukeImpactPos, duration=5, ChaseReeval.DESTINATION_AND_DURATION)
+    getAllPlayers().clearStatusEffect(Status.PHASED_OUT)
     wait(4.8)
     declarePlayerVictory(Winner)
     destroyEffect(Winner.NukeEffects[0])
-    kill(getAllPlayers().exclude([OutOfBoundBot, NuclearBot]), Winner)
+    destroyEffect(Winner.NukeEffects[1])
+    kill(getAllPlayers().exclude([OutOfBoundBot, NanoNukeBot]), Winner)
     Winner.addToScore(1) # to compensate for bomb self kill
     getAllPlayers().disableRespawn()
 
@@ -94,7 +102,7 @@ rule "Nuclear victory":
     chase(NukeExplodeFxPos, 220, rate=20, ChaseReeval.DESTINATION_AND_RATE)
 
     createInWorldText(getAllPlayers(),"Nuclear victory!", WinCamTextPosition(NukeCamPos, NukeImpactPos, 0, 0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
-    createInWorldText(getAllPlayers(),"www.jinko.dev/discord", WinCamTextPosition(NukeCamPos, NukeImpactPos, 0, -1), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
+    createInWorldText(getAllPlayers(),"join the discord server!\n        jinko.dev/discord", WinCamTextPosition(NukeCamPos, NukeImpactPos, 0, -1), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
 
     # camera shake
     wait(0.3)
@@ -144,10 +152,10 @@ rule "Sleep Dart victory":
     wait(0.5)
     #Amazing in-world text code by josbird https://workshop.codes/wiki/articles/rendering-an-inworld-text-at-a-specific-onscreen-position
     createInWorldText(getAllPlayers(),"longshot victory! {0}m hit!".format(OofString(victim.OofDistance)) if victim.OofDistance >= LONGSHOT_DISTANCE else "{0}m sleep dart hit!".format(OofString(victim.OofDistance)), WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, 0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)) if victim.OofDistance >= LONGSHOT_DISTANCE else customGreen, SpecVisibility.NEVER)
-    createInWorldText(getAllPlayers(),"www.jinko.dev/discord\nwww.jinko.dev/discord\nwww.jinko.dev/discord", WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, -1), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
+    createInWorldText(getAllPlayers(),"join the discord server!\n        jinko.dev/discord", WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, -0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
     wait(0.95)
     playEffect(getAllPlayers(), DynamicEffect.DVA_SELF_DESTRUCT_EXPLOSION, Color.ROSE, victim.getPosition(), 999)
-    wait(18.5)
+    wait(6 if DEBUG_MODE else 18.5)
     restartMatch()
 
 

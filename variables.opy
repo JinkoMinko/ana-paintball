@@ -3,7 +3,7 @@
 # CONSTANTS
 globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
 globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
-globalvar NUCLEAR_STREAK = (1 if DEBUG_MODE else 15)
+globalvar NUCLEAR_STREAK = (15 if DEBUG_MODE else 15)
 globalvar NANO_SCORE = (29 if DEBUG_MODE else 29)
 
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
@@ -115,14 +115,17 @@ enum Medal:
     LONGSHOT,
     NANOPUNCH,
     ENV_KILL,
+    ON_FIRE,
     ON_FIRE_SHUTDOWN,
+    RAMPAGE,
     RAMPAGE_SHUTDOWN,
     BUZZKILL,
+    NUCLEAR,
+    NUCLEAR_SHUTDOWN,
+    CATASTROPHE,
+    COUNTERMEASURE,
     SHOWSTOPPER,
     QUADFEED,
-    ON_FIRE,
-    RAMPAGE,
-    NUCLEAR,
     JOLLY_JUMPER,
     COLLATERAL_KILLS,
     MUTUAL_SLEEP,
@@ -172,7 +175,7 @@ subroutine PlayZoneLIJANGCONTROL
 
 # BOTS
 globalvar OutOfBoundBot
-globalvar NuclearBot
+globalvar NanoNukeBot
 globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 
 

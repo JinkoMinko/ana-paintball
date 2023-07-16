@@ -25,12 +25,13 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    #hudSubtext(eventPlayer, "Cam pos: {}".format(updateEveryTick(NukeImpactPos + normalize(vect(eventPlayer.getFacingDirection().x, 0, eventPlayer.getFacingDirection().z)) * 55 + vect(0, NukeImpactPos.y, 0) + vect(0, 80, 0)), NukeImpactPos, 0), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
-    #hudSubtext(eventPlayer, "NukeImpactPos: {}".format(NukeImpactPos), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
 
     #hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     #hudSubtext(eventPlayer, updateEveryTick("{}".format(eventPlayer.getPosition())), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
+
+    #hudSubtext(eventPlayer, "Cam pos: {}".format(updateEveryTick(NukeImpactPos + normalize(vect(eventPlayer.getFacingDirection().x, 0, eventPlayer.getFacingDirection().z)) * 55 + vect(0, NukeImpactPos.y, 0) + vect(0, 80, 0)), NukeImpactPos, 0), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+    #hudSubtext(eventPlayer, "NukeImpactPos: {}".format(NukeImpactPos), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
 
     
 rule "INTERACT: spawn bots":
@@ -121,6 +122,9 @@ rule "Kill all bots":
     BotName = 1
 
 
+
+    #    #    #    #    # SPAWN POINTS TOOL
+
 rule "show spawn points":
     @Condition DEBUG_MODE
     @Event global
@@ -128,8 +132,8 @@ rule "show spawn points":
 
     wait(1)
     for Spawn in range(len(SpawnPointSettings)):
-        createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.3, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-        createInWorldText(getAllPlayers(), "{0}".format(SpawnPointSettings[evalOnce(Spawn)]), SpawnPointSettings[evalOnce(Spawn)]+vect(0,0.5,0), 1, Clip.SURFACES, WorldTextReeval.VISIBILITY_AND_STRING, Color.GREEN, SpecVisibility.NEVER)
+        #createEffect(getAllPlayers(), Effect.LIGHT_SHAFT, Color.GREEN, SpawnPointSettings[evalOnce(Spawn)], 0.3, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+        createInWorldText(getAllPlayers(), "{0}".format(SpawnPointSettings[evalOnce(Spawn)]), SpawnPointSettings[evalOnce(Spawn)]+vect(0,0.5,0), 1, Clip.NONE, WorldTextReeval.VISIBILITY_AND_STRING, Color.GREEN, SpecVisibility.NEVER)
         #createEffect(getAllPlayers(), Effect.SPHERE, Color.RED, SpawnPointSettings[evalOnce(Spawn)]+vect(0,2,0), 0.1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
     
@@ -155,12 +159,12 @@ rule "cycle through to spawn points":
     eventPlayer.teleport(SpawnPointSettings[IndexValue][0])
     eventPlayer.setFacing(SpawnPointSettings[IndexValue][1], Relativity.TO_WORLD)
     IndexValue +=1
+    #wait(0.5)
+    #goto RULE_START
 
 
 
-
-
-    # NUKE TOOL
+    #    #    #    #    # NUKE TOOL
 
 rule "Debug HUDs":
     @Condition DEBUG_MODE

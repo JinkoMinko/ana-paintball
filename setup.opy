@@ -36,24 +36,6 @@ rule "Detect players": # Differentiate players from spectators & bots
     eventPlayer.setRespawnTime(CUSTOM_RESPAWN_TIME)
 
 
-rule "Initial spawn message":
-    @Event eachPlayer
-    @Hero ana
-    @Condition eventPlayer.hasSpawned()
-    @Condition eventPlayer.getNumberOfDeaths() == 0
-
-    wait(0.1) # required
-    smallMessage(eventPlayer, "    Mode by Jinko#2838")
-    wait(0.2) # required
-    smallMessage(eventPlayer, random.choice([
-                                                "    {0}  Discord server link on top  {0}".format(iconString(Icon.ARROW_UP)),
-                                                "    {0}  Ana Paintball TikTok: @Jinko_OW".format(iconString(Icon.EYE)),
-                                                "    {0}  Scoped shots pierce through enemies".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
-                                                "    {0}{1}  You can punch sleeping players".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
-                                                "    {0}  Guaranteed without bad teammates".format(iconString(Icon.CHECKMARK)),
-                                            ]))
-
-
 rule "Restart game when lobby is empty": # For when I spectate randoms
     @Event playerLeft
     @Condition not MatchEnded
@@ -196,7 +178,7 @@ rule "PLAYER EFFECTS":
     createEffect(localPlayer if eventPlayer.DemotedEffect == true else [], Effect.SOMBRA_HACKED_SOUND, Color.TEAM_1, eventPlayer, 100 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer.exclude(eventPlayer) if eventPlayer.RampageVFX == true else [], Effect.WINSTON_PRIMAL_RAGE, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer if eventPlayer.RampageVFX == true else [], Effect.WRECKING_BALL_ADAPTIVE_SHIELD_TARGET, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-    createEffect(localPlayer if MatchEnded else [], Effect.ZENYATTA_ORB_OF_DISCORD_TARGET, Color.TEAM_1, eventPlayer.exclude(Winner), 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer if MatchEnded and NukePos else [], Effect.ZENYATTA_ORB_OF_DISCORD_TARGET, Color.TEAM_1, eventPlayer.exclude(Winner), 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
 
 rule "AFK detection":

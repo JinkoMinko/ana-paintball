@@ -59,8 +59,8 @@ rule "If NANO_SCORE and died, nanoboost again":
 
     eventPlayer.disallowButton(Button.ABILITY_1)
     waitUntil(eventPlayer.isAlive(), 69)
-    eventPlayer.setUltCharge(100)
     while eventPlayer.isUsingUltimate() == false:
+        eventPlayer.setUltCharge(100)
         eventPlayer.forceButtonPress(Button.ULTIMATE)
         wait()
     eventPlayer.allowButton(Button.ABILITY_1)
