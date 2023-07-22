@@ -79,8 +79,9 @@ rule "Nuclear victory":
     declarePlayerVictory(Winner)
     destroyEffect(Winner.NukeEffects[0])
     destroyEffect(Winner.NukeEffects[1])
-    kill(getAllPlayers().exclude([OutOfBoundBot, NanoNukeBot]), Winner)
-    Winner.addToScore(1) # to compensate for bomb self kill
+    kill(getAllPlayers().exclude([OutOfBoundBot, NanoNukeBot]), null)
+    getAllPlayers().addToScore(1) # to compensate for bomb "suicide" caused by "null" killer
+    Winner.addToScore(len(getAllPlayers().exclude([OutOfBoundBot, NanoNukeBot, Winner])))
     getAllPlayers().disableRespawn()
 
     # Explosion effects at NukeImpactPos
@@ -120,6 +121,20 @@ rule "Nuclear victory":
         getAllPlayers().startCamera(vect(NukeCamShakeX + NukeCamPos.x, NukeCamShakeY + NukeCamPos.y, NukeCamShakeZ + NukeCamPos.z), vect(NukeCamShakeX + NukeImpactPos.x, NukeCamShakeY + NukeImpactPos.y, NukeCamShakeZ + NukeImpactPos.z), 10)
         wait(0.05)
 
+
+rule "rainbow outline for nuclear winner":
+    @Event eachPlayer
+    @Hero ana
+    @Condition MatchEnded
+    @Condition Winner
+    @Condition Winner.IsNuclear
+    @Disabled
+
+    Winner.startForcingOutlineFor(getAllPlayers(), true, rgb(rainbow(getTotalTimeElapsed() * 250)), OutlineVisibility.ALWAYS)
+    wait()
+    goto RULE_START
+
+
 rule "Sleep Dart victory":
     @Event playerDealtDamage
     @Hero ana
@@ -139,7 +154,7 @@ rule "Sleep Dart victory":
     victim.OofDistance = distance(attacker, victim)
     if victim.OofDistance >= LONGSHOT_DISTANCE:
         LongshotWin = not LongshotWin
-    getAllPlayers().exclude([Winner, FinalVictim]).startForcingOutlineFor(getAllPlayers(), false, rgb(rainbow(getTotalTimeElapsed() * 150)), OutlineVisibility.ALWAYS)
+    getAllPlayers().exclude(Winner).startForcingOutlineFor(getAllPlayers(), false, Color.RED, OutlineVisibility.OCCLUDED)
     createEffect(getAllPlayers(), Effect.SOLDIER_SPRINTING, Color.WHITE, victim, 1, EffectReeval.POSITION_AND_RADIUS)
     getAllPlayers().setStatusEffect(null, Status.INVINCIBLE, 999)
     getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
@@ -166,18 +181,3 @@ rule "Fix camera if last victim leaves the game":
     if FinalVictim == eventPlayer:
         destroyAllInWorldTexts()
         getAllPlayers().startCamera(raycast(Winner.getPosition(), (Winner.getPosition() * 3 + Vector.UP * 1.5), null, null, true).getHitPosition(), Winner.getEyePosition(), 0)
-
-
-rule "rainbow outline if last dart was a longshot":
-    @Event eachPlayer
-    @Hero ana
-    @Condition MatchEnded
-    @Condition Winner
-
-    Winner.startForcingOutlineFor(getAllPlayers(), true, rgb(rainbow(getTotalTimeElapsed() * 500)), OutlineVisibility.ALWAYS)
-    if FinalVictim.OofDistance >= LONGSHOT_DISTANCE:
-        FinalVictim.startForcingOutlineFor(getAllPlayers(), true, rgb(rainbow(getTotalTimeElapsed() * 500)), OutlineVisibility.ALWAYS)
-    else:
-        FinalVictim.startForcingOutlineFor(getAllPlayers(), false, Color.RED, OutlineVisibility.ALWAYS)
-    wait()
-    goto RULE_START

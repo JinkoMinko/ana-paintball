@@ -52,10 +52,10 @@ rule "Kill logic":
         attacker.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.MedalQueue)
     
     else:    # MELEE KILLS
+        attacker.KillStreak += 1
         if victim.isInAir() and attacker.isInAir():
             attacker.MedalQueue.append(Medal.DREAMCATCHER)  
 
-        attacker.KillStreak += 1
         attacker.Executes += 1
         attacker.PunchDrunk += 1
         attacker.setAmmo(0, 15)

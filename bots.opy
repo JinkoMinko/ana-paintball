@@ -25,37 +25,21 @@ rule "GLOBAL create Nano-Nuke Bastion":
     NanoNukeBot.setGravity(0)
     NanoNukeBot.startModifyingVoicelinePitch(0.5, false)
     NanoNukeBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
-
-rule "PETRA create FLOORBREAKER":
-    @Event global
-    @Condition getCurrentMap() == Map.PETRA
-    @Condition getNumberOfHeroes(Hero.ANA, Team.ALL) > 1
-
-    createDummy(Hero.WIDOWMAKER, Team.ALL, 11, vect(500, 500, 0), Vector.UP)
-    OutOfBoundBot = getLastCreatedEntity()
-    OutOfBoundBot.setScore(-69)
-    OutOfBoundBot.setGravity(0)
-    OutOfBoundBot.setInvisibility(Invis.ALL)
-    OutOfBoundBot.startScalingSize(0.2, false)
-    OutOfBoundBot.setFacing(Vector.UP, Relativity.TO_WORLD)
-    OutOfBoundBot.startForcingName("Floorbreaker")
-    OutOfBoundBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+    NanoNukeBot.startScalingSize(0.2, false) # for petra floor breaking
 
 
 rule "PETRA break floor over time":
     @Event global
-    @Condition OutOfBoundBot
+    @Condition NanoNukeBot
     @Condition getCurrentMap() == Map.PETRA
 
     for PetraPunches in range(0, 50, 1):
         wait(3)
-        OutOfBoundBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
-        OutOfBoundBot.teleport(random.choice([vect(-4, -11, 12), vect(9.5, -11, 11.3), vect(8.2, -11, 6.5), vect(-3.3, -11, 6.5)]))
-        OutOfBoundBot.startForcingButton(Button.MELEE)
+        NanoNukeBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT) # for people joining during the match
+        NanoNukeBot.teleport(random.choice([vect(-4, -11, 12), vect(9.5, -11, 11.3), vect(8.2, -11, 6.5), vect(-3.3, -11, 6.5)]))
+        NanoNukeBot.startForcingButton(Button.MELEE)
         wait()
-        OutOfBoundBot.teleport(vect(500, 500, 0))
-    destroyAllDummies()
-
+        NanoNukeBot.teleport(vect(0, 999, 0))
 
 ################################### DEATH PLANE BOTS
     
@@ -142,3 +126,57 @@ rule "Death plane SIGMA BLACK FOREST":
 
     OutOfBoundBot.teleport(vect(-44, -25, -2))
     OutOfBoundBot.setFacing(directionTowards(OutOfBoundBot.getEyePosition(), vect(-16.4, 15, -6)), Relativity.TO_WORLD)
+
+
+rule "Mei ECOPOINT":
+    @Condition isGameInProgress()
+    @Condition getCurrentMap() == Map.ECOPOINT_ANTARCTICA or getCurrentMap() == Map.ECOPOINT_ANTARCTICA_WINTER
+    @Disabled
+
+    createDummy(Hero.MEI, Team.ALL, 11, vect(26, 9.5, 0), Vector.RIGHT)
+    OutOfBoundBot = getLastCreatedEntity()
+    OutOfBoundBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+    OutOfBoundBot.setScore(-69)
+    OutOfBoundBot.startForcingName("Ice Cube")
+    OutOfBoundBot.disableNameplatesFor(getAllPlayers())
+    OutOfBoundBot.disableEnvironmentCollision(false)
+    OutOfBoundBot.startScalingSize(0.2, false)
+    OutOfBoundBot.setGravity(0)
+    OutOfBoundBot.setStatusEffect(null, Status.INVINCIBLE, 9999)
+    wait(2)
+    OutOfBoundBot.setStatusEffect(null, Status.ASLEEP, 9999)
+
+
+rule "Kiriko Kanezaka":
+    @Condition isGameInProgress()
+    @Condition getCurrentMap() == Map.KANEZAKA
+
+    createDummy(Hero.KIRIKO, Team.ALL, 11, vect(-11.5, 10.80, 16.9), Vector.RIGHT)
+    OutOfBoundBot = getLastCreatedEntity()
+    OutOfBoundBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+    OutOfBoundBot.setScore(-69)
+    OutOfBoundBot.startForcingName("Kiricat")
+    OutOfBoundBot.disableNameplatesFor(getAllPlayers())
+    OutOfBoundBot.disableEnvironmentCollision(true)
+    OutOfBoundBot.startScalingSize(0.15, false)
+    OutOfBoundBot.setGravity(0)
+    wait(2)
+    OutOfBoundBot.setStatusEffect(null, Status.ASLEEP, 9999)
+    OutOfBoundBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
+
+
+rule "Junkrat Petra":
+    @Condition isGameInProgress()
+    @Condition getCurrentMap() == Map.PETRA
+
+    createDummy(Hero.JUNKRAT, Team.ALL, 11, vect(-19.24, 0.7, 20.28), Vector.LEFT)
+    OutOfBoundBot = getLastCreatedEntity()
+    OutOfBoundBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
+    OutOfBoundBot.setScore(-69)
+    OutOfBoundBot.startForcingName("Gold Hoarder")
+    OutOfBoundBot.disableNameplatesFor(getAllPlayers())
+    #OutOfBoundBot.startScalingSize(0.15, false)
+    OutOfBoundBot.setGravity(0)
+    wait(2)
+    OutOfBoundBot.setStatusEffect(null, Status.ASLEEP, 9999)
+    OutOfBoundBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
