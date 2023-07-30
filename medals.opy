@@ -192,7 +192,7 @@ rule "Sandman":
     @Condition not victim.hasStatusEffect(Status.ASLEEP)
 
     attacker.Sandman += 1
-    if attacker.Sandman == 5:
+    if attacker.Sandman == 3:
         attacker.MedalQueue.append(Medal.SANDMAN)
         attacker.Sandman = 0
 

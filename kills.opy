@@ -80,7 +80,7 @@ rule "Kill logic":
             attacker.MedalQueue.append(Medal.EXECUTED)
             attacker.setAmmo(0, 15)
         
-        if attacker.PunchDrunk == 5:
+        if attacker.PunchDrunk == 3:
             attacker.MedalQueue.append(Medal.PUNCH_DRUNK)  
             attacker.PunchDrunk = 0
     

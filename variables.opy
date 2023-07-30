@@ -191,7 +191,6 @@ playervar RaycastLastHitPos
 
 
 # NUCLEAR BOMB
-playervar Count
 playervar NukeEffects
 globalvar NukeExplodeFxPos = 1
 
@@ -219,7 +218,6 @@ playervar FixMovementBug # delete this system when blizz fixes the bug
 
 # TRACKERS
 playervar IsPlayer 
-playervar Killer
 playervar LastSleptBy
 playervar SleepUsedAndDied = true    # detect when a sleeping player should be awoken due to their LastSleptBy dying
 playervar SleepLock     # needs reworked

@@ -161,7 +161,8 @@ rule "Kiriko Kanezaka":
     OutOfBoundBot.startScalingSize(0.15, false)
     OutOfBoundBot.setGravity(0)
     wait(2)
-    OutOfBoundBot.setStatusEffect(null, Status.ASLEEP, 9999)
+    OutOfBoundBot.setStatusEffect(null, Status.KNOCKED_DOWN, 9999)
+    createEffect(localPlayer, Effect.ANA_SLEEPING, Color.TEAM_1, OutOfBoundBot.getEyePosition() + vect(0, -0.1, 0), 1, EffectReeval.VISIBILITY)
     OutOfBoundBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
 
 
@@ -169,14 +170,14 @@ rule "Junkrat Petra":
     @Condition isGameInProgress()
     @Condition getCurrentMap() == Map.PETRA
 
-    createDummy(Hero.JUNKRAT, Team.ALL, 11, vect(-19.24, 0.7, 20.28), Vector.LEFT)
+    createDummy(Hero.JUNKRAT, Team.ALL, 11, vect(-17.94, 0.24, 17.11), Vector.LEFT)
     OutOfBoundBot = getLastCreatedEntity()
     OutOfBoundBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT)
     OutOfBoundBot.setScore(-69)
     OutOfBoundBot.startForcingName("Gold Hoarder")
     OutOfBoundBot.disableNameplatesFor(getAllPlayers())
-    #OutOfBoundBot.startScalingSize(0.15, false)
     OutOfBoundBot.setGravity(0)
     wait(2)
-    OutOfBoundBot.setStatusEffect(null, Status.ASLEEP, 9999)
+    OutOfBoundBot.setStatusEffect(null, Status.KNOCKED_DOWN, 9999)
+    createEffect(localPlayer, Effect.ANA_SLEEPING, Color.TEAM_1, vect(-18.8, 0.85, 17.11), 1, EffectReeval.VISIBILITY)
     OutOfBoundBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
