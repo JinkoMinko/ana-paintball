@@ -217,7 +217,8 @@ playervar FixMovementBug # delete this system when blizz fixes the bug
 
 
 # TRACKERS
-playervar IsPlayer 
+playervar IsPlayer
+playervar IsAIBot
 playervar LastSleptBy
 playervar SleepUsedAndDied = true    # detect when a sleeping player should be awoken due to their LastSleptBy dying
 playervar SleepLock     # needs reworked
