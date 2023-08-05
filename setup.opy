@@ -34,6 +34,9 @@ rule "Detect players": # Differentiate players from spectators & bots
     
     eventPlayer.IsPlayer = true
     eventPlayer.setRespawnTime(CUSTOM_RESPAWN_TIME)
+    if MatchEnded:
+        eventPlayer.disallowButton([Button.PRIMARY_FIRE, Button.SECONDARY_FIRE, Button.MELEE])
+        eventPlayer.setStatusEffect(null, Status.ROOTED, 999)
 
 
 rule "Restart game when lobby is empty": # For when I spectate randoms

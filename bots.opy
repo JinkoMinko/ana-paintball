@@ -35,7 +35,7 @@ rule "PETRA break floor over time":
 
     for PetraPunches in range(0, 50, 1):
         wait(3)
-        NanoNukeBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT) # for people joining during the match
+        NanoNukeBot.startForcingOutlineFor([getAllPlayers(), not localPlayer.IsPlayer], false, Color.RED, OutlineVisibility.DEFAULT) # for spectators joining during the match
         NanoNukeBot.teleport(random.choice([vect(-4, -11, 12), vect(9.5, -11, 11.3), vect(8.2, -11, 6.5), vect(-3.3, -11, 6.5)]))
         NanoNukeBot.startForcingButton(Button.MELEE)
         wait()
@@ -181,3 +181,5 @@ rule "Junkrat Petra":
     OutOfBoundBot.setStatusEffect(null, Status.KNOCKED_DOWN, 9999)
     createEffect(localPlayer, Effect.ANA_SLEEPING, Color.TEAM_1, vect(-18.8, 0.85, 17.11), 1, EffectReeval.VISIBILITY)
     OutOfBoundBot.setStatusEffect(null, Status.PHASED_OUT, 9999)
+
+    
