@@ -132,8 +132,9 @@ rule "Kill logic":
 rule "Respawn logic":
     @Event playerDied
     @Hero ana
+    @Condition not MatchEnded
     @Condition SpawnPointSettings != 0
-
+    
     eventPlayer.disableNameplatesFor([getAllPlayers(), not localPlayer.IsPlayer])
     wait(0.7)
     eventPlayer.setInvisibility(Invis.ALL)

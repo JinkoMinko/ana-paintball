@@ -47,7 +47,7 @@ rule "Nuclear victory":
     getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
     getAllPlayers().setAimSpeed(10)
     getAllPlayers().setMoveSpeed(10)
-    getAllPlayers().disallowButton([Button.ABILITY_1, Button.ABILITY_2, Button.CROUCH, Button.CROUCH, Button.PRIMARY_FIRE, Button.SECONDARY_FIRE, Button.RELOAD, Button.MELEE])
+    getAllPlayers().disallowButton([Button.ABILITY_1, Button.ABILITY_2, Button.CROUCH, Button.PRIMARY_FIRE, Button.SECONDARY_FIRE, Button.RELOAD, Button.MELEE])
     RandomEmote()
     Winner.communicate(Comms.GOODBYE)
     wait(2)
@@ -74,13 +74,12 @@ rule "Nuclear victory":
     Winner.NukeEffects[1] = getLastCreatedEntity()
     wait(2)
     chase(NukePos, NukeImpactPos, duration=5, ChaseReeval.DESTINATION_AND_DURATION)
-    getAllPlayers().clearStatusEffect(Status.PHASED_OUT)
     wait(4.8)
     declarePlayerVictory(Winner)
     destroyEffect(Winner.NukeEffects[0])
     destroyEffect(Winner.NukeEffects[1])
     kill(getAllPlayers().exclude([OutOfBoundBot, NanoNukeBot]), null)
-    getAllPlayers().addToScore(1) # to compensate for bomb "suicide" caused by "null" killer
+    getAllPlayers().exclude([OutOfBoundBot, NanoNukeBot]).addToScore(1) # to compensate for bomb "suicide" caused by "null" killer
     Winner.addToScore(len(getAllPlayers().exclude([OutOfBoundBot, NanoNukeBot, Winner])))
     getAllPlayers().disableRespawn()
 
@@ -107,14 +106,14 @@ rule "Nuclear victory":
 
     # camera shake
     wait(0.3)
-    for i in range(50):
+    for i in range(30):
         NukeCamShakeX = random.uniform(-10, 10)
         NukeCamShakeY = random.uniform(-5, 5)
         NukeCamShakeZ = random.uniform(-5, 5)
         getAllPlayers().startCamera(vect(NukeCamShakeX + NukeCamPos.x, NukeCamShakeY + NukeCamPos.y, NukeCamShakeZ + NukeCamPos.z), vect(NukeCamShakeX + NukeImpactPos.x, NukeCamShakeY + NukeImpactPos.y, NukeCamShakeZ + NukeImpactPos.z), 10)
         wait(0.05)
 
-    for i in range(50):
+    for i in range(30):
         NukeCamShakeX = random.uniform(-10, 10)
         NukeCamShakeY = random.uniform(-5, 5)
         NukeCamShakeZ = random.uniform(-5, 5)
