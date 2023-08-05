@@ -12,7 +12,7 @@ settings "settings.opy.json"
 
 # Toggle debug mode
 #!define DEBUG_MODE false
-# # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # #
 
 # Pre-match
 #!include "variables.opy"
@@ -23,6 +23,7 @@ settings "settings.opy.json"
 #!include "playzones.opy"
 #!include "mapObjects.opy"
 #!include "bots.opy"
+#!include "ai_bots.opy"
 
 #!include "systemMessages.opy"
 

@@ -236,3 +236,4 @@ playervar OofText
 playervar Temp
 
 globalvar SlowMo = 100
+globalvar TempAIBotBeingRemoved
