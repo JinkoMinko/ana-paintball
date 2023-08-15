@@ -4,7 +4,7 @@ rule "Hammond says hello back":
     @Event eachPlayer
     @Condition eventPlayer.isCommunicating(Comms.HELLO)
     @Condition distance(eventPlayer, OutOfBoundBot.getEyePosition()) < 15
-    @Condition angleBetweenVectors(eventPlayer.getFacingDirection(), directionTowards(eventPlayer.getEyePosition(), OutOfBoundBot.getEyePosition())) <= 6.5
+    @Condition angleBetweenVectors(eventPlayer.getFacingDirection(), directionTowards(eventPlayer.getEyePosition(), OutOfBoundBot.getEyePosition())) <= 16.5
     @Condition isInLoS(eventPlayer.getEyePosition(), OutOfBoundBot.getEyePosition(), BarrierLos.PASS_THROUGH_BARRIERS)
 
     wait(0.5)
