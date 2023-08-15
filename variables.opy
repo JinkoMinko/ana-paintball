@@ -3,8 +3,8 @@
 # CONSTANTS
 globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
 globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
-globalvar NUCLEAR_STREAK = (1 if DEBUG_MODE else 15)
-globalvar NANO_SCORE = (29 if DEBUG_MODE else 29)
+globalvar NUCLEAR_STREAK = (15 if DEBUG_MODE else 15)
+globalvar NANO_SCORE = (1 if DEBUG_MODE else 29)
 
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
 globalvar CUSTOM_RESPAWN_TIME = 1.6
@@ -225,7 +225,7 @@ playervar SleepsOnground = false    # Whether a player that was hit with a sleep
 playervar DemotionVictim
 playervar ShutdownVictim
 playervar StolenFrom
-playervar NanoDelay = 1    # Used to know when a player can cast Nanoboost
+playervar NanoDelay = 1    # Used to know when a player can cast Nanoboost, used to know when nanoboost SFX can take over - can probably be removed and rework the shit
 
 
 # OTHER

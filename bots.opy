@@ -7,7 +7,6 @@ rule "Hammond says hello back":
     @Condition angleBetweenVectors(eventPlayer.getFacingDirection(), directionTowards(eventPlayer.getEyePosition(), OutOfBoundBot.getEyePosition())) <= 6.5
     @Condition isInLoS(eventPlayer.getEyePosition(), OutOfBoundBot.getEyePosition(), BarrierLos.PASS_THROUGH_BARRIERS)
 
-    smallMessage(eventPlayer, "    hello triggered")
     wait(0.5)
     OutOfBoundBot.communicate(Comms.HELLO)
     wait(3)

@@ -47,7 +47,14 @@ rule "Nuclear victory":
     getAllPlayers().setStatusEffect(null, Status.ROOTED, 999)
     getAllPlayers().setAimSpeed(10)
     getAllPlayers().setMoveSpeed(10)
-    getAllPlayers().disallowButton([Button.ABILITY_1, Button.ABILITY_2, Button.CROUCH, Button.PRIMARY_FIRE, Button.SECONDARY_FIRE, Button.RELOAD, Button.MELEE])
+    eventPlayer.disallowButton(Button.ABILITY_1)
+    eventPlayer.disallowButton(Button.ABILITY_2)
+    eventPlayer.disallowButton(Button.CROUCH)
+    eventPlayer.disallowButton(Button.PRIMARY_FIRE)
+    eventPlayer.disallowButton(Button.SECONDARY_FIRE)
+    eventPlayer.disallowButton(Button.RELOAD)
+    eventPlayer.disallowButton(Button.MELEE)
+
     RandomEmote()
     Winner.communicate(Comms.GOODBYE)
     wait(2)
@@ -169,7 +176,7 @@ rule "Sleep Dart victory":
     createInWorldText(getAllPlayers(),"join the discord server!\n        jinko.dev/discord", WinCamTextPosition(raycast(victim.getEyePosition(), victim.getEyePosition() + directionTowards(attacker, victim) * -2 + Vector.UP * 0.5, null, null, true).getHitPosition(), victim.getEyePosition() + vect(0, -1, 0), 0, -0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
     wait(0.95)
     playEffect(getAllPlayers(), DynamicEffect.DVA_SELF_DESTRUCT_EXPLOSION, Color.ROSE, victim.getPosition(), 999)
-    wait(6 if DEBUG_MODE else 18.5)
+    wait(3 if DEBUG_MODE else 18.5)
     restartMatch()
 
 
@@ -179,4 +186,7 @@ rule "Fix camera if last victim leaves the game":
 
     if FinalVictim == eventPlayer:
         destroyAllInWorldTexts()
-        getAllPlayers().startCamera(raycast(Winner.getPosition(), (Winner.getPosition() * 3 + Vector.UP * 1.5), null, null, true).getHitPosition(), Winner.getEyePosition(), 0)
+        getAllPlayers().startCamera(NukeCamPos, NukeImpactPos, 0)
+        createInWorldText(getAllPlayers(),"The last victim left the game lol", WinCamTextPosition(NukeCamPos, NukeImpactPos, 0, 0.8), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
+        createInWorldText(getAllPlayers(),"join the discord server!\n        jinko.dev/discord", WinCamTextPosition(NukeCamPos, NukeImpactPos, 0, -1), 10, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.NEVER)
+    

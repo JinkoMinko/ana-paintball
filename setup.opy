@@ -34,8 +34,11 @@ rule "Detect players": # Differentiate players from spectators & bots
     
     eventPlayer.IsPlayer = true
     eventPlayer.setRespawnTime(CUSTOM_RESPAWN_TIME)
+    
     if MatchEnded:
-        eventPlayer.disallowButton([Button.PRIMARY_FIRE, Button.SECONDARY_FIRE, Button.MELEE])
+        eventPlayer.disallowButton(Button.PRIMARY_FIRE)
+        eventPlayer.disallowButton(Button.SECONDARY_FIRE)
+        eventPlayer.disallowButton(Button.MELEE)
         eventPlayer.setStatusEffect(null, Status.ROOTED, 999)
 
 

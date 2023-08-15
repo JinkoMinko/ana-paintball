@@ -14,14 +14,15 @@ rule "Initial spawn point & message":
     smallMessage(eventPlayer, "    Mode by Jinko#2838")
     playEffect(eventPlayer, DynamicEffect.BRIGITTE_REPAIR_PACK_ARMOR_SOUND, Color.WHITE, eventPlayer, 200)
     wait(0.7)
+
     smallMessage(eventPlayer, random.choice([
-                                                "    {0}  Discord invite up there  {0}".format(iconString(Icon.ARROW_UP)),
-                                                "    {0}  TikTok: @Jinko_OW".format(iconString(Icon.HEART)),
-                                                "    {0}  Scoped shots pierce enemies!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
-                                                #"    {0}  Guaranteed without bad teammates!".format(iconString(Icon.CHECKMARK)),
-                                                "    {0}  Get a 15 kills streak for a BIG surprise!".format(iconString(Icon.RADIOACTIVE)),
-                                                "    {0}{1}  Try punching sleeping players!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
-                                            ]))
+                                            "    {0}  Discord invite up there  {0}".format(iconString(Icon.ARROW_UP)),
+                                            "    {0}  TikTok: @Jinko_OW".format(iconString(Icon.HEART)),
+                                            "    {0}  Scoped shots pierce enemies!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
+                                            "    {0}  Get a 15 kills streak for a BIG surprise!".format(iconString(Icon.RADIOACTIVE)),
+                                            "    {0}{1}  Try punching sleeping players!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
+    ]))
+
     playEffect(eventPlayer, DynamicEffect.BRIGITTE_REPAIR_PACK_ARMOR_SOUND, Color.WHITE, eventPlayer, 200)
 
 
