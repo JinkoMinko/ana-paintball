@@ -31,8 +31,16 @@ rule "Start match sooner & pause timer":
 rule "Detect players": # Differentiate players from spectators & bots
     @Event playerJoined
     @Condition not eventPlayer.isDummy()
-    
-    eventPlayer.IsPlayer = true
+
+    eventPlayer.startForcingName(nextAIBotName)
+    if "{}".format(eventPlayer) == nextAIBotName:
+        eventPlayer.IsPlayer = false
+        eventPlayer.IsAIBot = true
+    else:
+        eventPlayer.IsPlayer = true
+        eventPlayer.IsAIBot = false
+        eventPlayer.stopForcingName()
+
     eventPlayer.setRespawnTime(CUSTOM_RESPAWN_TIME)
     
     if MatchEnded:
@@ -45,7 +53,7 @@ rule "Detect players": # Differentiate players from spectators & bots
 rule "Restart game when lobby is empty": # For when I spectate randoms
     @Event playerLeft
     @Condition not MatchEnded
-    
+
     if len(getPlayersOnHero(Hero.ANA, Team.ALL)) == 0:
         restartMatch()
 

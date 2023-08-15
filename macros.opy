@@ -23,6 +23,12 @@
 #!define distanceFromPointToPlayer(s, p) (distance(s, p) if p != null else 999999)
 #!define distanceFromPointToPlayerBetween(s, p, lower, upper) (abs(distance(s, p) - (upper + lower) / 2) <= (upper - lower) / 2 if p != null else true)
 
+#!define getNumberOfDummyBots(team) len([player for player in getPlayers(team) if player.isDummy()])
+#!define getNumberOfAIBots(team) len([player for player in getPlayers(team) if player.IsAIBot])
+
+#!define nextAIBot [player for player in getAllPlayers() if player.IsAIBot][0]
+#!define nextAIBotName "​ [ -C°▥°]-C Ana Bot #{}".format(getNumberOfAIBots(Team.ALL))
+
 #!define customGreen (rgb(63, 191, 116))
 #!define rSaturation 0.55
 #!define rValue 1.0
