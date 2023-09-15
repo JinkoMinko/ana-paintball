@@ -1,18 +1,20 @@
 #!mainFile "ANA_PB.opy"
 
 rule "Remove AI bots to leave space for human players":
-    @Event playerJoined
+    @Event eachPlayer
     @Condition getNumberOfPlayers(Team.ALL) - getNumberOfDummyBots(Team.ALL) == getNumberOfSlots(Team.ALL)
+    @Condition eventPlayer == nextAIBot
 
-    wait() # let the setup playerJoined rule run first, so IsAIBot is set
+    wait(0, Wait.ABORT_WHEN_FALSE) # let the setup playerJoined rule run first, so IsAIBot is set
 
     TempAIBotBeingRemoved = nextAIBot
+    TempAIBotBeingRemovedName = "{0}".format(TempAIBotBeingRemoved)
 
     if not TempAIBotBeingRemoved:
         return
 
     waitUntil(hostPlayer.hasSpawned(), 99999)
-    smallMessage(hostPlayer, "    {} Removing {} to leave space for more human players".format(iconString(Icon.BOLT), TempAIBotBeingRemoved))
+    smallMessage(hostPlayer, "    {0} Removing {1} to leave space for more human players".format(iconString(Icon.BOLT), TempAIBotBeingRemovedName))
 
     removeFromGame(TempAIBotBeingRemoved)
     waitUntil(not entityExists(TempAIBotBeingRemoved), 2)
