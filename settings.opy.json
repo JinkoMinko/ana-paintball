@@ -13,6 +13,7 @@
     },
     "gamemodes": {
         "ffa": {
+            "scoreToWin": 30,
             "enabledMaps": [
                 {"dorado": ["night"]},
                 {"eichenwalde": ["morning"]},
@@ -33,7 +34,6 @@
             "gamemodeStartTrigger": "immediately",
             "enableKillCam": false,
             "respawnTime%": 0,
-            "scoreToWin": 30,
             "enableSelfInitiatedRespawn": false,
             "spawnHealthPacks": "disabled"
         }
