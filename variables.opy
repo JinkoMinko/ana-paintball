@@ -179,6 +179,14 @@ globalvar NanoNukeBot
 globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 
 
+# AI BOTS
+globalvar TempAIBotBeingRemoved
+globalvar TempAIBotBeingRemovedName
+globalvar TempLeavingAIBotSlot
+globalvar AIBotSlots = []
+playervar AIBotKillsPerSlot
+
+
 # HONOR SYSTEM
 playervar HonorQueue = []
 playervar HonorBar = 0
@@ -236,5 +244,3 @@ playervar OofText
 playervar Temp
 
 globalvar SlowMo = 100
-globalvar TempAIBotBeingRemoved
-globalvar TempAIBotBeingRemovedName
