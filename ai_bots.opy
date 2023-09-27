@@ -15,6 +15,7 @@ rule "Store slot of AI bot that just joined":
 
 rule "Remove scores from players who killed the AI bot that just left":
     @Event playerLeft
+    @Condition RevertKillsToAIBotsEnabled
 
     TempLeavingAIBotSlot = -1
     for i in range(getNumberOfSlots(Team.ALL)):

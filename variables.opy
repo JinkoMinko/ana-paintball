@@ -182,6 +182,14 @@ globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 # AI BOTS
 globalvar TempAIBotBeingRemoved
 globalvar TempAIBotBeingRemovedName
+
+globalvar RevertKillsToAIBotsEnabled = createWorkshopSetting(
+    bool,
+    "AI Bots",
+    "Revert kills against removed AI bots",
+    true,
+    0
+)
 globalvar TempLeavingAIBotSlot
 globalvar AIBotSlots = []
 playervar AIBotKillsPerSlot
