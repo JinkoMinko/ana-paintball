@@ -179,6 +179,22 @@ globalvar NanoNukeBot
 globalvar PetraPunches    # Petra's Floorbreaker bot hits count
 
 
+# AI BOTS
+globalvar TempAIBotBeingRemoved
+globalvar TempAIBotBeingRemovedName
+
+globalvar RevertKillsToAIBotsEnabled = createWorkshopSetting(
+    bool,
+    "AI Bots",
+    "Revert kills against removed AI bots",
+    true,
+    0
+)
+globalvar TempLeavingAIBotSlot
+globalvar AIBotSlots = []
+playervar AIBotKillsPerSlot
+
+
 # HONOR SYSTEM
 playervar HonorQueue = []
 playervar HonorBar = 0
@@ -236,5 +252,3 @@ playervar OofText
 playervar Temp
 
 globalvar SlowMo = 100
-globalvar TempAIBotBeingRemoved
-globalvar TempAIBotBeingRemovedName
