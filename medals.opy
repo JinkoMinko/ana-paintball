@@ -136,23 +136,34 @@ rule "Environement death":
     @Hero ana
     @Condition eventWasEnvironment
 
-    # wait(CUSTOM_RESPAWN_TIME)
-    eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
-    smallMessage(eventPlayer, random.choice([
-        "    {}  no wings?".format(heroIcon(random.choice([Hero.ECHO, Hero.MERCY]))),
-        "    {}  no jetpacks?".format(heroIcon(random.choice([Hero.PHARAH, Hero.WINSTON]))),
-        "    {}  no translocators?".format(heroIcon(Hero.SOMBRA)),
-        "    {}  no grapples?".format(heroIcon(random.choice([Hero.HAMMOND, Hero.WIDOWMAKER]))),
-        "    {}  no teleports?".format(heroIcon(Hero.KIRIKO)),
-        "    {}  no recalls?".format(heroIcon(Hero.TRACER)),
-        "    {}  no wallrides?".format(heroIcon(Hero.LUCIO)),
-        "    {}  no slams?".format(heroIcon(Hero.DOOMFIST)),
-        "    {}  no mekas?".format(heroIcon(Hero.DVA)),
-        "    {}  no double jumps?".format(heroIcon(Hero.GENJI)),
-        "    {}  no wallclimbs?".format(heroIcon(random.choice([Hero.GENJI, Hero.HANZO, Hero.KIRIKO]))),
-        "    {}  no life grips?".format(heroIcon(Hero.LIFEWEAVER)),
-        "    {}  no rocket legs?".format(heroIcon(Hero.SOJOURN)),
-        ]))
+    if not strContains("{0}".format(eventPlayer), "ml7"):
+        eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
+        smallMessage(eventPlayer, random.choice([
+            "    {}  no wings?".format(heroIcon(random.choice([Hero.ECHO, Hero.MERCY]))),
+            "    {}  no jetpacks?".format(heroIcon(random.choice([Hero.PHARAH, Hero.WINSTON]))),
+            "    {}  no translocators?".format(heroIcon(Hero.SOMBRA)),
+            "    {}  no grapples?".format(heroIcon(random.choice([Hero.HAMMOND, Hero.WIDOWMAKER]))),
+            "    {}  no teleports?".format(heroIcon(Hero.KIRIKO)),
+            "    {}  no recalls?".format(heroIcon(Hero.TRACER)),
+            "    {}  no wallrides?".format(heroIcon(Hero.LUCIO)),
+            "    {}  no slams?".format(heroIcon(Hero.DOOMFIST)),
+            "    {}  no mekas?".format(heroIcon(Hero.DVA)),
+            "    {}  no double jumps?".format(heroIcon(Hero.GENJI)),
+            "    {}  no wallclimbs?".format(heroIcon(random.choice([Hero.GENJI, Hero.HANZO, Hero.KIRIKO]))),
+            "    {}  no life grips?".format(heroIcon(Hero.LIFEWEAVER)),
+            "    {}  no rocket legs?".format(heroIcon(Hero.SOJOURN)),
+            ]))
+    else: # for ml7
+        eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
+        smallMessage(eventPlayer, random.choice([
+            "    {} would have survived this".format(random.choice(["Olaf", "Denn", "Umarrii"])),
+            "    {} would never die like that".format(random.choice(["Demmos", "Sp33dyal", "Zeldig"])),
+            "    Demmos would have never done this",
+            "    Who put that wall there???",
+            "    Are y'all really subbed to this guy?",
+            "    COOM?!?",
+            ]))
+
 
 
 rule "Longshot":

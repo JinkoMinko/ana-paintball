@@ -9,8 +9,11 @@ rule "Hardscope messages":
     
     wait(4, Wait.ABORT_WHEN_FALSE)
     eventPlayer.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(eventPlayer.MedalQueue)
-    smallMessage(eventPlayer,random.choice(["    Take your time...", "    That's a long hardscope", "    No quickscopes?"]))
-        return
+    if not strContains("{0}".format(eventPlayer), "ml7"):
+        smallMessage(eventPlayer, random.choice(["    Take your time...", "    That's a long hardscope", "    No quickscopes?"]))
+    else:
+        smallMessage(eventPlayer, random.choice(["    ML7 HARDSCOPING LMFAO", "    POV ml7 is hardscoping", "    Even Demmos doesn't hardscope ml7LMAO"]))
+    return
 
 
 rule "If melee an awake player":

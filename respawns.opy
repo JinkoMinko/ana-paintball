@@ -9,19 +9,29 @@ rule "Initial spawn point & message":
 
     waitUntil(eventPlayer.hasSpawned(), 99999)
     RespawnSystem()
-
     wait(0.2)
     smallMessage(eventPlayer, "    Mode by Jinko#2838")
     playEffect(eventPlayer, DynamicEffect.BRIGITTE_REPAIR_PACK_ARMOR_SOUND, Color.WHITE, eventPlayer, 200)
     wait(0.7)
+    if not strContains("{0}".format(eventPlayer), "ml7"):
+        smallMessage(eventPlayer, random.choice([
+                                                "    {0}  Discord invite up there  {0}".format(iconString(Icon.ARROW_UP)),
+                                                "    {0}  TikTok: @Jinko_OW".format(iconString(Icon.HEART)),
+                                                "    {0}  Scoped shots pierce enemies!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
+                                                "    {0}  Get a 15 kills streak for a BIG surprise!".format(iconString(Icon.RADIOACTIVE)),
+                                                "    {0}{1}  Try punching sleeping players!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
+        ]))
 
-    smallMessage(eventPlayer, random.choice([
-                                            "    {0}  Discord invite up there  {0}".format(iconString(Icon.ARROW_UP)),
-                                            "    {0}  TikTok: @Jinko_OW".format(iconString(Icon.HEART)),
-                                            "    {0}  Scoped shots pierce enemies!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2)),
-                                            "    {0}  Get a 15 kills streak for a BIG surprise!".format(iconString(Icon.RADIOACTIVE)),
-                                            "    {0}{1}  Try punching sleeping players!".format(abilityIconString(Hero.ANA, Button.MELEE), abilityIconString(Hero.ANA, Button.ABILITY_1)),
-    ]))
+    else: # for ml7
+        smallMessage(eventPlayer, random.choice([
+                                                "    {0}  Guard Check  {0}".format(abilityIconString(Hero.ASHE, Button.ULTIMATE)),
+                                                "    fun fact: ml7 never got a nuke ml7Point",
+                                                "    100% nuking this game!! ml7Whoa",
+                                                "    {0}  Can we get some Guard Check in the chat?".format(abilityIconString(Hero.ASHE, Button.ULTIMATE)),
+                                                "    {0}  Demmos 1 nuke - ml7 0 nuke".format(iconString(Icon.SAD)),
+                                                "    ml7 joacă modul meu!! poggies".format(iconString(Icon.SAD)),
+                                                "    Hewwo. I'm em ewl sewwen (´・ω・`). I wuuve den (^^). I wike cats nyaa~ Owaf pways the game instwead of me, but uwu will never know (≧ω≦)".format(iconString(Icon.SAD)),                                     
+        ]))    
 
     playEffect(eventPlayer, DynamicEffect.BRIGITTE_REPAIR_PACK_ARMOR_SOUND, Color.WHITE, eventPlayer, 200)
 
