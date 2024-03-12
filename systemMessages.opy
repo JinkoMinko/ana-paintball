@@ -12,7 +12,7 @@ rule "Hardscope messages":
     if not strContains("{0}".format(eventPlayer), "ml7"):
         smallMessage(eventPlayer, random.choice(["    Take your time...", "    That's a long hardscope", "    No quickscopes?"]))
     else:
-        smallMessage(eventPlayer, random.choice(["    ML7 HARDSCOPING LMFAO", "    POV ml7 is hardscoping", "    Even Demmos doesn't hardscope ml7LMAO"]))
+        smallMessage(eventPlayer, random.choice(["    ML7 CAUGHT HARDSCOPING LMFAO", "    POV you're hardscoping", "    Even Demmos doesn't hardscope ml7LMAO"]))
     return
 
 

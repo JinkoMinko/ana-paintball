@@ -49,7 +49,10 @@ rule "perfect quickscopes":
         if not eventPlayer.isFiringSecondaryFire() and eventPlayer.KillStreak == eventPlayer.ElimsBeforeQS + 1:
             eventPlayer.MedalQueue.append(Medal.PERFECT_QS)
             eventPlayer.PerfectQuickscopes += 1
+            eventPlayer.PerfectQS = true
             playEffect(eventPlayer, DynamicEffect.WRECKING_BALL_MINEFIELD_EXPLOSION_SOUND, Color.TEAM_1, eventPlayer.getPosition()+eventPlayer.getThrottle()*eventPlayer.getSpeed(), 200)
+            wait(0.5)
+            eventPlayer.PerfectQS = null
 
 
 rule "quadfeed kills":
@@ -94,7 +97,7 @@ rule "Killstreak effects & announcements":
         attacker.MedalQueue.append(Medal.NUCLEAR)
         playEffect(getAllPlayers(), DynamicEffect.ANA_BIOTIC_GRENAGE_NO_HEALING_SOUND, Color.WHITE, attacker, 200)
         createInWorldText(attacker, "    {0} Nuclear killstreak! {0}\nPress [{1}] to request Nano-nuke".format(iconString(Icon.RADIOACTIVE), buttonString(Button.ULTIMATE)), updateEveryTick(localPlayer.getEyePosition() + (100 * (0 * worldVector(Vector.RIGHT, localPlayer, Transform.ROTATION) + ((0.69 - 0.2) * (angleToDirection(horizontalAngleOfDirection(localPlayer.getFacingDirection()), verticalAngleOfDirection(localPlayer.getFacingDirection()) - 90))) + 3 * localPlayer.getFacingDirection()))), 9, Clip.NONE, WorldTextReeval.VISIBILITY_POSITION_STRING_AND_COLOR, rgb(rainbow(getTotalTimeElapsed() * 500)), SpecVisibility.DEFAULT)
-        bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} got a Nuclear killstreak!  {0}".format(iconString(Icon.RADIOACTIVE), attacker))
+        bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} is Nuclear!  {0}".format(iconString(Icon.RADIOACTIVE), attacker))
 
 
 rule "Killstreak shutdown announcements":
@@ -169,7 +172,6 @@ rule "Environement death":
 rule "Longshot":
     @Event playerTookDamage
     @Hero ana
-    #@Condition attacker.isAlive()
     @Condition distance(attacker, victim) >= LONGSHOT_DISTANCE
     @Condition not eventWasEnvironment
     @Condition attacker.getScore() != NANO_SCORE
