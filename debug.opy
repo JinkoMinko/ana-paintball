@@ -25,7 +25,7 @@ rule "Debug HUDs":
     @Hero ana
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
-    #hudSubtext(eventPlayer, "{}".format(eventPlayer.getFacingDirection()), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
+    hudSubtext(eventPlayer, "{}".format(eventPlayer.MultiKillCount), HudPosition.TOP, 100, Color.ORANGE, HudReeval.STRING)
     #hudSubtext(eventPlayer, updateEveryTick("{}".format(eventPlayer.getPosition())), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
     #hudSubtext(eventPlayer, "looking at: {}".format(raycast(eventPlayer.getEyePosition(), eventPlayer.getEyePosition() + eventPlayer.getFacingDirection()*100, getAllPlayers(), eventPlayer, true).getHitPosition()), HudPosition.TOP, 100, Color.WHITE, HudReeval.STRING)
 
@@ -86,7 +86,7 @@ rule "CROUCH: teleport to closest bot":
     eventPlayer.teleport(getClosestPlayer(eventPlayer, Team.ALL))
 
 
-rule "SLEEP DART: make bots use sleep dart":
+rule "RELOAD: make bots use sleep dart":
     @Condition DEBUG_MODE
     @Event eachPlayer
     @Hero ana
@@ -94,7 +94,6 @@ rule "SLEEP DART: make bots use sleep dart":
     @Condition strContains("{0}".format(eventPlayer), "Jinko")
 
     getAllPlayers().exclude(eventPlayer).forceButtonPress(Button.ABILITY_1)
-
 
 rule "bots honor players'":
     @Condition DEBUG_MODE
@@ -120,6 +119,17 @@ rule "Kill all bots":
     destroyAllDummies()
     BotName = 1
 
+
+rule "Reset score": 
+    @Condition DEBUG_MODE
+    @Event eachPlayer
+    @Hero ana
+    @Condition eventPlayer.isHoldingButton(Button.ULTIMATE)
+    @Condition eventPlayer.isHoldingButton(Button.SECONDARY_FIRE)
+    @Condition strContains("{0}".format(eventPlayer), "Jinko")
+
+    kill(eventPlayer, null)
+    eventPlayer.setScore(0)
 
 
     #    #    #    #    # SPAWN POINTS TOOL

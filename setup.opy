@@ -2,7 +2,7 @@
 
 rule "Disable inspector & match ending and initiate text rainbow":
     @Event global
-    
+
     enableInspector() if DEBUG_MODE else disableInspector()
     disableGamemodeCompletion()
     Rainbow = vect(0, 0, 0)
@@ -14,13 +14,13 @@ rule "Player damage & HP settings":
     @Hero ana
 
     eventPlayer.setDamageReceived(0.0001)
-    eventPlayer.setMaxHealth(34.5)
+    eventPlayer.setMaxHealth(27.5)
 
 
 rule "Start match sooner & pause timer":
     @Condition not DEBUG_MODE
     @Condition isAssemblingHeroes()
-    
+
     setMatchTime(13)
     wait(13.2)
     setMatchTime(261)
@@ -42,7 +42,7 @@ rule "Detect players": # Differentiate players from spectators & bots
         eventPlayer.stopForcingName()
 
     eventPlayer.setRespawnTime(CUSTOM_RESPAWN_TIME)
-    
+
     if MatchEnded:
         eventPlayer.disallowButton(Button.PRIMARY_FIRE)
         eventPlayer.disallowButton(Button.SECONDARY_FIRE)
@@ -183,14 +183,14 @@ rule "PLAYER EFFECTS":
                         SpecVisibility.NEVER)
 
     createStreakEffect(localPlayer if eventPlayer.KillStreak >= ONFIRE_STREAK else [], Effect.SOLDIER_SPRINTING, 10)
-    createStreakEffect(localPlayer if eventPlayer.KillStreak >= RAMPAGE_STREAK else [], Effect.ECHO_CLONING, 1)
+    createStreakEffect(localPlayer if eventPlayer.KillStreak >= RAMPAGE_STREAK and not eventPlayer.KillStreak == NUCLEAR_STREAK else [], Effect.ECHO_CLONING, 1)
     createStreakEffect(localPlayer if eventPlayer.KillStreak >= RAMPAGE_STREAK and eventPlayer.RampageSFX == true else [], Effect.WINSTON_PRIMAL_RAGE_SOUND, 80 if eventPlayer == localPlayer else 200)
-    
+
     createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.NanoDelay else [], Effect.ANA_NANO_BOOSTED, Color.TEAM_1, eventPlayer, 0 if eventPlayer.isUsingUltimate() else 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer if eventPlayer.getScore() == NANO_SCORE and eventPlayer.isAlive() and eventPlayer.NanoDelay else [], Effect.ANA_NANO_BOOSTED_SOUND, Color.TEAM_1, eventPlayer, (0 if eventPlayer.isUsingUltimate() else 25) if eventPlayer == localPlayer else 150, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
 
     createEffect(localPlayer if eventPlayer.DemotedEffect == true else [], Effect.SOMBRA_HACKED_SOUND, Color.TEAM_1, eventPlayer, 100 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-    createEffect(localPlayer.exclude(eventPlayer) if eventPlayer.RampageVFX == true else [], Effect.WINSTON_PRIMAL_RAGE, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer.exclude(eventPlayer) if eventPlayer.RampageVFX == true and not eventPlayer.KillStreak == NUCLEAR_STREAK else [], Effect.WINSTON_PRIMAL_RAGE, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer if eventPlayer.RampageVFX == true else [], Effect.WRECKING_BALL_ADAPTIVE_SHIELD_TARGET, Color.TEAM_1, eventPlayer, 70 if eventPlayer == localPlayer else 200, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
     createEffect(localPlayer if MatchEnded and NukePos else [], Effect.ZENYATTA_ORB_OF_DISCORD_TARGET, Color.TEAM_1, eventPlayer.exclude(Winner), 1, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
-    createEffect(localPlayer if eventPlayer.PerfectQS == true else [], Effect.WRECKING_BALL_ADAPTIVE_SHIELD_TARGET, Color.TEAM_1, eventPlayer, 100 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
+    createEffect(localPlayer if eventPlayer.PerfectQSVFX == true else [], Effect.WRECKING_BALL_ADAPTIVE_SHIELD_TARGET, Color.TEAM_1, eventPlayer, 100 if eventPlayer == localPlayer else 0, EffectReeval.VISIBILITY_POSITION_AND_RADIUS)
