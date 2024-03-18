@@ -13,16 +13,20 @@ rule "Kill logic":
     victim.HonorBar = 100
     chase(victim.HonorBar, 0, duration=CUSTOM_RESPAWN_TIME + 0.9, ChaseReeval.DESTINATION_AND_DURATION)
 
-    if attacker.ComebackCount >= 3:
-        attacker.MedalQueue.append(Medal.COMEBACK)
+    if attacker.ComebackCount > 3:
         attacker.ComebackCount = 0
         async(SayVoiceline, AsyncBehavior.NOOP)
+        if attacker.ComebackCount < 10:
+            attacker.MedalQueue.append(Medal.COMEBACK)
+        else:
+            attacker.MedalQueue.append(Medal.IRON_WILL)
+            bigMessage(attacker, "{0}  Iron Will!  {0}".format(abilityIconString(Hero.PHARAH, Button.JUMP)))
 
     if not FirstBlood:
-        attacker.MedalQueue.append(Medal.FIRST_BLOOD)
         FirstBlood = not FirstBlood
+        attacker.MedalQueue.append(Medal.FIRST_BLOOD)
         async(SayVoiceline, AsyncBehavior.NOOP)
-                
+
     if attacker.isFiringPrimaryFire() and attacker.isFiringSecondaryFire():    # SCOPED KILLS
         attacker.ScopedHits +=1
         attacker.RaycastLastHitPlayer = attacker
@@ -44,8 +48,10 @@ rule "Kill logic":
         
         if attacker.EarnedCollateral > 1:
             attacker.MedalQueue.append(Medal.COLLATERAL_KILLS)
-            bigMessage(getAllPlayers().exclude(attacker), "{0}  {1} got {2} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker, attacker.EarnedCollateral))
             bigMessage(attacker, "{0}  {1} collateral kills!  {0}".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker.EarnedCollateral))
+            for i in range(getNumberOfPlayers(Team.ALL) - 1): # For loop required for SYSMSG that target multiple players
+                getAllPlayers().exclude(attacker)[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude(attacker)[i].MedalQueue)
+            smallMessage(getAllPlayers().exclude(attacker), "    {0}  {1} got {2} collateral kills!".format(abilityIconString(Hero.ZARYA, Button.ABILITY_2), attacker, attacker.EarnedCollateral))
 
     elif eventAbility == Button.PRIMARY_FIRE:    # NOSCOPE KILLS
         attacker.KillStreak += 1
@@ -54,7 +60,8 @@ rule "Kill logic":
     else:    # MELEE KILLS
         attacker.KillStreak += 1
         if victim.isInAir() and attacker.isInAir():
-            attacker.MedalQueue.append(Medal.DREAMCATCHER)  
+            attacker.MedalQueue.append(Medal.DREAMCATCHER)
+            bigMessage(attacker, "{0}  Dream catcher!  {0}".format(abilityIconString(Hero.RAMATTRA, Button.ABILITY_2)))
 
         attacker.Executes += 1
         attacker.PunchDrunk += 1
@@ -65,16 +72,23 @@ rule "Kill logic":
             attacker.DemotionVictim = victim
             attacker.MedalQueue.append(Medal.DEMOTION)
             async(SaySorry, AsyncBehavior.NOOP)
+            for i in range(getNumberOfPlayers(Team.ALL) - 2): # For loop required for SYSMSG that target multiple players
+                getAllPlayers().exclude([victim, attacker])[i].MedalQueue = [Medal.SYSTEM_MESSAGE].concat(getAllPlayers().exclude([victim, attacker])[i].MedalQueue)
             smallMessage(getAllPlayers().exclude([victim, attacker]), "    {0}  {1} demoted {2}!".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker, victim))
             victim.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(victim.MedalQueue)
             smallMessage(victim, "    {0}  {1} demoted you".format(abilityIconString(Hero.HAMMOND, Button.CROUCH), attacker))
             victim.setScore(victim.getScore()-1)
             attacker.DemotedPlayers += 1
+            if attacker.DemotedPlayers == 5:
+                attacker.MedalQueue.append(Medal.TERMINATOR)
+                bigMessage(attacker, "{0}  Terminator!  {0}".format(abilityIconString(Hero.BAPTISTE, Button.ABILITY_2)))
             playEffect(attacker, DynamicEffect.ANA_BIOTIC_GRENADE_EXPLOSION_SOUND, Color.WHITE, victim, 200)
             victim.DemotedEffect = true
 
             if victim.getScore() == NANO_SCORE -1:
                 attacker.MedalQueue.append(Medal.SHOWSTOPPER)
+                bigMessage((attacker), "  Showstopper!  ".format(iconString(Icon.STOP)))
+
         
         elif attacker.getScore() < NANO_SCORE:
             attacker.MedalQueue.append(Medal.EXECUTED)
@@ -85,15 +99,20 @@ rule "Kill logic":
             attacker.PunchDrunk = 0
     
     if victim.KillStreak == ONFIRE_STREAK-1 or victim.KillStreak == RAMPAGE_STREAK-1:
-        attacker.MedalQueue.append(Medal.BUZZKILL)
+        attacker.MedalQueue.append(Medal.STREAK_SQUASHER)
         async(SaySorry(), AsyncBehavior.NOOP)
 
     if victim.KillStreak == NUCLEAR_STREAK -1:
         attacker.MedalQueue.append(Medal.COUNTERMEASURE)
         async(SaySorry(), AsyncBehavior.NOOP)
+        bigMessage(getAllPlayers().exclude(attacker), "{0} saved everyone from {1}'s nuke!".format(attacker, victim))
+        bigMessage((attacker), "{0}  You saved everyone from {1}'s nuke!  {0}".format(abilityIconString(Hero.MERCY, Button.ULTIMATE), victim))
+
     
     if victim.IsNuclear:
         attacker.MedalQueue.append(Medal.CATASTROPHE)
+        bigMessage((attacker), "You triggered {0}'s nuke!".format(victim))
+
 
     if victim.KillStreak == 0:
         victim.ComebackCount +=1
@@ -107,6 +126,7 @@ rule "Kill logic":
 
     if attacker.getAmmo(0) == 0:
         attacker.MedalQueue.append(Medal.LAST_BULLET)
+        bigMessage(attacker, "{0} Last bullet kill! {0}".format(iconString(Icon.CLUB)))
 
     if victim.LastSleptBy != null and victim.LastSleptBy != attacker:    # STOLEN KILLS
         attacker.StolenFrom = victim.LastSleptBy
@@ -115,6 +135,10 @@ rule "Kill logic":
         attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the assist
         attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the kill
         attacker.StolenFrom.MedalQueue = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom.MedalQueue)    # For the message below
+        if attacker.StolenKills == 5:
+            attacker.MedalQueue.append(Medal.SLEEP_THIEF)
+            bigMessage(attacker, "{0}  Sleep thief:  {0}".format(abilityIconString(Hero.MOIRA, Button.SECONDARY_FIRE)))
+        attacker.StolenFrom = [Medal.SYSTEM_MESSAGE].concat(attacker.StolenFrom)
         smallMessage(attacker.StolenFrom, "    {0}  {1} stole your kill".format(abilityIconString(Hero.ROADHOG, Button.ABILITY_1), attacker))
         async(SayThanks, AsyncBehavior.NOOP)
     
@@ -123,7 +147,7 @@ rule "Kill logic":
 
     attacker.setUltCharge((attacker.getScore()/NANO_SCORE)*100)
     
-    if attacker.getScore() == NANO_SCORE - 2:
+    if attacker.getScore() == NANO_SCORE - 2 or attacker.getScore() == NANO_SCORE - 2 :
         async(SayUltStatus, AsyncBehavior.NOOP)
     
     attacker.ComebackCount = 0
@@ -161,6 +185,7 @@ rule "Reset players upon death":
     eventPlayer.NanoDelay = not eventPlayer.NanoDelay
     eventPlayer.Sandman = 0
     eventPlayer.PunchDrunk = 0
+    eventPlayer.MultiKillCount = 0
 
     waitUntil(eventPlayer.isAlive(), 69)
 

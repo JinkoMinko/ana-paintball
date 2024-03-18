@@ -35,6 +35,7 @@ rule "Noscope hits":
     BestNoscopeAccuracyPlayer = eventPlayer
     if attacker.NoscopeHits == 10:
         attacker.MedalQueue.append(Medal.NO_SCOPE_NEEDED)
+        bigMessage(attacker, "{0}  No scope needed!  {0}".format(abilityIconString(Hero.SOJOURN, Button.ULTIMATE)))
 
 
 rule "Sleep Dart shots":

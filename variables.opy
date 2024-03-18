@@ -95,6 +95,7 @@ playervar MedalScore
 playervar DisplayMedal
 playervar SystemMessages = []
 playervar MedalQueue = []
+playervar MultiKillCount
 playervar QuadFeedTimes = []
 playervar EarnedCollateral
 playervar Sandman
@@ -107,26 +108,32 @@ enum Medal:
     SYSTEM_MESSAGE,
     HONOR,
     EXECUTED,
-    PERFECT_QS,
     DEMOTION,
+    TERMINATOR,
+    PERFECT_QS,
     STOLEN_KILL,
+    SLEEP_THIEF,
     FIRST_BLOOD,
     FIRST_SLEEP,
     COMEBACK,
+    IRON_WILL,
     LONGSHOT,
     NANOPUNCH,
-    ENV_KILL,
+    ENVRNMTL_KILL,
     ON_FIRE,
     ON_FIRE_SHUTDOWN,
     RAMPAGE,
     RAMPAGE_SHUTDOWN,
-    BUZZKILL,
+    STREAK_SQUASHER,
     NUCLEAR,
     NUCLEAR_SHUTDOWN,
     CATASTROPHE,
     COUNTERMEASURE,
     SHOWSTOPPER,
     QUADFEED,
+    PENTAKILL,
+    ULTRAKILL,
+    KILLIONAIRE,
     JOLLY_JUMPER,
     COLLATERAL_KILLS,
     MUTUAL_SLEEP,
@@ -138,6 +145,7 @@ enum Medal:
     SANDMAN,
     PUNCH_DRUNK,
     FROM_THE_GRAVE,
+    PERFECTIONIST,
 
 
 # RESPAWN SYSTEM
@@ -254,4 +262,4 @@ playervar Temp
 
 globalvar SlowMo = 100
 
-playervar PerfectQS
+playervar PerfectQSVFX
