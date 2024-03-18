@@ -77,6 +77,7 @@ rule "Detect mutual sleeps":
     @Hero ana
 
     [eventPlayer, victim].MedalQueue.append(Medal.MUTUAL_SLEEP)
+    bigMessage([eventPlayer, victim], "Akward moment...")
     wait(1.5, Wait.ABORT_WHEN_FALSE)
     if attacker.isAlive() and victim.isAlive() == true:
         damage([eventPlayer, victim], null, 1)

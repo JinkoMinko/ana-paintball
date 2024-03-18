@@ -4,7 +4,7 @@
 globalvar ONFIRE_STREAK = (5 if DEBUG_MODE else 5)
 globalvar RAMPAGE_STREAK = (10 if DEBUG_MODE else 10)
 globalvar NUCLEAR_STREAK = (15 if DEBUG_MODE else 15)
-globalvar NANO_SCORE = (1 if DEBUG_MODE else 29)
+globalvar NANO_SCORE = (15 if DEBUG_MODE else 29)
 
 globalvar LONGSHOT_DISTANCE = (40 if DEBUG_MODE else 40)
 globalvar CUSTOM_RESPAWN_TIME = 1.6
@@ -91,9 +91,11 @@ subroutine RandomEmote
 
 # MEDALS
 globalvar i    # used to loop medals sent globally
+playervar MedalScore
 playervar DisplayMedal
 playervar SystemMessages = []
 playervar MedalQueue = []
+playervar MultiKillCount
 playervar QuadFeedTimes = []
 playervar EarnedCollateral
 playervar Sandman
@@ -106,26 +108,32 @@ enum Medal:
     SYSTEM_MESSAGE,
     HONOR,
     EXECUTED,
-    PERFECT_QS,
     DEMOTION,
+    TERMINATOR,
+    PERFECT_QS,
     STOLEN_KILL,
+    SLEEP_THIEF,
     FIRST_BLOOD,
     FIRST_SLEEP,
     COMEBACK,
+    IRON_WILL,
     LONGSHOT,
     NANOPUNCH,
-    ENV_KILL,
+    ENVRNMTL_KILL,
     ON_FIRE,
     ON_FIRE_SHUTDOWN,
     RAMPAGE,
     RAMPAGE_SHUTDOWN,
-    BUZZKILL,
+    STREAK_SQUASHER,
     NUCLEAR,
     NUCLEAR_SHUTDOWN,
     CATASTROPHE,
     COUNTERMEASURE,
     SHOWSTOPPER,
     QUADFEED,
+    PENTAKILL,
+    ULTRAKILL,
+    KILLIONAIRE,
     JOLLY_JUMPER,
     COLLATERAL_KILLS,
     MUTUAL_SLEEP,
@@ -137,6 +145,7 @@ enum Medal:
     SANDMAN,
     PUNCH_DRUNK,
     FROM_THE_GRAVE,
+    PERFECTIONIST,
 
 
 # RESPAWN SYSTEM
@@ -252,3 +261,5 @@ playervar OofText
 playervar Temp
 
 globalvar SlowMo = 100
+
+playervar PerfectQSVFX
